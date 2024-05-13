@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clundber <clundber@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: rboudwin <rboudwin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 13:58:21 by clundber          #+#    #+#             */
-/*   Updated: 2024/05/13 12:22:20 by clundber         ###   ########.fr       */
+/*   Updated: 2024/05/13 16:13:35 by rboudwin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,24 +18,45 @@
 # include <fcntl.h>		// for open
 # include <stdlib.h> 	// for malloc, free, exit
 # include <string.h> 	// for strerror
+# include "../Libft/libft.h"
 # include "../MLX42/include/MLX42/MLX42.h"
+
+
+# define BPP sizeof(int32_t)
 int cub3d_mlx(void);
+void free_2d(char **ptr);
+int get_rgba(int r, int g, int b, int a);
+
+typedef struct s_images
+{
+	mlx_image_t		*bg;
+	mlx_texture_t	*black;
+	mlx_texture_t	*white;
+	mlx_texture_t	*player;
+	mlx_texture_t	*direction;
+	mlx_image_t		*blk;
+	mlx_image_t		*wht;
+	mlx_image_t		*plyr;
+	mlx_image_t		*dir;
+}	t_images;
 
 typedef struct s_map
 {
-	char	**map;
-	int		p_pos_x;
-	int		p_pos_y;
-	int		p_orient;
+	char		**map;
+	int			p_pos_x;
+	int			p_pos_y;
+	int			p_orient;
 
-	int		*ceiling;
-	int		*floor;
+	int			*ceiling;
+	int			*floor;
 
-	char	*no_text;
-	char	*so_text;
-	char	*we_text;
-	char	*ea_text;
-
+	char		*no_text;
+	char		*so_text;
+	char		*we_text;
+	char		*ea_text;
+	mlx_t		*mlx;
+	t_images	*images;
 }	t_map;
+
 
 #endif
