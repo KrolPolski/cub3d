@@ -1,0 +1,14 @@
+* Configure MLX42 and Makefile
+* Ensure window management is smooth (changing focus, minimizing, etc)
+* Pressing ESC must close the window and quit the program cleanly.
+* Clicking on the red cross on the window’s frame must close the window and
+quit the program cleanly.
+* Display different wall textures that vary depending on which side the wall is facing
+* Be able to set the floor and ceiling colors to two different ones
+* The left and right arrow keys of the keyboard must allow you to look left and
+right in the maze.
+* The W, A, S, and D keys must allow you to move the point of view through
+the maze.
+* implement map validation to reject invalid maps
+* implement map parsing
+
