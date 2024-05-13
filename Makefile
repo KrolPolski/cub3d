@@ -26,7 +26,7 @@ OBJ_DIR = ./srcs/temp
 MLX_DIR = ./MLX42
 
 #------------- SOURCE FILES ------#
-CFILES = $(SRCS_DIR)/test.c $(SRCS_DIR)/mlx.c
+CFILES = $(SRCS_DIR)/cub3d.c $(SRCS_DIR)/parsing.c $(SRCS_DIR)/utils.c $(SRCS_DIR)/mlx.c 
 
 OFILES = $(CFILES:.c=.o)
 

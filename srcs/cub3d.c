@@ -6,15 +6,36 @@
 /*   By: clundber <clundber@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 11:45:09 by clundber          #+#    #+#             */
-/*   Updated: 2024/05/13 12:20:10 by clundber         ###   ########.fr       */
+/*   Updated: 2024/05/13 15:17:09 by clundber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../include/cub3d.h"
+
+void	init_data(t_map *map)
+{
+	map->map = NULL;
+	map->p_pos_x = 0;
+	map->p_pos_y = 0;
+	map->p_orient = 0;
+	map->ceiling = NULL;
+	map->floor = NULL;
+	map->no_text = NULL;
+	map->so_text = NULL;
+	map->we_text = NULL;
+	map->ea_text = NULL;
+	map->mapstart = -1;
+}
 int	main(int argc, char *argv[])
 {
-	//parse input
+	t_map map;
+
+	init_data(&map);
+	if (parsing(argc, argv, &map) != 0)
+		return (1);
 	//start MLX loop
 	//cleanup
+	return(0);
 }
 
 /* 
