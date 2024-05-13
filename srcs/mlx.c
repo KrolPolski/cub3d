@@ -6,7 +6,7 @@
 /*   By: rboudwin <rboudwin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 11:58:50 by rboudwin          #+#    #+#             */
-/*   Updated: 2024/05/13 16:17:53 by rboudwin         ###   ########.fr       */
+/*   Updated: 2024/05/13 17:40:25 by rboudwin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,20 @@ void	ft_movehook(void *param)
 	{
 		map->p_pos_x += 5;
 		map->images->plyr->instances[0].x = map->p_pos_x;
+	}
+	if (mlx_is_key_down(map->mlx, MLX_KEY_LEFT))
+	{
+		map->p_orient -= 1 * DEG_2_RAD;
+		if (map->p_orient <= 0)
+			map->p_orient += 2 * M_PI;
+		printf("Degrees: %f\n", map->p_orient / DEG_2_RAD);
+	}
+	if (mlx_is_key_down(map->mlx, MLX_KEY_RIGHT))
+	{
+		map->p_orient += 1 * DEG_2_RAD;
+		if (map->p_orient >= 2 * M_PI)
+			map->p_orient -= 2 * M_PI;
+		printf("Degrees: %f\n", map->p_orient / DEG_2_RAD);
 	}
 }
 
