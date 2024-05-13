@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clundber <clundber@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: rboudwin <rboudwin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 13:58:21 by clundber          #+#    #+#             */
-/*   Updated: 2024/05/13 12:22:20 by clundber         ###   ########.fr       */
+/*   Updated: 2024/05/13 12:38:42 by rboudwin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,12 @@
 # include <fcntl.h>		// for open
 # include <stdlib.h> 	// for malloc, free, exit
 # include <string.h> 	// for strerror
+# include "../Libft/libft.h"
 # include "../MLX42/include/MLX42/MLX42.h"
+
+# define BPP sizeof(int32_t)
 int cub3d_mlx(void);
+void free_2d(char **ptr);
 
 typedef struct s_map
 {
