@@ -20,7 +20,7 @@
 # include <string.h> 	// for strerror
 # include "../Libft/libft.h"
 # include "../MLX42/include/MLX42/MLX42.h"
-
+#include <stdbool.h>
 
 # define BPP sizeof(int32_t)
 int cub3d_mlx(void);
@@ -40,23 +40,34 @@ typedef struct s_images
 	mlx_image_t		*dir;
 }	t_images;
 
+
 typedef struct s_map
 {
 	char		**map;
 	int			p_pos_x;
 	int			p_pos_y;
 	int			p_orient;
-
-	int			*ceiling;
-	int			*floor;
-
-	char		*no_text;
+  
+  char		*no_text;
 	char		*so_text;
 	char		*we_text;
 	char		*ea_text;
-	mlx_t		*mlx;
-	t_images	*images;
-}	t_map;
+  
+  int			*ceiling;
+	int			*floor;
+  t_images  *images; 
+  mlx_t		*mlx; 
+  int		mapstart;
+}	t_map;  
 
+
+
+
+
+
+
+int cub3d_mlx(void);
+int	parsing(int argc, char **argv, t_map *map);
+int	ret_error(char *str);
 
 #endif
