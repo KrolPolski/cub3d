@@ -6,7 +6,7 @@
 /*   By: rboudwin <rboudwin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 13:58:21 by clundber          #+#    #+#             */
-/*   Updated: 2024/05/13 14:05:20 by rboudwin         ###   ########.fr       */
+/*   Updated: 2024/05/13 16:13:35 by rboudwin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,11 @@
 # include "../Libft/libft.h"
 # include "../MLX42/include/MLX42/MLX42.h"
 
+
 # define BPP sizeof(int32_t)
 int cub3d_mlx(void);
 void free_2d(char **ptr);
+int get_rgba(int r, int g, int b, int a);
 
 typedef struct s_images
 {
@@ -31,9 +33,11 @@ typedef struct s_images
 	mlx_texture_t	*black;
 	mlx_texture_t	*white;
 	mlx_texture_t	*player;
+	mlx_texture_t	*direction;
 	mlx_image_t		*blk;
 	mlx_image_t		*wht;
 	mlx_image_t		*plyr;
+	mlx_image_t		*dir;
 }	t_images;
 
 typedef struct s_map

@@ -6,12 +6,26 @@
 /*   By: rboudwin <rboudwin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 11:58:50 by rboudwin          #+#    #+#             */
-/*   Updated: 2024/05/13 14:14:47 by rboudwin         ###   ########.fr       */
+/*   Updated: 2024/05/13 16:17:53 by rboudwin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3d.h"
 
+void	draw_direction(mlx_t *mlx, t_map *map, t_images *images)
+{
+	int i;
+	(void)mlx;
+	(void)map;
+	i = 0;
+	while (i < 30)
+	{
+		printf("attempting to draw direction\n");
+		mlx_put_pixel(images->plyr, images->plyr->width / 2, i, get_rgba(255, 0, 0, 255));
+		//mlx_put_pixel(images->plyr, map->p_pos_x, map->p_pos_y + i, 16711680);
+		i++;
+	}
+}
 void	draw_2d_map(mlx_t *mlx, t_map *map, t_images *images)
 {
 	int			i;
@@ -22,10 +36,11 @@ void	draw_2d_map(mlx_t *mlx, t_map *map, t_images *images)
 	images->black = mlx_load_png("assets/black.png");
 	images->white = mlx_load_png("assets/white.png");
 	images->player = mlx_load_png("assets/player.png");
-	images->blk = mlx_texture_to_image(mlx, images->black);
+images->blk = mlx_texture_to_image(mlx, images->black);
 	images->wht = mlx_texture_to_image(mlx, images->white);
 	images->plyr = mlx_texture_to_image(mlx, images->player);
-	mlx_resize_image(images->plyr, 8, 8);
+	images->dir = mlx_new_image(mlx, 64, 64);
+	//mlx_resize_image(images->plyr, 8, 8);
 	images->bg = mlx_new_image(mlx, 1366, 768);
 	ft_memset(images->bg->pixels, 180, images->bg->width * images->bg->height * BPP);
 	mlx_image_to_window(mlx, images->bg, 0, 0);
@@ -47,6 +62,7 @@ void	draw_2d_map(mlx_t *mlx, t_map *map, t_images *images)
 			{
 				map->p_pos_x = (k + 2) * 64;
 				map->p_pos_y = (i + 2) * 64;
+				map->p_orient = 0;
 				mlx_image_to_window(mlx, images->wht, (k + 2) * 64, (i + 2) * 64);
 			}	
 			else if (map->map[i][k] == '0')
@@ -57,6 +73,7 @@ void	draw_2d_map(mlx_t *mlx, t_map *map, t_images *images)
 		i++;	
 	}
 	mlx_image_to_window(mlx, images->plyr, map->p_pos_x, map->p_pos_y);
+	draw_direction(mlx, map, images);
 }
 
 void	ft_movehook(void *param)
