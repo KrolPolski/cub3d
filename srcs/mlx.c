@@ -6,7 +6,7 @@
 /*   By: rboudwin <rboudwin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 11:58:50 by rboudwin          #+#    #+#             */
-/*   Updated: 2024/05/13 17:40:25 by rboudwin         ###   ########.fr       */
+/*   Updated: 2024/05/13 18:00:35 by rboudwin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,15 @@ void	draw_direction(mlx_t *mlx, t_map *map, t_images *images)
 	(void)mlx;
 	(void)map;
 	i = 0;
+	mlx_delete_image(mlx, images->plyr);
+	images->plyr = mlx_texture_to_image(mlx, images->player);
+	mlx_image_to_window(mlx, images->plyr, map->p_pos_x, map->p_pos_y);
 	while (i < 30)
 	{
 		printf("attempting to draw direction\n");
-		mlx_put_pixel(images->plyr, images->plyr->width / 2, i, get_rgba(255, 0, 0, 255));
-		//mlx_put_pixel(images->plyr, map->p_pos_x, map->p_pos_y + i, 16711680);
+		//this draws straight north
+		//mlx_put_pixel(images->plyr, images->plyr->width / 2, i, get_rgba(255, 0, 0, 255));
+		mlx_put_pixel(images->plyr, images->plyr->width / 2 + i * sin(map->p_orient), images->plyr->height /2 + -i * cos(map->p_orient), get_rgba(255, 0, 0, 255));
 		i++;
 	}
 }
@@ -110,6 +114,7 @@ void	ft_movehook(void *param)
 		if (map->p_orient <= 0)
 			map->p_orient += 2 * M_PI;
 		printf("Degrees: %f\n", map->p_orient / DEG_2_RAD);
+		draw_direction(map->mlx, map, map->images);
 	}
 	if (mlx_is_key_down(map->mlx, MLX_KEY_RIGHT))
 	{
@@ -117,6 +122,7 @@ void	ft_movehook(void *param)
 		if (map->p_orient >= 2 * M_PI)
 			map->p_orient -= 2 * M_PI;
 		printf("Degrees: %f\n", map->p_orient / DEG_2_RAD);
+		draw_direction(map->mlx, map, map->images);
 	}
 }
 
