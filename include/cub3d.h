@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rboudwin <rboudwin@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: clundber <clundber@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 13:58:21 by clundber          #+#    #+#             */
-/*   Updated: 2024/05/13 16:13:35 by rboudwin         ###   ########.fr       */
+/*   Updated: 2024/05/14 16:09:03 by clundber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,9 @@
 # include <string.h> 	// for strerror
 # include "../Libft/libft.h"
 # include "../MLX42/include/MLX42/MLX42.h"
-#include <stdbool.h>
+# include <stdbool.h>
 
 # define BPP sizeof(int32_t)
-int cub3d_mlx(void);
 void free_2d(char **ptr);
 int get_rgba(int r, int g, int b, int a);
 
@@ -47,17 +46,14 @@ typedef struct s_map
 	int			p_pos_x;
 	int			p_pos_y;
 	int			p_orient;
-  
-  char		*no_text;
-	char		*so_text;
-	char		*we_text;
-	char		*ea_text;
-  
-  int			*ceiling;
+
+	char		*text[5]; //N->E->S->W
+
+	int			*ceiling;
 	int			*floor;
-  t_images  *images; 
-  mlx_t		*mlx; 
-  int		mapstart;
+  	t_images  	*images; 
+  	mlx_t		*mlx; 
+ 	 int		mapstart;
 }	t_map;  
 
 
@@ -65,9 +61,9 @@ typedef struct s_map
 
 
 
-
-int cub3d_mlx(void);
-int	parsing(int argc, char **argv, t_map *map);
-int	ret_error(char *str);
+void	ft_nullfree(char *str);
+int	 	cub3d_mlx(void);
+int		parsing(int argc, char **argv, t_map *map);
+int		ret_error(char *str);
 
 #endif

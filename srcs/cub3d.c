@@ -6,7 +6,7 @@
 /*   By: clundber <clundber@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 11:45:09 by clundber          #+#    #+#             */
-/*   Updated: 2024/05/13 15:17:09 by clundber         ###   ########.fr       */
+/*   Updated: 2024/05/14 15:56:37 by clundber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,25 @@ void	init_data(t_map *map)
 	map->p_pos_x = 0;
 	map->p_pos_y = 0;
 	map->p_orient = 0;
-	map->ceiling = NULL;
-	map->floor = NULL;
-	map->no_text = NULL;
-	map->so_text = NULL;
-	map->we_text = NULL;
-	map->ea_text = NULL;
+	map->ceiling = malloc(sizeof(int *) * 5);
+	map->ceiling[0] = -1;
+	map->ceiling[1] = -1;
+	map->ceiling[2] = -1;
+	map->ceiling[3] = 0;
+	map->floor = malloc(sizeof(int *) * 5);
+	map->floor[0] = -1;
+	map->floor[1] = -1;
+	map->floor[2] = -1;
+	map->floor[3] = 0;
+	map->text[0] = NULL;
+	map->text[1] = NULL;
+	map->text[2] = NULL;
+	map->text[3] = NULL;
+	map->text[4] = NULL;
+	//map->no_text = NULL;
+	//map->so_text = NULL;
+	//map->we_text = NULL;
+	//map->ea_text = NULL;
 	map->mapstart = -1;
 }
 int	main(int argc, char *argv[])
@@ -35,6 +48,7 @@ int	main(int argc, char *argv[])
 		return (1);
 	//start MLX loop
 	//cleanup
+	printf("great success\n");
 	return(0);
 }
 

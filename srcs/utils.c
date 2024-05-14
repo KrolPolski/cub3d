@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rboudwin <rboudwin@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: clundber <clundber@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 12:04:25 by clundber          #+#    #+#             */
-/*   Updated: 2024/05/13 12:39:25 by rboudwin         ###   ########.fr       */
+/*   Updated: 2024/05/14 14:38:01 by clundber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,29 @@ int	ret_error(char *str)
 	return (1);
 }
 
-void free_2d(char **ptr)
+void	free_2d(char **ptr)
 {
-	int i;
-	
+	int	i;
+
 	i = 0;
-	while (ptr[i])
+	if (ptr)
 	{
-		free(ptr[i]);
-		ptr[i] = NULL;
-		i++;
+		while (ptr[i])
+		{
+			free(ptr[i]);
+			ptr[i] = NULL;
+			i++;
+		}
+		free(ptr);
+		ptr = NULL;
 	}
-	free(ptr);
-	ptr = NULL;
+}
+
+void	ft_nullfree(char *str)
+{
+	if (str)
+	{
+		free (str);
+		str = NULL;
+	}
 }
