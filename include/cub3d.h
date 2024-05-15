@@ -6,7 +6,7 @@
 /*   By: rboudwin <rboudwin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 13:58:21 by clundber          #+#    #+#             */
-/*   Updated: 2024/05/15 14:23:40 by rboudwin         ###   ########.fr       */
+/*   Updated: 2024/05/15 17:00:42 by rboudwin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 # include <stdbool.h>
 
 # define BPP sizeof(int32_t)
-# define DEG_2_RAD 0.0174533
+# define DEG_2_RAD 0.01745329252
 
 typedef struct s_images
 {
