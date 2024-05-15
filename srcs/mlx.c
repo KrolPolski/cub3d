@@ -6,7 +6,7 @@
 /*   By: rboudwin <rboudwin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 11:58:50 by rboudwin          #+#    #+#             */
-/*   Updated: 2024/05/15 15:07:31 by rboudwin         ###   ########.fr       */
+/*   Updated: 2024/05/15 15:27:33 by rboudwin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,21 @@ void	move_backward(t_map *map)
 	map->images->plyr->instances[0].x -= 5 * sin(map->p_orient);
 	map->images->plyr->instances[0].y += 5 * cos(map->p_orient);
 }
+void	move_left(t_map *map)
+{
+	map->p_pos_x -= 5 * sin(map->p_orient + 90 * DEG_2_RAD);
+	map->p_pos_y += 5 * cos(map->p_orient + 90 * DEG_2_RAD);
+	map->images->plyr->instances[0].x -= 5 * sin(map->p_orient + 90 * DEG_2_RAD);
+	map->images->plyr->instances[0].y += 5 * cos(map->p_orient + 90 * DEG_2_RAD);
+}
+
+void	move_right(t_map *map)
+{
+	map->p_pos_x -= 5 * sin(map->p_orient - 90 * DEG_2_RAD);
+	map->p_pos_y += 5 * cos(map->p_orient - 90 * DEG_2_RAD);
+	map->images->plyr->instances[0].x -= 5 * sin(map->p_orient - 90 * DEG_2_RAD);
+	map->images->plyr->instances[0].y += 5 * cos(map->p_orient - 90 * DEG_2_RAD);
+}
 void	ft_movehook(void *param)
 {
 	t_map *map;
@@ -161,16 +176,17 @@ void	ft_movehook(void *param)
 	{
 		//printf("The square to the west is a %c\n", detect_square(map, 'W'));
 		//if (detect_square(map, 'W') != '1'){
-		
-		map->p_pos_x -= 5;
-		map->images->plyr->instances[0].x -= 5;//}
+		move_left(map);
+		//map->p_pos_x -= 5;
+		//map->images->plyr->instances[0].x -= 5;//}
 	}
 	if (mlx_is_key_down(map->mlx, MLX_KEY_D))
 	{
 		//printf("The square to the east is a %c\n", detect_square(map, 'E'));
 		//if (detect_square(map, 'E') != '1'){
-		map->p_pos_x += 5;
-		map->images->plyr->instances[0].x += 5;
+		//map->p_pos_x += 5;
+		//map->images->plyr->instances[0].x += 5;
+		move_right(map);
 	}
 	if (mlx_is_key_down(map->mlx, MLX_KEY_LEFT))
 	{
