@@ -6,7 +6,7 @@
 /*   By: rboudwin <rboudwin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 11:58:50 by rboudwin          #+#    #+#             */
-/*   Updated: 2024/05/15 14:24:29 by rboudwin         ###   ########.fr       */
+/*   Updated: 2024/05/15 15:04:40 by rboudwin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,14 @@ char	detect_square(t_map *map, char dir)
 	printf("because p_pos_x and p_pos_y are %d, %d\n", map->p_pos_x, map->p_pos_y);
 	return (map->map[relative_y][relative_x]);
 }
+void	move_forward(t_map *map)
+{
+	map->p_pos_x += 5 * sin(map->p_orient);
+	map->p_pos_y -= 5 * cos(map->p_orient);
+	map->images->plyr->instances[0].x += 5 * sin(map->p_orient);
+	map->images->plyr->instances[0].y -= 5 * cos(map->p_orient);
+	//mlx_put_pixel(images->plyr, images->plyr->width / 2 + i * sin(map->p_orient), images->plyr->height /2 - i * cos(map->p_orient), get_rgba(255, 0, 0, 255));
+}
 void	ft_movehook(void *param)
 {
 	t_map *map;
@@ -130,8 +138,9 @@ void	ft_movehook(void *param)
 	{
 		//printf("The square to the north is a %c\n", detect_square(map, 'N'));
 	//	if (detect_square(map, 'N') != '1')
-		map->p_pos_y -= 5;
-		map->images->plyr->instances[0].y -= 5;
+		//map->p_pos_y -= 5;
+		//map->images->plyr->instances[0].y -= 5;
+		move_forward(map);
 	}
 	if (mlx_is_key_down(map->mlx, MLX_KEY_S))
 	{
