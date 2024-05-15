@@ -6,7 +6,7 @@
 /*   By: rboudwin <rboudwin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 11:58:50 by rboudwin          #+#    #+#             */
-/*   Updated: 2024/05/15 15:27:33 by rboudwin         ###   ########.fr       */
+/*   Updated: 2024/05/15 17:10:23 by rboudwin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,32 +121,32 @@ char	detect_square(t_map *map, char dir)
 }
 void	move_forward(t_map *map)
 {
-	map->p_pos_x += 5 * sin(map->p_orient);
-	map->p_pos_y -= 5 * cos(map->p_orient);
-	map->images->plyr->instances[0].x += 5 * sin(map->p_orient);
-	map->images->plyr->instances[0].y -= 5 * cos(map->p_orient);
+	map->p_pos_x += round(5 * sin(map->p_orient));
+	map->p_pos_y -= round(5 * cos(map->p_orient));
+	map->images->plyr->instances[0].x += round(5 * sin(map->p_orient));
+	map->images->plyr->instances[0].y -= round(5 * cos(map->p_orient));
 }
 void	move_backward(t_map *map)
 {
-	map->p_pos_x -= 5 * sin(map->p_orient);
-	map->p_pos_y += 5 * cos(map->p_orient);
-	map->images->plyr->instances[0].x -= 5 * sin(map->p_orient);
-	map->images->plyr->instances[0].y += 5 * cos(map->p_orient);
+	map->p_pos_x -= round(5 * sin(map->p_orient));
+	map->p_pos_y += round(5 * cos(map->p_orient));
+	map->images->plyr->instances[0].x -= round(5 * sin(map->p_orient));
+	map->images->plyr->instances[0].y += round(5 * cos(map->p_orient));
 }
 void	move_left(t_map *map)
 {
-	map->p_pos_x -= 5 * sin(map->p_orient + 90 * DEG_2_RAD);
-	map->p_pos_y += 5 * cos(map->p_orient + 90 * DEG_2_RAD);
-	map->images->plyr->instances[0].x -= 5 * sin(map->p_orient + 90 * DEG_2_RAD);
-	map->images->plyr->instances[0].y += 5 * cos(map->p_orient + 90 * DEG_2_RAD);
+	map->p_pos_x += round(5 * sin(map->p_orient - 90 * DEG_2_RAD));
+	map->p_pos_y -= round(5 * cos(map->p_orient - 90 * DEG_2_RAD));
+	map->images->plyr->instances[0].x += round(5 * sin(map->p_orient - 90 * DEG_2_RAD));
+	map->images->plyr->instances[0].y -= round(5 * cos(map->p_orient - 90 * DEG_2_RAD));
 }
 
 void	move_right(t_map *map)
 {
-	map->p_pos_x -= 5 * sin(map->p_orient - 90 * DEG_2_RAD);
-	map->p_pos_y += 5 * cos(map->p_orient - 90 * DEG_2_RAD);
-	map->images->plyr->instances[0].x -= 5 * sin(map->p_orient - 90 * DEG_2_RAD);
-	map->images->plyr->instances[0].y += 5 * cos(map->p_orient - 90 * DEG_2_RAD);
+	map->p_pos_x += round(5 * sin(map->p_orient + 90 * DEG_2_RAD));
+	map->p_pos_y -= round(5 * cos(map->p_orient + 90 * DEG_2_RAD));
+	map->images->plyr->instances[0].x += round(5 * sin(map->p_orient + 90 * DEG_2_RAD));
+	map->images->plyr->instances[0].y -= round(5 * cos(map->p_orient + 90 * DEG_2_RAD));
 }
 void	ft_movehook(void *param)
 {
@@ -190,7 +190,7 @@ void	ft_movehook(void *param)
 	}
 	if (mlx_is_key_down(map->mlx, MLX_KEY_LEFT))
 	{
-		map->p_orient -= 1 * DEG_2_RAD;
+		map->p_orient -= 2 * DEG_2_RAD;
 		if (map->p_orient <= 0)
 			map->p_orient += 2 * M_PI;
 		printf("Degrees: %f\n", map->p_orient / DEG_2_RAD);
@@ -198,7 +198,7 @@ void	ft_movehook(void *param)
 	}
 	if (mlx_is_key_down(map->mlx, MLX_KEY_RIGHT))
 	{
-		map->p_orient += 1 * DEG_2_RAD;
+		map->p_orient += 2 * DEG_2_RAD;
 		if (map->p_orient >= 2 * M_PI)
 			map->p_orient -= 2 * M_PI;
 		printf("Degrees: %f\n", map->p_orient / DEG_2_RAD);
