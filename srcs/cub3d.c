@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clundber <clundber@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: rboudwin <rboudwin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 11:45:09 by clundber          #+#    #+#             */
-/*   Updated: 2024/05/14 15:56:37 by clundber         ###   ########.fr       */
+/*   Updated: 2024/05/15 13:31:20 by rboudwin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	main(int argc, char *argv[])
 	init_data(&map);
 	if (parsing(argc, argv, &map) != 0)
 		return (1);
-	//start MLX loop
+	cub3d_mlx(&map);
 	//cleanup
 	printf("great success\n");
 	return(0);

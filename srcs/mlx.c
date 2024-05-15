@@ -6,7 +6,7 @@
 /*   By: rboudwin <rboudwin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 11:58:50 by rboudwin          #+#    #+#             */
-/*   Updated: 2024/05/14 16:43:06 by rboudwin         ###   ########.fr       */
+/*   Updated: 2024/05/15 14:15:03 by rboudwin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ images->blk = mlx_texture_to_image(mlx, images->black);
 	images->plyr = mlx_texture_to_image(mlx, images->player);
 	images->dir = mlx_new_image(mlx, 64, 64);
 	//mlx_resize_image(images->plyr, 8, 8);
-	images->bg = mlx_new_image(mlx, 1366, 768);
+	images->bg = mlx_new_image(mlx, 2560, 1440);
 	ft_memset(images->bg->pixels, 180, images->bg->width * images->bg->height * BPP);
 	mlx_image_to_window(mlx, images->bg, 0, 0);
 	i = 0;
@@ -67,6 +67,7 @@ images->blk = mlx_texture_to_image(mlx, images->black);
 	x = 0;
 	y = 0;
 	//mlx_image_to_window(mlx, black, 500, 500);
+	printf("About to enter map printing loop\n");
 	while (map->map[i])
 	{
 		while (map->map[i][k])
@@ -74,17 +75,17 @@ images->blk = mlx_texture_to_image(mlx, images->black);
 			if (map->map[i][k] == '1')
 			{
 				printf("map->map[%d][%d] is %c so placing black img\n", i, k, map->map[i][k]);
-				mlx_image_to_window(mlx, images->blk, (k + 2) * 64, (i + 2) * 64);
+				mlx_image_to_window(mlx, images->blk, (k + 1) * 64, (i + 1) * 64);
 			}
 			else if (map->map[i][k] == 'N')
 			{
-				map->p_pos_x = ((k + 2) * 64) + 32;
-				map->p_pos_y = ((i + 2) * 64) + 32;
+				map->p_pos_x = ((k + 1) * 64) + 32;
+				map->p_pos_y = ((i + 1) * 64) + 32;
 				map->p_orient = 0;
-				mlx_image_to_window(mlx, images->wht, (k + 2) * 64, (i + 2) * 64);
+				mlx_image_to_window(mlx, images->wht, (k + 1) * 64, (i + 1) * 64);
 			}	
 			else if (map->map[i][k] == '0')
-				mlx_image_to_window(mlx, images->wht, (k + 2) * 64, (i + 2) * 64);
+				mlx_image_to_window(mlx, images->wht, (k + 1) * 64, (i + 1) * 64);
 			k++;
 		}
 		k = 0;
@@ -174,41 +175,40 @@ void	ft_movehook(void *param)
 	}
 }
 
-int cub3d_mlx(void)
+int cub3d_mlx(t_map *map)
 {
 	mlx_t	*mlx;
-	t_map 	map;
 	t_images images;
 	
-	map.images = &images;
-	map.map = ft_calloc(10, sizeof(char *));
-	map.map[0] = ft_strdup("111111111");
-	map.map[1] = ft_strdup("100000001");
-	map.map[2] = ft_strdup("100000001");
-	map.map[3] = ft_strdup("100000001");
-	map.map[4] = ft_strdup("1000N0001");
-	map.map[5] = ft_strdup("100101001");
-	map.map[6] = ft_strdup("100111001");
-	map.map[7] = ft_strdup("100000001");
-	map.map[8] = ft_strdup("111111111");
-	map.map[9] = NULL;
+	map->images = &images;
+	/*map->map = ft_calloc(10, sizeof(char *));
+	map->map[0] = ft_strdup("111111111");
+	map->map[1] = ft_strdup("100000001");
+	map->map[2] = ft_strdup("100000001");
+	map->map[3] = ft_strdup("100000001");
+	map->map[4] = ft_strdup("1000N0001");
+	map->map[5] = ft_strdup("100101001");
+	map->map[6] = ft_strdup("100111001");
+	map->map[7] = ft_strdup("100000001");
+	map->map[8] = ft_strdup("111111111");
+	map->map[9] = NULL;*/
 	
 	int i;
 	i = 0;
-	while (map.map[i])
+	/*while (map->map[i])
 	{
-		printf("Line %d is: %s\n", i, map.map[i]);
+		printf("Line %d is: %s\n", i, map->map[i]);
 		i++;
-	}
+	}*/
 		
-	mlx = mlx_init(1366, 768, "cub3d", true);
-	map.mlx = mlx;
-	draw_2d_map(mlx, &map, &images);
-	map.x_offset = 128;
-	map.y_offset = 128;
-	mlx_loop_hook(mlx, ft_movehook, &map);
+	mlx = mlx_init(2560, 1440, "cub3d", true);
+	map->mlx = mlx;
+	draw_2d_map(mlx, map, &images);
+	map->x_offset = 64;
+	map->y_offset = 64;
+	//mlx_loop_hook(mlx, ft_movehook, &map);
 	mlx_loop(mlx);
 	mlx_terminate(mlx);
-	free_2d(map.map);
+	free_2d(map->map);
 	return (EXIT_SUCCESS);
 }
