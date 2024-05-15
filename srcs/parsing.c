@@ -6,7 +6,7 @@
 /*   By: rboudwin <rboudwin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 12:02:13 by clundber          #+#    #+#             */
-/*   Updated: 2024/05/15 14:11:03 by rboudwin         ###   ########.fr       */
+/*   Updated: 2024/05/15 14:45:37 by clundber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,6 @@ int	ft_ismap(char *line)
 
 int	get_color(int *arr, char *str)
 {
-	int	i;
-
-	i = 0;
 	str++;
 	str++;
 	ft_atoi(str);
@@ -190,9 +187,7 @@ int	map_parse(char *map_str, t_map *map)
 	char	**temp_map;
 	int		x;
 	int		y;
-	int		max;
 
-	max = 0;
 	y = 0;
 	temp_map = NULL;
 	temp_map = ft_split(map_str, '\n');
@@ -260,6 +255,58 @@ int	extract_data(char *arg, t_map *map)
 	return (0);
 }
 
+int	pos_check(t_map *map, int y, int x)
+{
+	if (x == 0 || y == 0)
+		return (1);
+	if (map->map[y -1][x] == ' ' || map->map[y -1][x] == '\0')
+		return (1);
+	if (map->map[y +1][x] == ' ' || map->map[y +1][x] == '\0')
+		return (1);
+	if (map->map[y][x -1] == ' ' || map->map[y][x -1] == '\0')
+		return (1);
+	if (map->map[y][x +1] == ' ' || map->map[y][x +1] == '\0')
+		return (1);
+	return (0);
+}
+
+int	validate_map(t_map *map)
+{
+	int		x;
+	int		y;
+	bool	player;
+
+	player = false;
+	y = 0;
+	while (map->map[y])
+	{
+		x = 0;
+		while (map->map[y][x])
+		{
+			if(map->map[y][x] != '0' && map->map[y][x] != 'N' && map->map[y][x] != 'E' \
+				&& map->map[y][x] != 'S' && map->map[y][x] != 'W' && map->map[y][x] != ' ' && map->map[y][x] != '1')
+				return (1);
+			if(map->map[y][x] != '1' && map->map[y][x] != ' ')
+			{
+				if (pos_check(map, y, x) != 0)
+					return (1);
+				if (map->map[y][x] == 'N' || map->map[y][x] == 'E' || map->map[y][x] == 'S' || map->map[y][x] == 'W')
+				{	
+					if (player == true)
+						return (1);
+					else
+						player = true; 
+				}
+			}
+			x++;
+		}
+		y++;
+	}
+	if (player == false)
+		return (1);
+	return (0);
+}
+
 int	validate_data(t_map *map)
 {
 	int	i;
@@ -281,6 +328,8 @@ int	validate_data(t_map *map)
 		else
 			close(fd);
 		i++;
+		if (validate_map(map) != 0)
+			return(ret_error("incorrect map"));
 	}
 	return (0);
 }
@@ -293,7 +342,6 @@ int	parsing(int argc, char **argv, t_map *map)
 		return (ret_error("invalid argument name"));
 	if (extract_data(argv[1], map) != 0)
 		return (ret_error("invalid file data"));
-	//printf("%s\n", map->text[0]);
 	if (validate_data(map) != 0)
 		return (1);
 	return (0);
