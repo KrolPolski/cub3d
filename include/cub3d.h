@@ -6,7 +6,7 @@
 /*   By: rboudwin <rboudwin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 13:58:21 by clundber          #+#    #+#             */
-/*   Updated: 2024/05/13 17:40:30 by rboudwin         ###   ########.fr       */
+/*   Updated: 2024/05/14 14:16:22 by rboudwin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ typedef struct s_map
   t_images  *images; 
   mlx_t		*mlx; 
   int		mapstart;
+  int		x_offset;
+  int		y_offset;
 }	t_map;  
 
 
