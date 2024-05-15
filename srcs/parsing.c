@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clundber <clundber@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: rboudwin <rboudwin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 12:02:13 by clundber          #+#    #+#             */
 /*   Updated: 2024/05/15 14:45:37 by clundber         ###   ########.fr       */
@@ -175,9 +175,10 @@ int	map_init(char **temp_map, t_map *map)
 	x = 0;
 	while (x < y)
 	{
-		map->map[x] = ft_calloc(max +1, sizeof(char));
+		map->map[x] = ft_calloc(max + 1, sizeof(char));
 		x++;
 	}
+	//printf("We decided the max was %d\n", max);
 	return (0);
 }
 
@@ -202,8 +203,17 @@ int	map_parse(char *map_str, t_map *map)
 			map->map[y][x] = temp_map[y][x];
 			x++;
 		}
+		temp_map[y][x] = '\0';
 		y++;
 	}
+	temp_map[y] = NULL;
+	y = 0;
+	while (temp_map[y])
+	{
+		printf("Map: %s\n", temp_map[y]);
+		y++;
+	}
+	//printf("This will probably segfault()")
 	free_2d(temp_map);
 	return (0);
 }
