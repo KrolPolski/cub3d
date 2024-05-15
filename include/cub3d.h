@@ -6,7 +6,7 @@
 /*   By: rboudwin <rboudwin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 13:58:21 by clundber          #+#    #+#             */
-/*   Updated: 2024/05/14 14:16:22 by rboudwin         ###   ########.fr       */
+/*   Updated: 2024/05/15 13:29:33 by rboudwin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # include <math.h>
 # include "../Libft/libft.h"
 # include "../MLX42/include/MLX42/MLX42.h"
-#include <stdbool.h>
+# include <stdbool.h>
 
 # define BPP sizeof(int32_t)
 # define DEG_2_RAD 0.0174533
@@ -62,6 +62,15 @@ typedef struct s_map
   int		mapstart;
   int		x_offset;
   int		y_offset;
+	int			p_orient;
+
+	char		*text[5]; //N->E->S->W
+
+	int			*ceiling;
+	int			*floor;
+  	t_images  	*images; 
+  	mlx_t		*mlx; 
+ 	 int		mapstart;
 }	t_map;  
 
 
@@ -69,9 +78,9 @@ typedef struct s_map
 
 
 
-
-int cub3d_mlx(void);
-int	parsing(int argc, char **argv, t_map *map);
-int	ret_error(char *str);
+void	ft_nullfree(char *str);
+int	 	cub3d_mlx(void);
+int		parsing(int argc, char **argv, t_map *map);
+int		ret_error(char *str);
 
 #endif

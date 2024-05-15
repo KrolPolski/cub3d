@@ -1,8 +1,8 @@
-NO ./path_to_the_north_texture
-SO ./path_to_the_south_texture
-WE ./path_to_the_west_texture
-EA ./path_to_the_east_texture
-      
+NO ./assets/duck1.png
+SO ./assets/duck1.png
+WE ./assets/duck1.png
+EA ./assets/duck1.png
+
 
 F 220,100,0
 C 225,30,0
