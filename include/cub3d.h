@@ -6,7 +6,7 @@
 /*   By: rboudwin <rboudwin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 13:58:21 by clundber          #+#    #+#             */
-/*   Updated: 2024/05/15 13:33:35 by rboudwin         ###   ########.fr       */
+/*   Updated: 2024/05/15 14:23:40 by rboudwin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,19 +46,17 @@ typedef struct s_map
 	int			p_pos_x;
 	int			p_pos_y;
 	double		p_orient;
-  
-  char		*no_text;
+	char		*no_text;
 	char		*so_text;
 	char		*we_text;
 	char		*ea_text;
-  
-  int			*ceiling;
+	int			*ceiling;
 	int			*floor;
-  t_images  *images; 
-  mlx_t		*mlx; 
-  int		mapstart;
-  int		x_offset;
-  int		y_offset;
+	t_images	*images; 
+	mlx_t		*mlx; 
+	int			mapstart;
+	int			x_offset;
+	int			y_offset;
 	char		*text[5]; //N->E->S->W
 
 }	t_map;  

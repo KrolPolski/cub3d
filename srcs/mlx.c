@@ -6,7 +6,7 @@
 /*   By: rboudwin <rboudwin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 11:58:50 by rboudwin          #+#    #+#             */
-/*   Updated: 2024/05/15 14:15:03 by rboudwin         ###   ########.fr       */
+/*   Updated: 2024/05/15 14:24:29 by rboudwin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,34 +128,34 @@ void	ft_movehook(void *param)
 		mlx_close_window(map->mlx);
 	if (mlx_is_key_down(map->mlx, MLX_KEY_W))
 	{
-		printf("The square to the north is a %c\n", detect_square(map, 'N'));
-		if (detect_square(map, 'N') != '1')
-		{map->p_pos_y -= 5;
+		//printf("The square to the north is a %c\n", detect_square(map, 'N'));
+	//	if (detect_square(map, 'N') != '1')
+		map->p_pos_y -= 5;
 		map->images->plyr->instances[0].y -= 5;
-		}}
+	}
 	if (mlx_is_key_down(map->mlx, MLX_KEY_S))
-		{
-			printf("The square to the south is a %c\n", detect_square(map, 'S'));
-		if (detect_square(map, 'S') != '1')
+	{
+		//	printf("The square to the south is a %c\n", detect_square(map, 'S'));
+		//if (detect_square(map, 'S') != '1')
 		
-		{map->p_pos_y += 5;
+		map->p_pos_y += 5;
 		map->images->plyr->instances[0].y += 5;
-		}}
+	}
 
 	if (mlx_is_key_down(map->mlx, MLX_KEY_A))
 	{
-		printf("The square to the west is a %c\n", detect_square(map, 'W'));
-		if (detect_square(map, 'W') != '1'){
+		//printf("The square to the west is a %c\n", detect_square(map, 'W'));
+		//if (detect_square(map, 'W') != '1'){
 		
 		map->p_pos_x -= 5;
-		map->images->plyr->instances[0].x -= 5;}
+		map->images->plyr->instances[0].x -= 5;//}
 	}
 	if (mlx_is_key_down(map->mlx, MLX_KEY_D))
 	{
-		printf("The square to the east is a %c\n", detect_square(map, 'E'));
-		if (detect_square(map, 'E') != '1'){
+		//printf("The square to the east is a %c\n", detect_square(map, 'E'));
+		//if (detect_square(map, 'E') != '1'){
 		map->p_pos_x += 5;
-		map->images->plyr->instances[0].x += 5;}
+		map->images->plyr->instances[0].x += 5;
 	}
 	if (mlx_is_key_down(map->mlx, MLX_KEY_LEFT))
 	{
@@ -206,7 +206,7 @@ int cub3d_mlx(t_map *map)
 	draw_2d_map(mlx, map, &images);
 	map->x_offset = 64;
 	map->y_offset = 64;
-	//mlx_loop_hook(mlx, ft_movehook, &map);
+	mlx_loop_hook(mlx, ft_movehook, map);
 	mlx_loop(mlx);
 	mlx_terminate(mlx);
 	free_2d(map->map);
