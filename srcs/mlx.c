@@ -6,7 +6,7 @@
 /*   By: rboudwin <rboudwin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 11:58:50 by rboudwin          #+#    #+#             */
-/*   Updated: 2024/05/15 18:30:01 by rboudwin         ###   ########.fr       */
+/*   Updated: 2024/05/16 11:08:29 by rboudwin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,58 +113,58 @@ void	draw_2d_map(mlx_t *mlx, t_map *map, t_images *images)
 	draw_direction(mlx, map, images);
 }
 
-/*char	detect_square(t_map *map, char dir)
-{
-	int relative_x;
-	int	relative_y;
-	int remainder_x;
-	int remainder_y;
-	//remainder_x = (map->p_pos_x - map->x_offset) % 64;
-	//remainder_y = (map->p_pos_y - map->x_offset) % 64;
-	relative_x = ((map->p_pos_x - map->x_offset + 30) / 64); 
-	relative_y = ((map->p_pos_y - map->y_offset + 30) / 64);
-	printf("Our current square is a '%c'\n", map->map[relative_y][relative_x]);
-	printf("And our relative_x is %d and relative_y is %d\n", relative_x, relative_y);
-	//if (dir == 'N')
-	//	relative_y-= 1;
-	//if (dir == 'S')
-	//	relative_y+= 1;	
-	//else if (dir == 'W')
-	//	relative_x-= 1;
-	//else if (dir == 'E')
-	//	relative_x+= 1;
-	printf("for next square relative_x is %d and relative_y is %d\n", relative_x, relative_y);
-	printf("because p_pos_x and p_pos_y are %d, %d\n", map->p_pos_x, map->p_pos_y);
-	return (map->map[relative_y][relative_x]);
-}*/
 void	move_forward(t_map *map)
 {
-	map->p_pos_x += round(5 * sin(map->p_orient));
-	map->p_pos_y -= round(5 * cos(map->p_orient));
-	map->images->plyr->instances[0].x += round(5 * sin(map->p_orient));
-	map->images->plyr->instances[0].y -= round(5 * cos(map->p_orient));
+	printf("We are in a '%c' square\n", detect_square(map, map->p_pos_x, map->p_pos_y));
+	if (detect_square(map, map->p_pos_x + round(5 * sin(map->p_orient)), map->p_pos_y - round(5 * cos(map->p_orient))) != '1')
+	{
+		map->p_pos_x += round(5 * sin(map->p_orient));
+		map->p_pos_y -= round(5 * cos(map->p_orient));
+		map->images->plyr->instances[0].x += round(5 * sin(map->p_orient));
+		map->images->plyr->instances[0].y -= round(5 * cos(map->p_orient));
+	}
+	else
+		printf("Hello wall my old friend\n");
 }
 void	move_backward(t_map *map)
 {
-	map->p_pos_x -= round(5 * sin(map->p_orient));
-	map->p_pos_y += round(5 * cos(map->p_orient));
-	map->images->plyr->instances[0].x -= round(5 * sin(map->p_orient));
-	map->images->plyr->instances[0].y += round(5 * cos(map->p_orient));
+	printf("We are in a '%c' square\n", detect_square(map, map->p_pos_x, map->p_pos_y));
+	if (detect_square(map, map->p_pos_x - round(5 * sin(map->p_orient)), map->p_pos_y + round(5 * cos(map->p_orient))) != '1')
+	{
+		map->p_pos_x -= round(5 * sin(map->p_orient));
+		map->p_pos_y += round(5 * cos(map->p_orient));
+		map->images->plyr->instances[0].x -= round(5 * sin(map->p_orient));
+		map->images->plyr->instances[0].y += round(5 * cos(map->p_orient));
+	}
+	else
+		printf("Hello wall my old friend\n");
 }
 void	move_left(t_map *map)
 {
-	map->p_pos_x += round(5 * sin(map->p_orient - 90 * DEG_2_RAD));
-	map->p_pos_y -= round(5 * cos(map->p_orient - 90 * DEG_2_RAD));
-	map->images->plyr->instances[0].x += round(5 * sin(map->p_orient - 90 * DEG_2_RAD));
-	map->images->plyr->instances[0].y -= round(5 * cos(map->p_orient - 90 * DEG_2_RAD));
+	printf("We are in a '%c' square\n", detect_square(map, map->p_pos_x, map->p_pos_y));
+	if (detect_square(map, map->p_pos_x + round(5 * sin(map->p_orient - 90 * DEG_2_RAD)), map->p_pos_y - round(5 * cos(map->p_orient - 90 * DEG_2_RAD))) != '1')
+	{
+		map->p_pos_x += round(5 * sin(map->p_orient - 90 * DEG_2_RAD));
+		map->p_pos_y -= round(5 * cos(map->p_orient - 90 * DEG_2_RAD));
+		map->images->plyr->instances[0].x += round(5 * sin(map->p_orient - 90 * DEG_2_RAD));
+		map->images->plyr->instances[0].y -= round(5 * cos(map->p_orient - 90 * DEG_2_RAD));
+	}
+	else
+		printf("Hello wall my old friend\n");
 }
 
 void	move_right(t_map *map)
 {
-	map->p_pos_x += round(5 * sin(map->p_orient + 90 * DEG_2_RAD));
-	map->p_pos_y -= round(5 * cos(map->p_orient + 90 * DEG_2_RAD));
-	map->images->plyr->instances[0].x += round(5 * sin(map->p_orient + 90 * DEG_2_RAD));
-	map->images->plyr->instances[0].y -= round(5 * cos(map->p_orient + 90 * DEG_2_RAD));
+	printf("We are in a '%c' square\n", detect_square(map, map->p_pos_x, map->p_pos_y));
+	if (detect_square(map, map->p_pos_x + round(5 * sin(map->p_orient + 90 * DEG_2_RAD)), map->p_pos_y - round(5 * cos(map->p_orient + 90 * DEG_2_RAD))) != '1')
+	{
+		map->p_pos_x += round(5 * sin(map->p_orient + 90 * DEG_2_RAD));
+		map->p_pos_y -= round(5 * cos(map->p_orient + 90 * DEG_2_RAD));
+		map->images->plyr->instances[0].x += round(5 * sin(map->p_orient + 90 * DEG_2_RAD));
+		map->images->plyr->instances[0].y -= round(5 * cos(map->p_orient + 90 * DEG_2_RAD));
+	}
+	else
+		printf("Hello wall my old friend\n");
 }
 void	ft_movehook(void *param)
 {
