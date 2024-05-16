@@ -27,7 +27,7 @@ MLX_DIR = ./MLX42
 
 #------------- SOURCE FILES ------#
 CFILES = $(SRCS_DIR)/cub3d.c $(SRCS_DIR)/parsing.c $(SRCS_DIR)/utils.c $(SRCS_DIR)/mlx.c \
-      $(SRCS_DIR)/colors.c
+      $(SRCS_DIR)/colors.c $(SRCS_DIR)/collision.c $(SRCS_DIR)/ray_tracing.c
 
 OFILES = $(CFILES:.c=.o)
 
@@ -41,7 +41,7 @@ endif
 
 #--------- FLAGS ----------#
 CC = @cc
-CFLAGS = -Wall -Wextra -Werror -g -Wunreachable-code -Ofast
+CFLAGS =# -Wall -Wextra -Werror -g -Wunreachable-code -Ofast
 HEADERS	:= -I ./includes -I $(MLX_DIR)/include/MLX42/
 
 all: libmlx $(NAME)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rboudwin <rboudwin@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: clundber <clundber@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 11:45:09 by clundber          #+#    #+#             */
-/*   Updated: 2024/05/15 13:31:20 by rboudwin         ###   ########.fr       */
+/*   Updated: 2024/05/16 11:16:05 by clundber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,6 @@ void	init_data(t_map *map)
 	map->text[2] = NULL;
 	map->text[3] = NULL;
 	map->text[4] = NULL;
-	//map->no_text = NULL;
-	//map->so_text = NULL;
-	//map->we_text = NULL;
-	//map->ea_text = NULL;
 	map->mapstart = -1;
 }
 int	main(int argc, char *argv[])
