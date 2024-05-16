@@ -6,7 +6,7 @@
 /*   By: clundber <clundber@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 11:27:52 by clundber          #+#    #+#             */
-/*   Updated: 2024/05/16 14:50:21 by clundber         ###   ########.fr       */
+/*   Updated: 2024/05/16 16:11:47 by clundber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,25 +16,40 @@ void	ray_trace(mlx_t *mlx, t_map *map, t_images *images)
 {
 	int	pixels;
 	int	deg;
+	int	ray_size;
+	unsigned int	y;
+	unsigned int	x;
+	bool			pos_wall;
+	bool			neg_wall;
 
+
+	y = 0;
+	x = 0;
+	ray_size = 500;
 	deg = 0;
 	mlx_delete_image(mlx, images->fg);
-	//images->fg = mlx_new_image(mlx, 2560, 1440);
-	images->fg = mlx_new_image(mlx, 600, 600);
-	mlx_image_to_window(mlx, images->fg, map->p_pos_x + 32 - 300, map->p_pos_y + 32 - 300);
-	//printf("x = %d, y = %d\n", map->p_pos_x, map->p_pos_y);
-	while (deg <= 66)
+	images->fg = mlx_new_image(mlx, ray_size, ray_size);
+	mlx_image_to_window(mlx, images->fg, map->p_pos_x + 32 - (ray_size / 2), map->p_pos_y + 32 - (ray_size / 2));
+	while (deg <= 33)
 	{
 		pixels = 0;
-		while (pixels < 300)
+		pos_wall = false;
+		neg_wall = false;
+		while (pixels < (ray_size / 2))
 		{
-			//mlx_put_pixel(images->fg,  map->p_pos_x + pixels + map->x_offset * sin(map->p_orient), map->p_pos_y + map->y_offset + pixels * cos(map->p_orient), get_rgba(255, 0, 0, 255));	
-		//	mlx_put_pixel(images->fg, 300 + pixels * sin(map->p_orient), 300 - pixels * cos(map->p_orient), get_rgba(255, 0, 0, 255));
-			mlx_put_pixel(images->fg, 300 + pixels * sin(map->p_orient + deg * DEG_2_RAD), 300 - pixels * cos(map->p_orient + deg * DEG_2_RAD), get_rgba(255, 0, 0, 255));
-			mlx_put_pixel(images->fg, 300 + pixels * sin(map->p_orient - deg * DEG_2_RAD), 300 - pixels * cos(map->p_orient - deg * DEG_2_RAD), get_rgba(255, 0, 0, 255));
+				y = (map->p_pos_y - 32 - pixels * cos(map->p_orient + deg * DEG_2_RAD)) / 64;
+				x = (map->p_pos_x - 32 + pixels * sin(map->p_orient + deg * DEG_2_RAD)) / 64;
+			if (pos_wall == false && map->map[y][x] != '1')
+				mlx_put_pixel(images->fg, (ray_size / 2) + pixels * sin(map->p_orient + deg * DEG_2_RAD), (ray_size / 2) - pixels * cos(map->p_orient + deg * DEG_2_RAD), get_rgba(255, 0, 0, 255));
+			else
+				pos_wall = true;
 
-		//	mlx_put_pixel(images->plyr, images->plyr->width / 2 + i * sin(map->p_orient + 30 * DEG_2_RAD), images->plyr->height /2 - i * cos(map->p_orient + 30 * DEG_2_RAD), get_rgba(255, 0, 255, 255));
-		//	mlx_put_pixel(images->plyr, images->plyr->width / 2 + i * sin(map->p_orient - 30 * DEG_2_RAD), images->plyr->height /2 - i * cos(map->p_orient - 30 * DEG_2_RAD), get_rgba(255, 0, 255, 255));
+			y = (map->p_pos_y - 32 - pixels * cos(map->p_orient - deg * DEG_2_RAD)) / 64;
+			x = (map->p_pos_x - 32 + pixels * sin(map->p_orient - deg * DEG_2_RAD)) / 64;
+			if (neg_wall == false && map->map[y][x] != '1')
+				mlx_put_pixel(images->fg, (ray_size / 2) + pixels * sin(map->p_orient - deg * DEG_2_RAD), (ray_size / 2) - pixels * cos(map->p_orient - deg * DEG_2_RAD), get_rgba(255, 0, 0, 255));
+			else
+				neg_wall = true;
 			pixels++;
 		}
 		deg++;
