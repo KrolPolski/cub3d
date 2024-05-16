@@ -6,7 +6,7 @@
 /*   By: rboudwin <rboudwin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 11:58:50 by rboudwin          #+#    #+#             */
-/*   Updated: 2024/05/15 14:24:29 by rboudwin         ###   ########.fr       */
+/*   Updated: 2024/05/15 18:30:01 by rboudwin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 	mlx_put_pixel(images->plyr, images->plyr->width / 2 + i * sin(map->p_orient - 30 * DEG_2_RAD), images->plyr->height /2 - i * cos(map->p_orient - 30 * DEG_2_RAD), get_rgba(255, 0, 255, 255));
 
 }*/
+/* Draws lines on the minimap, to indicate a 60 degree field of view relative to the players orientation */
 void	draw_direction(mlx_t *mlx, t_map *map, t_images *images)
 {
 	int i;
@@ -32,9 +33,6 @@ void	draw_direction(mlx_t *mlx, t_map *map, t_images *images)
 	mlx_image_to_window(mlx, images->plyr, map->p_pos_x, map->p_pos_y);
 	while (i < 30)
 	{
-		//printf("attempting to draw direction\n");
-		//this draws straight north
-		//mlx_put_pixel(images->plyr, images->plyr->width / 2, i, get_rgba(255, 0, 0, 255));
 		mlx_put_pixel(images->plyr, images->plyr->width / 2 + i * sin(map->p_orient), images->plyr->height /2 - i * cos(map->p_orient), get_rgba(255, 0, 0, 255));
 		mlx_put_pixel(images->plyr, images->plyr->width / 2 + i * sin(map->p_orient + 30 * DEG_2_RAD), images->plyr->height /2 - i * cos(map->p_orient + 30 * DEG_2_RAD), get_rgba(255, 0, 255, 255));
 		mlx_put_pixel(images->plyr, images->plyr->width / 2 + i * sin(map->p_orient - 30 * DEG_2_RAD), images->plyr->height /2 - i * cos(map->p_orient - 30 * DEG_2_RAD), get_rgba(255, 0, 255, 255));
@@ -44,29 +42,29 @@ void	draw_direction(mlx_t *mlx, t_map *map, t_images *images)
 		i++;
 	}
 }
+/* draws a top down map */
 void	draw_2d_map(mlx_t *mlx, t_map *map, t_images *images)
 {
 	int			i;
 	int			k;
 	int			x;
 	int			y;
-	
+
 	images->black = mlx_load_png("assets/black.png");
 	images->white = mlx_load_png("assets/white.png");
 	images->player = mlx_load_png("assets/player.png");
-images->blk = mlx_texture_to_image(mlx, images->black);
+	images->blk = mlx_texture_to_image(mlx, images->black);
 	images->wht = mlx_texture_to_image(mlx, images->white);
 	images->plyr = mlx_texture_to_image(mlx, images->player);
 	images->dir = mlx_new_image(mlx, 64, 64);
-	//mlx_resize_image(images->plyr, 8, 8);
 	images->bg = mlx_new_image(mlx, 2560, 1440);
-	ft_memset(images->bg->pixels, 180, images->bg->width * images->bg->height * BPP);
+	ft_memset(images->bg->pixels, 180, images->bg->width
+		* images->bg->height * BPP);
 	mlx_image_to_window(mlx, images->bg, 0, 0);
 	i = 0;
 	k = 0;
 	x = 0;
 	y = 0;
-	//mlx_image_to_window(mlx, black, 500, 500);
 	printf("About to enter map printing loop\n");
 	while (map->map[i])
 	{
@@ -74,16 +72,36 @@ images->blk = mlx_texture_to_image(mlx, images->black);
 		{
 			if (map->map[i][k] == '1')
 			{
-				printf("map->map[%d][%d] is %c so placing black img\n", i, k, map->map[i][k]);
 				mlx_image_to_window(mlx, images->blk, (k + 1) * 64, (i + 1) * 64);
 			}
 			else if (map->map[i][k] == 'N')
 			{
-				map->p_pos_x = ((k + 1) * 64) + 32;
-				map->p_pos_y = ((i + 1) * 64) + 32;
+				map->p_pos_x = ((k + 1) * 64);
+				map->p_pos_y = ((i + 1) * 64);
 				map->p_orient = 0;
 				mlx_image_to_window(mlx, images->wht, (k + 1) * 64, (i + 1) * 64);
-			}	
+			}
+			else if (map->map[i][k] == 'S')
+			{
+				map->p_pos_x = ((k + 1) * 64);
+				map->p_pos_y = ((i + 1) * 64);
+				map->p_orient = 180 * DEG_2_RAD;
+				mlx_image_to_window(mlx, images->wht, (k + 1) * 64, (i + 1) * 64);
+			}
+			else if (map->map[i][k] == 'E')
+			{
+				map->p_pos_x = ((k + 1) * 64);
+				map->p_pos_y = ((i + 1) * 64);
+				map->p_orient = 90 * DEG_2_RAD;
+				mlx_image_to_window(mlx, images->wht, (k + 1) * 64, (i + 1) * 64);
+			}
+			else if (map->map[i][k] == 'W')
+			{
+				map->p_pos_x = ((k + 1) * 64);
+				map->p_pos_y = ((i + 1) * 64);
+				map->p_orient = 270 * DEG_2_RAD;
+				mlx_image_to_window(mlx, images->wht, (k + 1) * 64, (i + 1) * 64);
+			}
 			else if (map->map[i][k] == '0')
 				mlx_image_to_window(mlx, images->wht, (k + 1) * 64, (i + 1) * 64);
 			k++;
@@ -91,11 +109,11 @@ images->blk = mlx_texture_to_image(mlx, images->black);
 		k = 0;
 		i++;	
 	}
-	mlx_image_to_window(mlx, images->plyr, map->p_pos_x - 32, map->p_pos_y - 32);
+	mlx_image_to_window(mlx, images->plyr, map->p_pos_x, map->p_pos_y);
 	draw_direction(mlx, map, images);
 }
 
-char	detect_square(t_map *map, char dir)
+/*char	detect_square(t_map *map, char dir)
 {
 	int relative_x;
 	int	relative_y;
@@ -118,6 +136,35 @@ char	detect_square(t_map *map, char dir)
 	printf("for next square relative_x is %d and relative_y is %d\n", relative_x, relative_y);
 	printf("because p_pos_x and p_pos_y are %d, %d\n", map->p_pos_x, map->p_pos_y);
 	return (map->map[relative_y][relative_x]);
+}*/
+void	move_forward(t_map *map)
+{
+	map->p_pos_x += round(5 * sin(map->p_orient));
+	map->p_pos_y -= round(5 * cos(map->p_orient));
+	map->images->plyr->instances[0].x += round(5 * sin(map->p_orient));
+	map->images->plyr->instances[0].y -= round(5 * cos(map->p_orient));
+}
+void	move_backward(t_map *map)
+{
+	map->p_pos_x -= round(5 * sin(map->p_orient));
+	map->p_pos_y += round(5 * cos(map->p_orient));
+	map->images->plyr->instances[0].x -= round(5 * sin(map->p_orient));
+	map->images->plyr->instances[0].y += round(5 * cos(map->p_orient));
+}
+void	move_left(t_map *map)
+{
+	map->p_pos_x += round(5 * sin(map->p_orient - 90 * DEG_2_RAD));
+	map->p_pos_y -= round(5 * cos(map->p_orient - 90 * DEG_2_RAD));
+	map->images->plyr->instances[0].x += round(5 * sin(map->p_orient - 90 * DEG_2_RAD));
+	map->images->plyr->instances[0].y -= round(5 * cos(map->p_orient - 90 * DEG_2_RAD));
+}
+
+void	move_right(t_map *map)
+{
+	map->p_pos_x += round(5 * sin(map->p_orient + 90 * DEG_2_RAD));
+	map->p_pos_y -= round(5 * cos(map->p_orient + 90 * DEG_2_RAD));
+	map->images->plyr->instances[0].x += round(5 * sin(map->p_orient + 90 * DEG_2_RAD));
+	map->images->plyr->instances[0].y -= round(5 * cos(map->p_orient + 90 * DEG_2_RAD));
 }
 void	ft_movehook(void *param)
 {
@@ -128,38 +175,24 @@ void	ft_movehook(void *param)
 		mlx_close_window(map->mlx);
 	if (mlx_is_key_down(map->mlx, MLX_KEY_W))
 	{
-		//printf("The square to the north is a %c\n", detect_square(map, 'N'));
-	//	if (detect_square(map, 'N') != '1')
-		map->p_pos_y -= 5;
-		map->images->plyr->instances[0].y -= 5;
+		move_forward(map);
 	}
 	if (mlx_is_key_down(map->mlx, MLX_KEY_S))
 	{
-		//	printf("The square to the south is a %c\n", detect_square(map, 'S'));
-		//if (detect_square(map, 'S') != '1')
-		
-		map->p_pos_y += 5;
-		map->images->plyr->instances[0].y += 5;
+		move_backward(map);
 	}
 
 	if (mlx_is_key_down(map->mlx, MLX_KEY_A))
 	{
-		//printf("The square to the west is a %c\n", detect_square(map, 'W'));
-		//if (detect_square(map, 'W') != '1'){
-		
-		map->p_pos_x -= 5;
-		map->images->plyr->instances[0].x -= 5;//}
+		move_left(map);
 	}
 	if (mlx_is_key_down(map->mlx, MLX_KEY_D))
 	{
-		//printf("The square to the east is a %c\n", detect_square(map, 'E'));
-		//if (detect_square(map, 'E') != '1'){
-		map->p_pos_x += 5;
-		map->images->plyr->instances[0].x += 5;
+		move_right(map);
 	}
 	if (mlx_is_key_down(map->mlx, MLX_KEY_LEFT))
 	{
-		map->p_orient -= 1 * DEG_2_RAD;
+		map->p_orient -= 2 * DEG_2_RAD;
 		if (map->p_orient <= 0)
 			map->p_orient += 2 * M_PI;
 		printf("Degrees: %f\n", map->p_orient / DEG_2_RAD);
@@ -167,7 +200,7 @@ void	ft_movehook(void *param)
 	}
 	if (mlx_is_key_down(map->mlx, MLX_KEY_RIGHT))
 	{
-		map->p_orient += 1 * DEG_2_RAD;
+		map->p_orient += 2 * DEG_2_RAD;
 		if (map->p_orient >= 2 * M_PI)
 			map->p_orient -= 2 * M_PI;
 		printf("Degrees: %f\n", map->p_orient / DEG_2_RAD);
@@ -177,30 +210,12 @@ void	ft_movehook(void *param)
 
 int cub3d_mlx(t_map *map)
 {
-	mlx_t	*mlx;
-	t_images images;
-	
+	int			i;
+	mlx_t		*mlx;
+	t_images	images;
+
 	map->images = &images;
-	/*map->map = ft_calloc(10, sizeof(char *));
-	map->map[0] = ft_strdup("111111111");
-	map->map[1] = ft_strdup("100000001");
-	map->map[2] = ft_strdup("100000001");
-	map->map[3] = ft_strdup("100000001");
-	map->map[4] = ft_strdup("1000N0001");
-	map->map[5] = ft_strdup("100101001");
-	map->map[6] = ft_strdup("100111001");
-	map->map[7] = ft_strdup("100000001");
-	map->map[8] = ft_strdup("111111111");
-	map->map[9] = NULL;*/
-	
-	int i;
 	i = 0;
-	/*while (map->map[i])
-	{
-		printf("Line %d is: %s\n", i, map->map[i]);
-		i++;
-	}*/
-		
 	mlx = mlx_init(2560, 1440, "cub3d", true);
 	map->mlx = mlx;
 	draw_2d_map(mlx, map, &images);
