@@ -6,7 +6,7 @@
 /*   By: clundber <clundber@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 13:58:21 by clundber          #+#    #+#             */
-/*   Updated: 2024/05/16 12:18:22 by clundber         ###   ########.fr       */
+/*   Updated: 2024/05/16 16:16:41 by clundber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ typedef struct s_map
 
 
 
-void	ray_trace(mlx_t *mlx, t_map *map, t_images *images);
+void	ray_caster(mlx_t *mlx, t_map *map, t_images *images);
 char	detect_square(t_map *map, int x, int y);
 void	ft_nullfree(char *str);
 int		parsing(int argc, char **argv, t_map *map);

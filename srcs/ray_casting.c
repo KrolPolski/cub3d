@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ray_tracing.c                                      :+:      :+:    :+:   */
+/*   ray_casting.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: clundber <clundber@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 11:27:52 by clundber          #+#    #+#             */
-/*   Updated: 2024/05/16 16:11:47 by clundber         ###   ########.fr       */
+/*   Updated: 2024/05/16 16:17:10 by clundber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3d.h"
 
-void	ray_trace(mlx_t *mlx, t_map *map, t_images *images)
+void	ray_caster(mlx_t *mlx, t_map *map, t_images *images)
 {
 	int	pixels;
 	int	deg;

@@ -6,7 +6,7 @@
 /*   By: clundber <clundber@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 11:58:50 by rboudwin          #+#    #+#             */
-/*   Updated: 2024/05/16 14:45:41 by clundber         ###   ########.fr       */
+/*   Updated: 2024/05/16 16:17:52 by clundber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ void	draw_2d_map(mlx_t *mlx, t_map *map, t_images *images)
 	mlx_image_to_window(mlx, images->plyr, map->p_pos_x, map->p_pos_y);
 	
 	// raytracing
-	ray_trace(mlx, map, images);
+	ray_caster(mlx, map, images);
 	//draw_direction(mlx, map, images);
 }
 
@@ -179,23 +179,23 @@ void	ft_movehook(void *param)
 	if (mlx_is_key_down(map->mlx, MLX_KEY_W))
 	{
 		move_forward(map);
-		ray_trace(map->mlx, map, map->images);
+		ray_caster(map->mlx, map, map->images);
 	}
 	if (mlx_is_key_down(map->mlx, MLX_KEY_S))
 	{
 		move_backward(map);
-		ray_trace(map->mlx, map, map->images);
+		ray_caster(map->mlx, map, map->images);
 	}
 
 	if (mlx_is_key_down(map->mlx, MLX_KEY_A))
 	{
 		move_left(map);
-		ray_trace(map->mlx, map, map->images);
+		ray_caster(map->mlx, map, map->images);
 	}
 	if (mlx_is_key_down(map->mlx, MLX_KEY_D))
 	{
 		move_right(map);
-		ray_trace(map->mlx, map, map->images);
+		ray_caster(map->mlx, map, map->images);
 	}
 	if (mlx_is_key_down(map->mlx, MLX_KEY_LEFT))
 	{
@@ -203,7 +203,7 @@ void	ft_movehook(void *param)
 		if (map->p_orient <= 0)
 			map->p_orient += 2 * M_PI;
 		printf("Degrees: %f\n", map->p_orient / DEG_2_RAD);
-		ray_trace(map->mlx, map, map->images);
+		ray_caster(map->mlx, map, map->images);
 		//draw_direction(map->mlx, map, map->images);
 	}
 	if (mlx_is_key_down(map->mlx, MLX_KEY_RIGHT))
@@ -212,7 +212,7 @@ void	ft_movehook(void *param)
 		if (map->p_orient >= 2 * M_PI)
 			map->p_orient -= 2 * M_PI;
 		printf("Degrees: %f\n", map->p_orient / DEG_2_RAD);
-		ray_trace(map->mlx, map, map->images);
+		ray_caster(map->mlx, map, map->images);
 		//draw_direction(map->mlx, map, map->images);
 	}
 }
