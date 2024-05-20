@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rboudwin <rboudwin@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: clundber <clundber@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 13:58:21 by clundber          #+#    #+#             */
-/*   Updated: 2024/05/16 10:54:24 by rboudwin         ###   ########.fr       */
+/*   Updated: 2024/05/20 15:46:10 by clundber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,11 @@
 # include "../Libft/libft.h"
 # include "../MLX42/include/MLX42/MLX42.h"
 # include <stdbool.h>
+# include <limits.h>
 
 # define BPP sizeof(int32_t)
 # define DEG_2_RAD 0.01745329252
+# define PI 3.14159265359
 
 typedef struct s_images
 {
@@ -37,6 +39,7 @@ typedef struct s_images
 	mlx_image_t		*wht;
 	mlx_image_t		*plyr;
 	mlx_image_t		*dir;
+	mlx_image_t		*fg;
 }	t_images;
 
 
@@ -60,7 +63,7 @@ typedef struct s_map
 
 
 
-
+void	ray_caster(mlx_t *mlx, t_map *map, t_images *images);
 char	detect_square(t_map *map, int x, int y);
 void	ft_nullfree(char *str);
 int		parsing(int argc, char **argv, t_map *map);

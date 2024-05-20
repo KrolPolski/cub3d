@@ -20,14 +20,14 @@ NAME = cub3d
 LIBFTNAME = libft.a
 
 # ------------ DIRECTORIES ---#
-LIBFT_DIR = ./libft
+LIBFT_DIR = ./Libft
 SRCS_DIR = ./srcs
 OBJ_DIR = ./srcs/temp
 MLX_DIR = ./MLX42
 
 #------------- SOURCE FILES ------#
 CFILES = $(SRCS_DIR)/cub3d.c $(SRCS_DIR)/parsing.c $(SRCS_DIR)/utils.c $(SRCS_DIR)/mlx.c \
-      $(SRCS_DIR)/colors.c
+      $(SRCS_DIR)/colors.c $(SRCS_DIR)/collision.c $(SRCS_DIR)/ray_casting.c
 
 OFILES = $(CFILES:.c=.o)
 
@@ -41,8 +41,11 @@ endif
 
 #--------- FLAGS ----------#
 CC = @cc
-CFLAGS = -Wall -Wextra -Werror -g -Wunreachable-code -Ofast
-HEADERS	:= -I ./includes -I $(MLX_DIR)/include/MLX42/
+CFLAGS =# -Wall -Wextra -Werror -Wunreachable-code -Ofast
+HEADERS	= -I ./includes -I $(MLX_DIR)/include/MLX42/
+DEBUGFLAGS = -g -fsanitize=address,undefined
+
+#------------------#
 
 all: libmlx $(NAME)
 
@@ -51,22 +54,34 @@ libmlx:
 		cmake $(MLX_DIR) -B $(MLX_DIR)/build && make -C $(MLX_DIR)/build -j4; \
 	fi
 
+debug: libmlx .debug
+
 $(NAME): $(OFILES)
 	@echo "$(COLOUR_BLUE)compiling $(NAME)$(COLOUR_END)"
-	@make -C libft
+	@make -C Libft
 	@$(CC) $(CFLAGS) $(OFILES)  $(HEADERS) $(LIBS) $(MLX_LIBS) $(LIBFT_DIR)/$(LIBFTNAME) -o $(NAME) 
+	@echo "$(COLOUR_GREEN)$(NAME) compiled successfully$(COLOUR_END)"
+
+.debug: $(OFILES) 	
+	@echo "$(COLOUR_BLUE)compiling $(NAME) in debug mode$(COLOUR_END)"
+	@make -C Libft
+	@cc $(DEBUGFLAGS) $(OFILES) $(HEADERS) $(LIBS) $(MLX_LIBS) $(LIBFT_DIR)/$(LIBFTNAME) -o $(NAME) 
+	@touch .debug
 	@echo "$(COLOUR_GREEN)$(NAME) compiled successfully$(COLOUR_END)"
 
 clean:
 	@echo "$(COLOUR_GREEN)cleaning $(NAME)$(COLOUR_END)"
 	@rm -f $(OFILES) 
-	@make clean -C libft/
+	@make clean -C $(LIBFT_DIR)
 	@rm -rf $(MLX_DIR)/build
 
 fclean: clean
 	@rm -f $(NAME) 
-	@rm -f libft/libft.a
+	make fclean -C $(LIBFT_DIR) 
+	$(RM) $(NAME)
+	$(RM) .debug
+	$(RM) -r $(NAME).dSYM
 
 re: fclean all 
 
-.PHONY: all clean fclean re libmlx
+.PHONY: all clean fclean re libmlx debug
