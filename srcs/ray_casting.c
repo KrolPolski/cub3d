@@ -6,7 +6,7 @@
 /*   By: clundber <clundber@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 11:27:52 by clundber          #+#    #+#             */
-/*   Updated: 2024/05/16 16:17:10 by clundber         ###   ########.fr       */
+/*   Updated: 2024/05/20 14:15:20 by clundber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,26 +14,34 @@
 
 void	get_abs(t_map *map, int *x_abs, int *y_abs, int deg)
 {
-	if (map->p_orient / DEG_2_RAD > 270  || map->p_orient / DEG_2_RAD < 90)
-		(*y_abs) = (64 - (map->p_pos_y % 64)) / cos(map->p_orient + deg * DEG_2_RAD);
-	else if (map->p_orient / DEG_2_RAD == 270  || map->p_orient / DEG_2_RAD == 90)
+	double	corner;
+
+	corner = 0;
+	if (map->p_orient + deg > 270)
+		corner = 360 - (map->p_orient + deg);
+	else if (map->p_orient + deg < 90)
+		corner = (map->p_orient + deg);
+	//if (map->p_orient > 270 || map->p_orient < 90)
+		//(*y_abs) = (map->p_pos_y % 64) / cos(map->p_orient + deg * DEG_2_RAD);
+	(*y_abs) = ((map->p_pos_y +32) % 64) * cos((corner * DEG_2_RAD));
+/*  	else if (map->p_orient == 270  || map->p_orient == 90)
 		(*y_abs) = 5 * 64;
 	else
-		(*y_abs) = (64 - map->p_pos_y % 64) / cos((map->p_orient + (180 * DEG_2_RAD))  + deg * DEG_2_RAD);
-	if (map->p_orient / DEG_2_RAD >= 0  && map->p_orient / DEG_2_RAD <= 180)
+		(*y_abs) = (64 - map->p_pos_y % 64) / cos((map->p_orient / DEG_2_RAD)  + deg * DEG_2_RAD); */
+/* 	if (map->p_orient / DEG_2_RAD >= 0  && map->p_orient / DEG_2_RAD <= 180)
 		(*x_abs) = 64 / sin(map->p_orient + deg * DEG_2_RAD);
 	else if (map->p_orient / DEG_2_RAD == 0  || map->p_orient / DEG_2_RAD == 180)
 		(*x_abs) = 5* 64;
 	else
 		(*x_abs) = 64 / sin((map->p_orient + (-180 * DEG_2_RAD))  + deg * DEG_2_RAD);			
-
+ */
 }
 
 void	ray_caster(mlx_t *mlx, t_map *map, t_images *images)
 {
-	int	pixels;
-	int	deg;
-	int	ray_size;
+	int				pixels;
+	int				deg;
+	int				ray_size;
 	unsigned int	y;
 	unsigned int	x;
 	bool			pos_wall;
@@ -52,25 +60,27 @@ void	ray_caster(mlx_t *mlx, t_map *map, t_images *images)
 	mlx_delete_image(mlx, images->fg);
 	images->fg = mlx_new_image(mlx, ray_size, ray_size);
 	mlx_image_to_window(mlx, images->fg, map->p_pos_x + 32 - (ray_size / 2), map->p_pos_y + 32 - (ray_size / 2));
-	
-	while (deg < 33)
+ 	while (deg < 33)
 	{
 		pixels = 0;
 		pos_wall = false;
 		neg_wall = false;
+		abs = INT_MAX;
 		get_abs(map, &x_abs, &abs, deg);
-		while (pixels < (ray_size / 2) && pixels < abs)// && pixels < x_abs)//pos_wall == false && neg_wall == false)
+		printf ("abs = %d\n", abs);
+	//printf ("math = %d\n", ((map->p_pos_y + 32) % 64));
+/*  		while (pixels < (ray_size / 2)&& pos_wall == false && neg_wall == false)// pixels < abs && pixels < x_abs && pos_wall == false && neg_wall == false)
 		{
 			mlx_put_pixel(images->fg, (ray_size / 2) + pixels * sin(map->p_orient + deg * DEG_2_RAD), (ray_size / 2) - pixels * cos(map->p_orient + deg * DEG_2_RAD), get_rgba(255, 0, 0, 255));
 			pixels++;
 			y = (map->p_pos_y - 32 - pixels * cos(map->p_orient + deg * DEG_2_RAD));
-			x = (map->p_pos_x - 32 + pixels * sin(map->p_orient + deg * DEG_2_RAD));
+			x = (map->p_pos_x - 32 + pixels * sin(map->p_orient + deg * DEG_2_RAD)); 
 			if (y % 64 == 0)
 				pos_wall = true;
 			if (x % 64 == 0)
-				neg_wall = true;
+				neg_wall = true; 
 		}
-/* 		if (pos_wall == true)
+  		if (pos_wall == true)
 		{
 			if (map->p_orient / DEG_2_RAD > 270  || map->p_orient / DEG_2_RAD < 90)
 				abs = 64 / cos(map->p_orient + deg * DEG_2_RAD) + pixels;
@@ -85,33 +95,48 @@ void	ray_caster(mlx_t *mlx, t_map *map, t_images *images)
 			else if (map->p_orient / DEG_2_RAD == 0  || map->p_orient / DEG_2_RAD == 180)
 				x_abs = ray_size /2;
 			else
-				x_abs = 64 / sin((map->p_orient + (-180 * DEG_2_RAD))  + deg * DEG_2_RAD) + pixels;			 */
-/*  		while (pixels < (ray_size / 2)  && pixels <= abs && pixels <= x_abs)
+				x_abs = 64 / sin((map->p_orient + (-180 * DEG_2_RAD))  + deg * DEG_2_RAD) + pixels; */
+  		while (pixels < (ray_size / 2)  && pixels <= abs && pixels <= x_abs)
 		{
 			mlx_put_pixel(images->fg, (ray_size / 2) + pixels * sin(map->p_orient + deg * DEG_2_RAD), (ray_size / 2) - pixels * cos(map->p_orient + deg * DEG_2_RAD), get_rgba(255, 0, 0, 255));
 			pixels++;
-		} */
+		}
 		deg++;
+		}
+		//			abs = 64 / cos(map->p_orient + deg * DEG_2_RAD);
 
-	}
-	
-/* 	while (deg <= 33)
+}
+
+void	ray_caster2(mlx_t *mlx, t_map *map, t_images *images)
+{
+	int				pixels;
+	int				deg;
+	int				ray_size;
+	unsigned int	y;
+	unsigned int	x;
+	bool			pos_wall;
+	bool			neg_wall;
+
+	y = 0;
+	x = 0;
+	ray_size = 1024;
+	deg = 0;
+	mlx_delete_image(mlx, images->fg);
+	images->fg = mlx_new_image(mlx, ray_size, ray_size);
+	mlx_image_to_window(mlx, images->fg, map->p_pos_x + 32 - (ray_size / 2), map->p_pos_y + 32 - (ray_size / 2));
+ 	while (deg <= 33)
 	{
-
 		pixels = 0;
 		pos_wall = false;
 		neg_wall = false;
 		while (pixels < (ray_size / 2))
 		{
-				y = (map->p_pos_y - 32 - pixels * cos(map->p_orient + deg * DEG_2_RAD)) / 64;
-				x = (map->p_pos_x - 32 + pixels * sin(map->p_orient + deg * DEG_2_RAD)) / 64;
-			abs = 64 / cos(map->p_orient + deg * DEG_2_RAD);
-			printf ("abs = %d\n", abs);
+			y = (map->p_pos_y - 32 - pixels * cos(map->p_orient + deg * DEG_2_RAD)) / 64;
+			x = (map->p_pos_x - 32 + pixels * sin(map->p_orient + deg * DEG_2_RAD)) / 64;
 			if (pos_wall == false && map->map[y][x] != '1')
 				mlx_put_pixel(images->fg, (ray_size / 2) + pixels * sin(map->p_orient + deg * DEG_2_RAD), (ray_size / 2) - pixels * cos(map->p_orient + deg * DEG_2_RAD), get_rgba(255, 0, 0, 255));
 			else
 				pos_wall = true;
-
 			y = (map->p_pos_y - 32 - pixels * cos(map->p_orient - deg * DEG_2_RAD)) / 64;
 			x = (map->p_pos_x - 32 + pixels * sin(map->p_orient - deg * DEG_2_RAD)) / 64;
 			if (neg_wall == false && map->map[y][x] != '1')
@@ -121,7 +146,7 @@ void	ray_caster(mlx_t *mlx, t_map *map, t_images *images)
 			pixels++;
 		}
 		deg++;
-	} */
+	}
 }
 
 /*  deltaDistX = abs(|rayDir| / rayDirX)
