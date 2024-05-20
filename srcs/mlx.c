@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mlx.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rboudwin <rboudwin@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: clundber <clundber@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 11:58:50 by rboudwin          #+#    #+#             */
-/*   Updated: 2024/05/20 18:17:50 by rboudwin         ###   ########.fr       */
+/*   Updated: 2024/05/16 16:17:52 by clundber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,7 @@ void	draw_2d_map(mlx_t *mlx, t_map *map, t_images *images)
 	images->blk = mlx_texture_to_image(mlx, images->black);
 	images->wht = mlx_texture_to_image(mlx, images->white);
 	images->plyr = mlx_texture_to_image(mlx, images->player);
-	mlx_resize_image(images->blk, 32, 32);
-	mlx_resize_image(images->wht, 32, 32);
-	mlx_resize_image(images->plyr, 32, 32);
-	images->dir = mlx_new_image(mlx, 32, 32);
+	images->dir = mlx_new_image(mlx, 64, 64);
 	images->bg = mlx_new_image(mlx, 2560, 1440);
 	ft_memset(images->bg->pixels, 180, images->bg->width
 		* images->bg->height * BPP);
@@ -75,38 +72,38 @@ void	draw_2d_map(mlx_t *mlx, t_map *map, t_images *images)
 		{
 			if (map->map[i][k] == '1')
 			{
-				mlx_image_to_window(mlx, images->blk, (k + 1) * 32, (i + 1) * 32);
+				mlx_image_to_window(mlx, images->blk, (k + 1) * 64, (i + 1) * 64);
 			}
 			else if (map->map[i][k] == 'N')
 			{
-				map->p_pos_x = ((k + 1) * 32);
-				map->p_pos_y = ((i + 1) * 32);
+				map->p_pos_x = ((k + 1) * 64);
+				map->p_pos_y = ((i + 1) * 64);
 				map->p_orient = 0;
-				mlx_image_to_window(mlx, images->wht, (k + 1) * 32, (i + 1) * 32);
+				mlx_image_to_window(mlx, images->wht, (k + 1) * 64, (i + 1) * 64);
 			}
 			else if (map->map[i][k] == 'S')
 			{
-				map->p_pos_x = ((k + 1) * 32);
-				map->p_pos_y = ((i + 1) * 32);
+				map->p_pos_x = ((k + 1) * 64);
+				map->p_pos_y = ((i + 1) * 64);
 				map->p_orient = 180 * DEG_2_RAD;
-				mlx_image_to_window(mlx, images->wht, (k + 1) * 32, (i + 1) * 32);
+				mlx_image_to_window(mlx, images->wht, (k + 1) * 64, (i + 1) * 64);
 			}
 			else if (map->map[i][k] == 'E')
 			{
-				map->p_pos_x = ((k + 1) * 32);
-				map->p_pos_y = ((i + 1) * 32);
+				map->p_pos_x = ((k + 1) * 64);
+				map->p_pos_y = ((i + 1) * 64);
 				map->p_orient = 90 * DEG_2_RAD;
-				mlx_image_to_window(mlx, images->wht, (k + 1) * 32, (i + 1) * 32);
+				mlx_image_to_window(mlx, images->wht, (k + 1) * 64, (i + 1) * 64);
 			}
 			else if (map->map[i][k] == 'W')
 			{
-				map->p_pos_x = ((k + 1) * 32);
-				map->p_pos_y = ((i + 1) * 32);
+				map->p_pos_x = ((k + 1) * 64);
+				map->p_pos_y = ((i + 1) * 64);
 				map->p_orient = 270 * DEG_2_RAD;
-				mlx_image_to_window(mlx, images->wht, (k + 1) * 32, (i + 1) * 32);
+				mlx_image_to_window(mlx, images->wht, (k + 1) * 64, (i + 1) * 64);
 			}
 			else if (map->map[i][k] == '0')
-				mlx_image_to_window(mlx, images->wht, (k + 1) * 32, (i + 1) * 32);
+				mlx_image_to_window(mlx, images->wht, (k + 1) * 64, (i + 1) * 64);
 			k++;
 		}
 		k = 0;
@@ -122,12 +119,12 @@ void	draw_2d_map(mlx_t *mlx, t_map *map, t_images *images)
 void	move_forward(t_map *map)
 {
 	printf("We are in a '%c' square\n", detect_square(map, map->p_pos_x, map->p_pos_y));
-	if (detect_square(map, map->p_pos_x + round(3 * sin(map->p_orient)), map->p_pos_y - round(3 * cos(map->p_orient))) != '1')
+	if (detect_square(map, map->p_pos_x + round(5 * sin(map->p_orient)), map->p_pos_y - round(5 * cos(map->p_orient))) != '1')
 	{
-		map->p_pos_x += round(3 * sin(map->p_orient));
-		map->p_pos_y -= round(3 * cos(map->p_orient));
-		map->images->plyr->instances[0].x += round(3 * sin(map->p_orient));
-		map->images->plyr->instances[0].y -= round(3 * cos(map->p_orient));
+		map->p_pos_x += round(5 * sin(map->p_orient));
+		map->p_pos_y -= round(5 * cos(map->p_orient));
+		map->images->plyr->instances[0].x += round(5 * sin(map->p_orient));
+		map->images->plyr->instances[0].y -= round(5 * cos(map->p_orient));
 	}
 	else
 		printf("Hello wall my old friend\n");
@@ -135,12 +132,12 @@ void	move_forward(t_map *map)
 void	move_backward(t_map *map)
 {
 	printf("We are in a '%c' square\n", detect_square(map, map->p_pos_x, map->p_pos_y));
-	if (detect_square(map, map->p_pos_x - round(3 * sin(map->p_orient)), map->p_pos_y + round(3 * cos(map->p_orient))) != '1')
+	if (detect_square(map, map->p_pos_x - round(5 * sin(map->p_orient)), map->p_pos_y + round(5 * cos(map->p_orient))) != '1')
 	{
-		map->p_pos_x -= round(3 * sin(map->p_orient));
-		map->p_pos_y += round(3 * cos(map->p_orient));
-		map->images->plyr->instances[0].x -= round(3 * sin(map->p_orient));
-		map->images->plyr->instances[0].y += round(3 * cos(map->p_orient));
+		map->p_pos_x -= round(5 * sin(map->p_orient));
+		map->p_pos_y += round(5 * cos(map->p_orient));
+		map->images->plyr->instances[0].x -= round(5 * sin(map->p_orient));
+		map->images->plyr->instances[0].y += round(5 * cos(map->p_orient));
 	}
 	else
 		printf("Hello wall my old friend\n");
@@ -148,12 +145,12 @@ void	move_backward(t_map *map)
 void	move_left(t_map *map)
 {
 	printf("We are in a '%c' square\n", detect_square(map, map->p_pos_x, map->p_pos_y));
-	if (detect_square(map, map->p_pos_x + round(3 * sin(map->p_orient - 90 * DEG_2_RAD)), map->p_pos_y - round(3 * cos(map->p_orient - 90 * DEG_2_RAD))) != '1')
+	if (detect_square(map, map->p_pos_x + round(5 * sin(map->p_orient - 90 * DEG_2_RAD)), map->p_pos_y - round(5 * cos(map->p_orient - 90 * DEG_2_RAD))) != '1')
 	{
-		map->p_pos_x += round(3 * sin(map->p_orient - 90 * DEG_2_RAD));
-		map->p_pos_y -= round(3 * cos(map->p_orient - 90 * DEG_2_RAD));
-		map->images->plyr->instances[0].x += round(3 * sin(map->p_orient - 90 * DEG_2_RAD));
-		map->images->plyr->instances[0].y -= round(3 * cos(map->p_orient - 90 * DEG_2_RAD));
+		map->p_pos_x += round(5 * sin(map->p_orient - 90 * DEG_2_RAD));
+		map->p_pos_y -= round(5 * cos(map->p_orient - 90 * DEG_2_RAD));
+		map->images->plyr->instances[0].x += round(5 * sin(map->p_orient - 90 * DEG_2_RAD));
+		map->images->plyr->instances[0].y -= round(5 * cos(map->p_orient - 90 * DEG_2_RAD));
 	}
 	else
 		printf("Hello wall my old friend\n");
@@ -162,12 +159,12 @@ void	move_left(t_map *map)
 void	move_right(t_map *map)
 {
 	printf("We are in a '%c' square\n", detect_square(map, map->p_pos_x, map->p_pos_y));
-	if (detect_square(map, map->p_pos_x + round(3 * sin(map->p_orient + 90 * DEG_2_RAD)), map->p_pos_y - round(3 * cos(map->p_orient + 90 * DEG_2_RAD))) != '1')
+	if (detect_square(map, map->p_pos_x + round(5 * sin(map->p_orient + 90 * DEG_2_RAD)), map->p_pos_y - round(5 * cos(map->p_orient + 90 * DEG_2_RAD))) != '1')
 	{
-		map->p_pos_x += round(3 * sin(map->p_orient + 90 * DEG_2_RAD));
-		map->p_pos_y -= round(3 * cos(map->p_orient + 90 * DEG_2_RAD));
-		map->images->plyr->instances[0].x += round(3 * sin(map->p_orient + 90 * DEG_2_RAD));
-		map->images->plyr->instances[0].y -= round(3 * cos(map->p_orient + 90 * DEG_2_RAD));
+		map->p_pos_x += round(5 * sin(map->p_orient + 90 * DEG_2_RAD));
+		map->p_pos_y -= round(5 * cos(map->p_orient + 90 * DEG_2_RAD));
+		map->images->plyr->instances[0].x += round(5 * sin(map->p_orient + 90 * DEG_2_RAD));
+		map->images->plyr->instances[0].y -= round(5 * cos(map->p_orient + 90 * DEG_2_RAD));
 	}
 	else
 		printf("Hello wall my old friend\n");
@@ -231,8 +228,8 @@ int cub3d_mlx(t_map *map)
 	mlx = mlx_init(2560, 1440, "cub3d", true);
 	map->mlx = mlx;
 	draw_2d_map(mlx, map, &images);
-	map->x_offset = 32;
-	map->y_offset = 32;
+	map->x_offset = 64;
+	map->y_offset = 64;
 	mlx_loop_hook(mlx, ft_movehook, map);
 	mlx_loop(mlx);
 	mlx_terminate(mlx);
