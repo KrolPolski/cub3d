@@ -6,35 +6,30 @@
 /*   By: clundber <clundber@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 11:27:52 by clundber          #+#    #+#             */
-/*   Updated: 2024/05/20 14:15:20 by clundber         ###   ########.fr       */
+/*   Updated: 2024/05/20 16:14:51 by clundber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3d.h"
 
-void	get_abs(t_map *map, int *x_abs, int *y_abs, int deg)
+void	get_len(t_map *map, int *x_len, int *y_len, int deg)
 {
 	double	corner;
 
 	corner = 0;
-	if (map->p_orient + deg > 270)
-		corner = 360 - (map->p_orient + deg);
-	else if (map->p_orient + deg < 90)
-		corner = (map->p_orient + deg);
-	//if (map->p_orient > 270 || map->p_orient < 90)
-		//(*y_abs) = (map->p_pos_y % 64) / cos(map->p_orient + deg * DEG_2_RAD);
-	(*y_abs) = ((map->p_pos_y +32) % 64) * cos((corner * DEG_2_RAD));
-/*  	else if (map->p_orient == 270  || map->p_orient == 90)
-		(*y_abs) = 5 * 64;
+		corner = (map->p_orient + (deg * DEG_2_RAD));
+	if (corner / DEG_2_RAD > 90 && corner / DEG_2_RAD < 270)
+		(*y_len) = (64 - ((map->p_pos_y +32) % 64)) / cos((corner));
 	else
-		(*y_abs) = (64 - map->p_pos_y % 64) / cos((map->p_orient / DEG_2_RAD)  + deg * DEG_2_RAD); */
-/* 	if (map->p_orient / DEG_2_RAD >= 0  && map->p_orient / DEG_2_RAD <= 180)
-		(*x_abs) = 64 / sin(map->p_orient + deg * DEG_2_RAD);
-	else if (map->p_orient / DEG_2_RAD == 0  || map->p_orient / DEG_2_RAD == 180)
-		(*x_abs) = 5* 64;
+		(*y_len) = ((map->p_pos_y +32) % 64) / cos((corner));
+    if (corner / DEG_2_RAD > 0 && corner / DEG_2_RAD < 180)
+		(*x_len) = (64 - ((map->p_pos_x +32) % 64)) / cos((corner));
 	else
-		(*x_abs) = 64 / sin((map->p_orient + (-180 * DEG_2_RAD))  + deg * DEG_2_RAD);			
- */
+		(*x_len) = ((map->p_pos_x +32) % 64) / cos((corner));	
+	if (*y_len < 0)
+        (*y_len) *= -1;
+	if (*x_len < 0)
+        (*x_len) *= -1;	
 }
 
 void	ray_caster(mlx_t *mlx, t_map *map, t_images *images)
@@ -46,16 +41,16 @@ void	ray_caster(mlx_t *mlx, t_map *map, t_images *images)
 	unsigned int	x;
 	bool			pos_wall;
 	bool			neg_wall;
-	int				abs;
-	int				x_abs;
+	int				y_len;
+	int				x_len;
 	bool			neg_deg;
 
 	neg_deg = false;
-	abs = INT_MAX;
-	x_abs = INT_MAX;
+	y_len = INT_MAX;
+	x_len = INT_MAX;
 	y = 0;
 	x = 0;
-	ray_size = 500;
+	ray_size = 1024;
 	deg = 0;
 	mlx_delete_image(mlx, images->fg);
 	images->fg = mlx_new_image(mlx, ray_size, ray_size);
@@ -65,45 +60,15 @@ void	ray_caster(mlx_t *mlx, t_map *map, t_images *images)
 		pixels = 0;
 		pos_wall = false;
 		neg_wall = false;
-		abs = INT_MAX;
-		get_abs(map, &x_abs, &abs, deg);
-		printf ("abs = %d\n", abs);
-	//printf ("math = %d\n", ((map->p_pos_y + 32) % 64));
-/*  		while (pixels < (ray_size / 2)&& pos_wall == false && neg_wall == false)// pixels < abs && pixels < x_abs && pos_wall == false && neg_wall == false)
-		{
-			mlx_put_pixel(images->fg, (ray_size / 2) + pixels * sin(map->p_orient + deg * DEG_2_RAD), (ray_size / 2) - pixels * cos(map->p_orient + deg * DEG_2_RAD), get_rgba(255, 0, 0, 255));
-			pixels++;
-			y = (map->p_pos_y - 32 - pixels * cos(map->p_orient + deg * DEG_2_RAD));
-			x = (map->p_pos_x - 32 + pixels * sin(map->p_orient + deg * DEG_2_RAD)); 
-			if (y % 64 == 0)
-				pos_wall = true;
-			if (x % 64 == 0)
-				neg_wall = true; 
-		}
-  		if (pos_wall == true)
-		{
-			if (map->p_orient / DEG_2_RAD > 270  || map->p_orient / DEG_2_RAD < 90)
-				abs = 64 / cos(map->p_orient + deg * DEG_2_RAD) + pixels;
-			else if (map->p_orient / DEG_2_RAD == 270  || map->p_orient / DEG_2_RAD == 90)
-				abs = ray_size / 2;
-			else
-				abs = 64 / cos((map->p_orient + (180 * DEG_2_RAD))  + deg * DEG_2_RAD) + pixels;
-		}
-		else
-			if (map->p_orient / DEG_2_RAD >= 0  && map->p_orient / DEG_2_RAD <= 180)
-				x_abs = 64 / sin(map->p_orient + deg * DEG_2_RAD) + pixels;
-			else if (map->p_orient / DEG_2_RAD == 0  || map->p_orient / DEG_2_RAD == 180)
-				x_abs = ray_size /2;
-			else
-				x_abs = 64 / sin((map->p_orient + (-180 * DEG_2_RAD))  + deg * DEG_2_RAD) + pixels; */
-  		while (pixels < (ray_size / 2)  && pixels <= abs && pixels <= x_abs)
+		y_len = INT_MAX;
+		get_len(map, &x_len, &y_len, deg);
+  		while (pixels < (ray_size / 2)  && pixels <= y_len && pixels <= x_len)
 		{
 			mlx_put_pixel(images->fg, (ray_size / 2) + pixels * sin(map->p_orient + deg * DEG_2_RAD), (ray_size / 2) - pixels * cos(map->p_orient + deg * DEG_2_RAD), get_rgba(255, 0, 0, 255));
 			pixels++;
 		}
 		deg++;
-		}
-		//			abs = 64 / cos(map->p_orient + deg * DEG_2_RAD);
+	}
 
 }
 
@@ -148,6 +113,35 @@ void	ray_caster2(mlx_t *mlx, t_map *map, t_images *images)
 		deg++;
 	}
 }
+
+	//printf ("math = %d\n", ((map->p_pos_y + 32) % 64));
+/*  		while (pixels < (ray_size / 2)&& pos_wall == false && neg_wall == false)// pixels < abs && pixels < x_abs && pos_wall == false && neg_wall == false)
+		{
+			mlx_put_pixel(images->fg, (ray_size / 2) + pixels * sin(map->p_orient + deg * DEG_2_RAD), (ray_size / 2) - pixels * cos(map->p_orient + deg * DEG_2_RAD), get_rgba(255, 0, 0, 255));
+			pixels++;
+			y = (map->p_pos_y - 32 - pixels * cos(map->p_orient + deg * DEG_2_RAD));
+			x = (map->p_pos_x - 32 + pixels * sin(map->p_orient + deg * DEG_2_RAD)); 
+			if (y % 64 == 0)
+				pos_wall = true;
+			if (x % 64 == 0)
+				neg_wall = true; 
+		}
+  		if (pos_wall == true)
+		{
+			if (map->p_orient / DEG_2_RAD > 270  || map->p_orient / DEG_2_RAD < 90)
+				abs = 64 / cos(map->p_orient + deg * DEG_2_RAD) + pixels;
+			else if (map->p_orient / DEG_2_RAD == 270  || map->p_orient / DEG_2_RAD == 90)
+				abs = ray_size / 2;
+			else
+				abs = 64 / cos((map->p_orient + (180 * DEG_2_RAD))  + deg * DEG_2_RAD) + pixels;
+		}
+		else
+			if (map->p_orient / DEG_2_RAD >= 0  && map->p_orient / DEG_2_RAD <= 180)
+				x_abs = 64 / sin(map->p_orient + deg * DEG_2_RAD) + pixels;
+			else if (map->p_orient / DEG_2_RAD == 0  || map->p_orient / DEG_2_RAD == 180)
+				x_abs = ray_size /2;
+			else
+				x_abs = 64 / sin((map->p_orient + (-180 * DEG_2_RAD))  + deg * DEG_2_RAD) + pixels; */
 
 /*  deltaDistX = abs(|rayDir| / rayDirX)
 deltaDistY = abs(|rayDir| / rayDirY)

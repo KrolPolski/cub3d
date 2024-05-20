@@ -6,7 +6,7 @@
 /*   By: clundber <clundber@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 13:58:21 by clundber          #+#    #+#             */
-/*   Updated: 2024/05/16 16:16:41 by clundber         ###   ########.fr       */
+/*   Updated: 2024/05/20 15:46:10 by clundber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 
 # define BPP sizeof(int32_t)
 # define DEG_2_RAD 0.01745329252
+# define PI 3.14159265359
 
 typedef struct s_images
 {
