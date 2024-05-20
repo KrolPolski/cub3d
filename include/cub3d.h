@@ -22,6 +22,7 @@
 # include "../Libft/libft.h"
 # include "../MLX42/include/MLX42/MLX42.h"
 # include <stdbool.h>
+# include <limits.h>
 
 # define BPP sizeof(int32_t)
 # define DEG_2_RAD 0.01745329252
