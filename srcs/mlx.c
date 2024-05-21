@@ -6,7 +6,7 @@
 /*   By: clundber <clundber@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 11:58:50 by rboudwin          #+#    #+#             */
-/*   Updated: 2024/05/21 11:13:07 by clundber         ###   ########.fr       */
+/*   Updated: 2024/05/21 19:42:51 by clundber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	draw_2d_map(mlx_t *mlx, t_map *map, t_images *images)
 	images->wht = mlx_texture_to_image(mlx, images->white);
 	images->plyr = mlx_texture_to_image(mlx, images->player);
 	images->dir = mlx_new_image(mlx, 64, 64);
-	images->bg = mlx_new_image(mlx, 2560, 1440);
+	images->bg = mlx_new_image(mlx, map->s_width, map->s_height);
 	ft_memset(images->bg->pixels, 180, images->bg->width
 		* images->bg->height * BPP);
 	mlx_image_to_window(mlx, images->bg, 0, 0);
@@ -220,7 +220,12 @@ int cub3d_mlx(t_map *map)
 
 	map->images = &images;
 	i = 0;
-	mlx = mlx_init(2560, 1440, "cub3d", true);
+	map->s_width = 320;//2560;
+	map->s_height = 200;//1440;
+	map->fov_angle = 60;
+	map->proj_plane = (map->s_width / 2) / tan((map->fov_angle /2) * DEG_2_RAD);
+	printf("plane = %d\n", map->proj_plane);
+	mlx = mlx_init(map->s_width, map->s_height, "cub3d", true);
 	map->mlx = mlx;
 	//draw_2d_map(mlx, map, &images);
 	map->x_offset = 64;

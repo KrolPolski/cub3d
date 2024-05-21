@@ -6,7 +6,7 @@
 /*   By: clundber <clundber@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 13:58:21 by clundber          #+#    #+#             */
-/*   Updated: 2024/05/21 12:25:14 by clundber         ###   ########.fr       */
+/*   Updated: 2024/05/21 19:56:30 by clundber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,10 +65,12 @@ typedef struct s_map
 	int			x_offset;
 	int			y_offset;
 	char		*text[5]; //N->E->S->W
-
+	int			s_width;
+	int			s_height;
+	int			proj_plane;
+	double		fov_angle;
+	
 }	t_map;  
-
-
 
 
 void	ray_caster(mlx_t *mlx, t_map *map, t_images *images);
