@@ -6,7 +6,7 @@
 /*   By: clundber <clundber@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 11:27:52 by clundber          #+#    #+#             */
-/*   Updated: 2024/05/21 13:52:21 by clundber         ###   ########.fr       */
+/*   Updated: 2024/05/21 16:56:09 by clundber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,9 @@ void	cast_wall(t_map *map, int dist, float deg, enum e_dir dir)
 	int	width;
 	int	pixels;
 	int	color;
+	float	angle;
 
+	angle = 0;
 	if (dir == north)
 		color = get_rgba(100, 100, 200, 255);
 	if (dir == east)
@@ -53,8 +55,12 @@ void	cast_wall(t_map *map, int dist, float deg, enum e_dir dir)
 		color = get_rgba(100, 100, 0, 255);
 	width = 0;
 	pixels = 0;
-
- 	if (dist > 10)
+ 	if (deg < 0)
+		angle = ((deg * -1) + 90) * DEG_2_RAD;
+	else
+		angle = (deg + 90) * DEG_2_RAD;
+	dist = dist * sin(angle);
+  	if (dist > 10)
 		dist /= 10;
 	else if (dist == 0)
 		dist = 1;
@@ -69,18 +75,6 @@ void	cast_wall(t_map *map, int dist, float deg, enum e_dir dir)
 		}
 	width++;
 	}
-/* 	while (pixels < 1440 / dist)
-	{
-		width = 0;
-		while (width < 39)
-		{
-			mlx_put_pixel(map->images->bg, (2560 / 2) + (deg * 38) + width , height - pixels, get_rgba(255, 0, 0, 255));
-			width++;
-		}
-		pixels++;
-	} */
-
-
 }
 	//screen size = 2560
 
