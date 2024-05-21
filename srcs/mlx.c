@@ -6,7 +6,7 @@
 /*   By: clundber <clundber@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 11:58:50 by rboudwin          #+#    #+#             */
-/*   Updated: 2024/05/16 16:17:52 by clundber         ###   ########.fr       */
+/*   Updated: 2024/05/21 11:13:07 by clundber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,10 +110,7 @@ void	draw_2d_map(mlx_t *mlx, t_map *map, t_images *images)
 		i++;	
 	}
 	mlx_image_to_window(mlx, images->plyr, map->p_pos_x, map->p_pos_y);
-	
-	// raytracing
 	ray_caster(mlx, map, images);
-	//draw_direction(mlx, map, images);
 }
 
 void	move_forward(t_map *map)
@@ -123,8 +120,8 @@ void	move_forward(t_map *map)
 	{
 		map->p_pos_x += round(5 * sin(map->p_orient));
 		map->p_pos_y -= round(5 * cos(map->p_orient));
-		map->images->plyr->instances[0].x += round(5 * sin(map->p_orient));
-		map->images->plyr->instances[0].y -= round(5 * cos(map->p_orient));
+	//	map->images->plyr->instances[0].x += round(5 * sin(map->p_orient));
+	//	map->images->plyr->instances[0].y -= round(5 * cos(map->p_orient));
 	}
 	else
 		printf("Hello wall my old friend\n");
@@ -136,8 +133,8 @@ void	move_backward(t_map *map)
 	{
 		map->p_pos_x -= round(5 * sin(map->p_orient));
 		map->p_pos_y += round(5 * cos(map->p_orient));
-		map->images->plyr->instances[0].x -= round(5 * sin(map->p_orient));
-		map->images->plyr->instances[0].y += round(5 * cos(map->p_orient));
+	//	map->images->plyr->instances[0].x -= round(5 * sin(map->p_orient));
+	//	map->images->plyr->instances[0].y += round(5 * cos(map->p_orient));
 	}
 	else
 		printf("Hello wall my old friend\n");
@@ -149,8 +146,8 @@ void	move_left(t_map *map)
 	{
 		map->p_pos_x += round(5 * sin(map->p_orient - 90 * DEG_2_RAD));
 		map->p_pos_y -= round(5 * cos(map->p_orient - 90 * DEG_2_RAD));
-		map->images->plyr->instances[0].x += round(5 * sin(map->p_orient - 90 * DEG_2_RAD));
-		map->images->plyr->instances[0].y -= round(5 * cos(map->p_orient - 90 * DEG_2_RAD));
+	//	map->images->plyr->instances[0].x += round(5 * sin(map->p_orient - 90 * DEG_2_RAD));
+	//	map->images->plyr->instances[0].y -= round(5 * cos(map->p_orient - 90 * DEG_2_RAD));
 	}
 	else
 		printf("Hello wall my old friend\n");
@@ -163,8 +160,8 @@ void	move_right(t_map *map)
 	{
 		map->p_pos_x += round(5 * sin(map->p_orient + 90 * DEG_2_RAD));
 		map->p_pos_y -= round(5 * cos(map->p_orient + 90 * DEG_2_RAD));
-		map->images->plyr->instances[0].x += round(5 * sin(map->p_orient + 90 * DEG_2_RAD));
-		map->images->plyr->instances[0].y -= round(5 * cos(map->p_orient + 90 * DEG_2_RAD));
+	//	map->images->plyr->instances[0].x += round(5 * sin(map->p_orient + 90 * DEG_2_RAD));
+	//	map->images->plyr->instances[0].y -= round(5 * cos(map->p_orient + 90 * DEG_2_RAD));
 	}
 	else
 		printf("Hello wall my old friend\n");
@@ -204,7 +201,6 @@ void	ft_movehook(void *param)
 			map->p_orient += 2 * M_PI;
 		printf("Degrees: %f\n", map->p_orient / DEG_2_RAD);
 		ray_caster(map->mlx, map, map->images);
-		//draw_direction(map->mlx, map, map->images);
 	}
 	if (mlx_is_key_down(map->mlx, MLX_KEY_RIGHT))
 	{
@@ -213,7 +209,6 @@ void	ft_movehook(void *param)
 			map->p_orient -= 2 * M_PI;
 		printf("Degrees: %f\n", map->p_orient / DEG_2_RAD);
 		ray_caster(map->mlx, map, map->images);
-		//draw_direction(map->mlx, map, map->images);
 	}
 }
 
@@ -227,9 +222,15 @@ int cub3d_mlx(t_map *map)
 	i = 0;
 	mlx = mlx_init(2560, 1440, "cub3d", true);
 	map->mlx = mlx;
-	draw_2d_map(mlx, map, &images);
+	//draw_2d_map(mlx, map, &images);
 	map->x_offset = 64;
 	map->y_offset = 64;
+
+	map->p_pos_x = ((23 + 1) * 64);
+	map->p_pos_y = ((10 + 1) * 64);
+	map->p_orient = 0;
+	ray_caster(mlx, map, map->images);
+	
 	mlx_loop_hook(mlx, ft_movehook, map);
 	mlx_loop(mlx);
 	mlx_terminate(mlx);

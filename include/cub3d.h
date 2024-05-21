@@ -6,7 +6,7 @@
 /*   By: clundber <clundber@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 13:58:21 by clundber          #+#    #+#             */
-/*   Updated: 2024/05/20 15:46:10 by clundber         ###   ########.fr       */
+/*   Updated: 2024/05/21 12:25:14 by clundber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,16 @@ typedef struct s_images
 	mlx_image_t		*plyr;
 	mlx_image_t		*dir;
 	mlx_image_t		*fg;
+	mlx_image_t		*world;
 }	t_images;
 
+enum e_dir
+{
+	north,
+	east,
+	south,
+	west,
+};
 
 typedef struct s_map
 {
