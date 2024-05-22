@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mlx.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clundber <clundber@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: rboudwin <rboudwin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 11:58:50 by rboudwin          #+#    #+#             */
-/*   Updated: 2024/05/16 16:17:52 by clundber         ###   ########.fr       */
+/*   Updated: 2024/05/22 09:59:49 by rboudwin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,10 @@ void	draw_2d_map(mlx_t *mlx, t_map *map, t_images *images)
 	// raytracing
 	ray_caster(mlx, map, images);
 	//draw_direction(mlx, map, images);
+	images->blk->enabled = false;
+	images->wht->enabled = false;
+	images->plyr->enabled = false;
+	images->fg->enabled = false;
 }
 
 void	move_forward(t_map *map)
@@ -176,12 +180,12 @@ void	ft_movehook(void *param)
 	map = (t_map *)param;
 	if (mlx_is_key_down(map->mlx, MLX_KEY_ESCAPE))
 		mlx_close_window(map->mlx);
-	if (mlx_is_key_down(map->mlx, MLX_KEY_W))
+	if (mlx_is_key_down(map->mlx, MLX_KEY_W) || mlx_is_key_down(map->mlx, MLX_KEY_UP))
 	{
 		move_forward(map);
 		ray_caster(map->mlx, map, map->images);
 	}
-	if (mlx_is_key_down(map->mlx, MLX_KEY_S))
+	if (mlx_is_key_down(map->mlx, MLX_KEY_S) || mlx_is_key_down(map->mlx, MLX_KEY_DOWN))
 	{
 		move_backward(map);
 		ray_caster(map->mlx, map, map->images);
@@ -215,6 +219,34 @@ void	ft_movehook(void *param)
 		ray_caster(map->mlx, map, map->images);
 		//draw_direction(map->mlx, map, map->images);
 	}
+	
+}
+void	ft_single_press_hook(mlx_key_data_t keydata, void *param)
+{
+t_map *map;
+
+map = (t_map *)param;
+if	(((keydata.key == MLX_KEY_M)
+		&& keydata.action == MLX_PRESS))
+	{
+		if (map->map_visible)
+		{
+			map->map_visible = false;
+			map->images->blk->enabled = false;
+			map->images->wht->enabled = false;
+			map->images->plyr->enabled = false;
+			map->images->fg->enabled = false;
+		}
+		else
+		{
+			map->map_visible = true;
+			map->images->blk->enabled = true;
+			map->images->wht->enabled = true;
+			map->images->plyr->enabled = true;
+			map->images->fg->enabled = true;
+			
+		}
+	}
 }
 
 int cub3d_mlx(t_map *map)
@@ -230,6 +262,7 @@ int cub3d_mlx(t_map *map)
 	draw_2d_map(mlx, map, &images);
 	map->x_offset = 64;
 	map->y_offset = 64;
+	mlx_key_hook(mlx, ft_single_press_hook, map);
 	mlx_loop_hook(mlx, ft_movehook, map);
 	mlx_loop(mlx);
 	mlx_terminate(mlx);
