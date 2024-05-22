@@ -6,7 +6,7 @@
 /*   By: clundber <clundber@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 11:58:50 by rboudwin          #+#    #+#             */
-/*   Updated: 2024/05/21 19:42:51 by clundber         ###   ########.fr       */
+/*   Updated: 2024/05/22 13:25:45 by clundber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -223,7 +223,7 @@ int cub3d_mlx(t_map *map)
 	map->s_width = 320;//2560;
 	map->s_height = 200;//1440;
 	map->fov_angle = 60;
-	map->proj_plane = (map->s_width / 2) / tan((map->fov_angle /2) * DEG_2_RAD);
+	map->proj_plane = 50;//(map->s_width / 2) / tan((map->fov_angle /2) * DEG_2_RAD);
 	printf("plane = %d\n", map->proj_plane);
 	mlx = mlx_init(map->s_width, map->s_height, "cub3d", true);
 	map->mlx = mlx;

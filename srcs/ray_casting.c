@@ -6,7 +6,7 @@
 /*   By: clundber <clundber@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 11:27:52 by clundber          #+#    #+#             */
-/*   Updated: 2024/05/21 19:56:30 by clundber         ###   ########.fr       */
+/*   Updated: 2024/05/22 13:24:04 by clundber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,21 +59,30 @@ void	cast_wall(t_map *map, int dist, float deg, enum e_dir dir, int *row)
 	else
 		angle = (deg + 90) * DEG_2_RAD;
 	dist = dist * sin(angle);
-     	if (dist > 10)
+/*      	if (dist > 10)
 		dist /= 10;
-	else if (dist == 0)
+	else */if (dist == 0)
 		dist = 1;
-	height = (map->s_height / 2) - ((map->s_height / dist * map->proj_plane) /2);
-	//height = 64 / dist * 277;
-/*   	while (width < 7)
-	{
-		pixels = 0; */
-		while (pixels < (64 / dist * map->proj_plane))//map->s_height / dist)// && (height + pixels) < 1440 && (height + pixels) > 0)
+	//height = (map->s_height / 2) - ((map->s_height / dist) /2);
+	height = 0;
+	height = (map->s_height / 2) - (((float)64 / (float)dist) * map->proj_plane);
+	if (height < 0)// && height > map->s_height)
+		height = 0;
+	unsigned int draw_height;
+	draw_height = (64 / dist) * map->proj_plane;
+
+		while (pixels < draw_height && height + pixels < map->s_height)//map->s_height / dist)// && (height + pixels) < 1440 && (height + pixels) > 0)
 		{
 			mlx_put_pixel(map->images->world, (*row), height + pixels, color);//get_rgba(100, 100, 200, 255));
 			pixels++;
 		}
 	(*row)++;
+	printf("dist = %d\n", dist);	
+	printf("height = %d\n", height);
+/*   	while (width < 7)
+	{
+		pixels = 0; */
+
 /* 	width++;
 	} */
 }
@@ -106,7 +115,7 @@ void	ray_caster(mlx_t *mlx, t_map *map, t_images *images)
 	//mlx_delete_image(mlx, images->fg);
 	//images->fg = mlx_new_image(mlx, ray_size, ray_size);
 	//mlx_image_to_window(mlx, images->fg, map->p_pos_x + 32 - (ray_size / 2), map->p_pos_y + 32 - (ray_size / 2));
- 	while (deg <= 30)
+ 	while (deg <= 30 && row < map->s_width)
 	{
 		y_len = INT_MAX;
 		x_len = INT_MAX;
