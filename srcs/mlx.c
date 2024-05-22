@@ -6,7 +6,7 @@
 /*   By: clundber <clundber@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 11:58:50 by rboudwin          #+#    #+#             */
-/*   Updated: 2024/05/22 15:27:36 by clundber         ###   ########.fr       */
+/*   Updated: 2024/05/22 21:38:19 by clundber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -254,12 +254,11 @@ int cub3d_mlx(t_map *map)
 
 	map->images = &images;
 	i = 0;
-	map->s_width = 2560;//320;//2560;
-	map->s_height = 1440;//200;//1440;
+	map->s_width = 800;//320;//2560;
+	map->s_height = 600;//1440;
 	map->fov_angle = 60;
 	map->proj_plane = (map->s_width / 2) / tan((map->fov_angle /2) * DEG_2_RAD);
-	map->rend_dist = 512;
-	printf("plane = %d\n", map->proj_plane);
+	map->rend_dist = 700; //512;
 	mlx = mlx_init(map->s_width, map->s_height, "cub3d", true);
 	map->mlx = mlx;
 	draw_2d_map(mlx, map, &images);
@@ -267,10 +266,6 @@ int cub3d_mlx(t_map *map)
 	map->y_offset = 64;
 
 	mlx_key_hook(mlx, ft_single_press_hook, map);
-
-	//map->p_pos_x = ((23 + 1) * 64);
-	//map->p_pos_y = ((10 + 1) * 64);
-	//map->p_orient = 0;
 	ray_caster(mlx, map, map->images);
 	mlx_loop_hook(mlx, ft_movehook, map);
 	mlx_loop(mlx);
