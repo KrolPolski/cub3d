@@ -6,7 +6,7 @@
 /*   By: rboudwin <rboudwin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 11:58:50 by rboudwin          #+#    #+#             */
-/*   Updated: 2024/05/22 09:59:49 by rboudwin         ###   ########.fr       */
+/*   Updated: 2024/05/22 13:25:45 by clundber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	draw_2d_map(mlx_t *mlx, t_map *map, t_images *images)
 	images->wht = mlx_texture_to_image(mlx, images->white);
 	images->plyr = mlx_texture_to_image(mlx, images->player);
 	images->dir = mlx_new_image(mlx, 64, 64);
-	images->bg = mlx_new_image(mlx, 2560, 1440);
+	images->bg = mlx_new_image(mlx, map->s_width, map->s_height);
 	ft_memset(images->bg->pixels, 180, images->bg->width
 		* images->bg->height * BPP);
 	mlx_image_to_window(mlx, images->bg, 0, 0);
@@ -110,9 +110,8 @@ void	draw_2d_map(mlx_t *mlx, t_map *map, t_images *images)
 		i++;	
 	}
 	mlx_image_to_window(mlx, images->plyr, map->p_pos_x, map->p_pos_y);
-	
-	// raytracing
 	ray_caster(mlx, map, images);
+
 	//draw_direction(mlx, map, images);
 	images->blk->enabled = false;
 	images->wht->enabled = false;
@@ -127,8 +126,8 @@ void	move_forward(t_map *map)
 	{
 		map->p_pos_x += round(5 * sin(map->p_orient));
 		map->p_pos_y -= round(5 * cos(map->p_orient));
-		map->images->plyr->instances[0].x += round(5 * sin(map->p_orient));
-		map->images->plyr->instances[0].y -= round(5 * cos(map->p_orient));
+	//	map->images->plyr->instances[0].x += round(5 * sin(map->p_orient));
+	//	map->images->plyr->instances[0].y -= round(5 * cos(map->p_orient));
 	}
 	else
 		printf("Hello wall my old friend\n");
@@ -140,8 +139,8 @@ void	move_backward(t_map *map)
 	{
 		map->p_pos_x -= round(5 * sin(map->p_orient));
 		map->p_pos_y += round(5 * cos(map->p_orient));
-		map->images->plyr->instances[0].x -= round(5 * sin(map->p_orient));
-		map->images->plyr->instances[0].y += round(5 * cos(map->p_orient));
+	//	map->images->plyr->instances[0].x -= round(5 * sin(map->p_orient));
+	//	map->images->plyr->instances[0].y += round(5 * cos(map->p_orient));
 	}
 	else
 		printf("Hello wall my old friend\n");
@@ -153,8 +152,8 @@ void	move_left(t_map *map)
 	{
 		map->p_pos_x += round(5 * sin(map->p_orient - 90 * DEG_2_RAD));
 		map->p_pos_y -= round(5 * cos(map->p_orient - 90 * DEG_2_RAD));
-		map->images->plyr->instances[0].x += round(5 * sin(map->p_orient - 90 * DEG_2_RAD));
-		map->images->plyr->instances[0].y -= round(5 * cos(map->p_orient - 90 * DEG_2_RAD));
+	//	map->images->plyr->instances[0].x += round(5 * sin(map->p_orient - 90 * DEG_2_RAD));
+	//	map->images->plyr->instances[0].y -= round(5 * cos(map->p_orient - 90 * DEG_2_RAD));
 	}
 	else
 		printf("Hello wall my old friend\n");
@@ -167,8 +166,8 @@ void	move_right(t_map *map)
 	{
 		map->p_pos_x += round(5 * sin(map->p_orient + 90 * DEG_2_RAD));
 		map->p_pos_y -= round(5 * cos(map->p_orient + 90 * DEG_2_RAD));
-		map->images->plyr->instances[0].x += round(5 * sin(map->p_orient + 90 * DEG_2_RAD));
-		map->images->plyr->instances[0].y -= round(5 * cos(map->p_orient + 90 * DEG_2_RAD));
+	//	map->images->plyr->instances[0].x += round(5 * sin(map->p_orient + 90 * DEG_2_RAD));
+	//	map->images->plyr->instances[0].y -= round(5 * cos(map->p_orient + 90 * DEG_2_RAD));
 	}
 	else
 		printf("Hello wall my old friend\n");
@@ -208,7 +207,6 @@ void	ft_movehook(void *param)
 			map->p_orient += 2 * M_PI;
 		printf("Degrees: %f\n", map->p_orient / DEG_2_RAD);
 		ray_caster(map->mlx, map, map->images);
-		//draw_direction(map->mlx, map, map->images);
 	}
 	if (mlx_is_key_down(map->mlx, MLX_KEY_RIGHT))
 	{
@@ -217,7 +215,6 @@ void	ft_movehook(void *param)
 			map->p_orient -= 2 * M_PI;
 		printf("Degrees: %f\n", map->p_orient / DEG_2_RAD);
 		ray_caster(map->mlx, map, map->images);
-		//draw_direction(map->mlx, map, map->images);
 	}
 	
 }
@@ -257,12 +254,23 @@ int cub3d_mlx(t_map *map)
 
 	map->images = &images;
 	i = 0;
-	mlx = mlx_init(2560, 1440, "cub3d", true);
+	map->s_width = 320;//2560;
+	map->s_height = 200;//1440;
+	map->fov_angle = 60;
+	map->proj_plane = 50;//(map->s_width / 2) / tan((map->fov_angle /2) * DEG_2_RAD);
+	printf("plane = %d\n", map->proj_plane);
+	mlx = mlx_init(map->s_width, map->s_height, "cub3d", true);
 	map->mlx = mlx;
-	draw_2d_map(mlx, map, &images);
+	//draw_2d_map(mlx, map, &images);
 	map->x_offset = 64;
 	map->y_offset = 64;
+
 	mlx_key_hook(mlx, ft_single_press_hook, map);
+
+	map->p_pos_x = ((23 + 1) * 64);
+	map->p_pos_y = ((10 + 1) * 64);
+	map->p_orient = 0;
+	ray_caster(mlx, map, map->images);
 	mlx_loop_hook(mlx, ft_movehook, map);
 	mlx_loop(mlx);
 	mlx_terminate(mlx);

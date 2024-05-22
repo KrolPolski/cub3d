@@ -40,8 +40,16 @@ typedef struct s_images
 	mlx_image_t		*plyr;
 	mlx_image_t		*dir;
 	mlx_image_t		*fg;
+	mlx_image_t		*world;
 }	t_images;
 
+enum e_dir
+{
+	north,
+	east,
+	south,
+	west,
+};
 
 typedef struct s_map
 {
@@ -59,9 +67,12 @@ typedef struct s_map
 	char		*text[5]; //N->E->S->W
 	bool		map_visible;
 
+	int			s_width;
+	int			s_height;
+	int			proj_plane;
+	double		fov_angle;
+
 }	t_map;  
-
-
 
 
 void	ray_caster(mlx_t *mlx, t_map *map, t_images *images);
