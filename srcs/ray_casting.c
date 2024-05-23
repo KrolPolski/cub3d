@@ -6,7 +6,7 @@
 /*   By: clundber <clundber@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 11:27:52 by clundber          #+#    #+#             */
-/*   Updated: 2024/05/22 22:07:26 by clundber         ###   ########.fr       */
+/*   Updated: 2024/05/23 15:48:45 by clundber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,13 @@ void	ray_caster(mlx_t *mlx, t_map *map, t_images *images)
 		}
 		y = (map->p_pos_y - 32 - dist  * cos(map->p_orient + (deg * DEG_2_RAD)));
 		x = (map->p_pos_x - 32 + dist  * sin(map->p_orient + (deg * DEG_2_RAD)));
-		if (map->map[y / 64][x / 64] == '1' )//|| dist >= map->rend_dist)
+		if (y  < 0 || x < 0 )//y >= map->s_height || x < 0 || x >= map->s_width)
+		{
+			printf("ray out of bounds detected\n");	
+			deg += (double)60 / map->s_width;
+			dist = 0;
+		}
+		if (map->map[y / 64][x / 64] == '1' || map->map[y / 64][x / 64] == '\0' || dist -50 > map->rend_dist)
 		{
 			if (y % 64 == 0)
 				cast_wall(map, dist, deg, north, &row);

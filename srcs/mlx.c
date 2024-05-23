@@ -6,7 +6,7 @@
 /*   By: clundber <clundber@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 11:58:50 by rboudwin          #+#    #+#             */
-/*   Updated: 2024/05/22 21:38:19 by clundber         ###   ########.fr       */
+/*   Updated: 2024/05/23 15:07:38 by clundber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ void	draw_2d_map(mlx_t *mlx, t_map *map, t_images *images)
 
 void	move_forward(t_map *map)
 {
-	printf("We are in a '%c' square\n", detect_square(map, map->p_pos_x, map->p_pos_y));
+	//printf("We are in a '%c' square\n", detect_square(map, map->p_pos_x, map->p_pos_y));
 	if (detect_square(map, map->p_pos_x + round(5 * sin(map->p_orient)), map->p_pos_y - round(5 * cos(map->p_orient))) != '1')
 	{
 		map->p_pos_x += round(5 * sin(map->p_orient));
@@ -129,12 +129,12 @@ void	move_forward(t_map *map)
 	//	map->images->plyr->instances[0].x += round(5 * sin(map->p_orient));
 	//	map->images->plyr->instances[0].y -= round(5 * cos(map->p_orient));
 	}
-	else
-		printf("Hello wall my old friend\n");
+	//else
+	//	printf("Hello wall my old friend\n");
 }
 void	move_backward(t_map *map)
 {
-	printf("We are in a '%c' square\n", detect_square(map, map->p_pos_x, map->p_pos_y));
+	//printf("We are in a '%c' square\n", detect_square(map, map->p_pos_x, map->p_pos_y));
 	if (detect_square(map, map->p_pos_x - round(5 * sin(map->p_orient)), map->p_pos_y + round(5 * cos(map->p_orient))) != '1')
 	{
 		map->p_pos_x -= round(5 * sin(map->p_orient));
@@ -142,12 +142,12 @@ void	move_backward(t_map *map)
 	//	map->images->plyr->instances[0].x -= round(5 * sin(map->p_orient));
 	//	map->images->plyr->instances[0].y += round(5 * cos(map->p_orient));
 	}
-	else
-		printf("Hello wall my old friend\n");
+	//else
+	//	printf("Hello wall my old friend\n");
 }
 void	move_left(t_map *map)
 {
-	printf("We are in a '%c' square\n", detect_square(map, map->p_pos_x, map->p_pos_y));
+	//printf("We are in a '%c' square\n", detect_square(map, map->p_pos_x, map->p_pos_y));
 	if (detect_square(map, map->p_pos_x + round(5 * sin(map->p_orient - 90 * DEG_2_RAD)), map->p_pos_y - round(5 * cos(map->p_orient - 90 * DEG_2_RAD))) != '1')
 	{
 		map->p_pos_x += round(5 * sin(map->p_orient - 90 * DEG_2_RAD));
@@ -155,13 +155,13 @@ void	move_left(t_map *map)
 	//	map->images->plyr->instances[0].x += round(5 * sin(map->p_orient - 90 * DEG_2_RAD));
 	//	map->images->plyr->instances[0].y -= round(5 * cos(map->p_orient - 90 * DEG_2_RAD));
 	}
-	else
-		printf("Hello wall my old friend\n");
+	//else
+	//	printf("Hello wall my old friend\n");
 }
 
 void	move_right(t_map *map)
 {
-	printf("We are in a '%c' square\n", detect_square(map, map->p_pos_x, map->p_pos_y));
+	//printf("We are in a '%c' square\n", detect_square(map, map->p_pos_x, map->p_pos_y));
 	if (detect_square(map, map->p_pos_x + round(5 * sin(map->p_orient + 90 * DEG_2_RAD)), map->p_pos_y - round(5 * cos(map->p_orient + 90 * DEG_2_RAD))) != '1')
 	{
 		map->p_pos_x += round(5 * sin(map->p_orient + 90 * DEG_2_RAD));
@@ -169,8 +169,8 @@ void	move_right(t_map *map)
 	//	map->images->plyr->instances[0].x += round(5 * sin(map->p_orient + 90 * DEG_2_RAD));
 	//	map->images->plyr->instances[0].y -= round(5 * cos(map->p_orient + 90 * DEG_2_RAD));
 	}
-	else
-		printf("Hello wall my old friend\n");
+	//else
+	//	printf("Hello wall my old friend\n");
 }
 void	ft_movehook(void *param)
 {
@@ -201,14 +201,14 @@ void	ft_movehook(void *param)
 		map->p_orient -= 2 * DEG_2_RAD;
 		if (map->p_orient <= 0)
 			map->p_orient += 2 * M_PI;
-		printf("Degrees: %f\n", map->p_orient / DEG_2_RAD);
+		//printf("Degrees: %f\n", map->p_orient / DEG_2_RAD);
 	}
 	if (mlx_is_key_down(map->mlx, MLX_KEY_RIGHT))
 	{
 		map->p_orient += 2 * DEG_2_RAD;
 		if (map->p_orient >= 2 * M_PI)
 			map->p_orient -= 2 * M_PI;
-		printf("Degrees: %f\n", map->p_orient / DEG_2_RAD);
+		//printf("Degrees: %f\n", map->p_orient / DEG_2_RAD);
 	}
 	ray_caster(map->mlx, map, map->images);
 	
@@ -249,8 +249,8 @@ int cub3d_mlx(t_map *map)
 
 	map->images = &images;
 	i = 0;
-	map->s_width = 1920;//320;//2560;
-	map->s_height = 1080;//1440;
+	map->s_width = 800;//1920;//320;//2560;
+	map->s_height = 600;//1080;//1440;
 	map->fov_angle = 60;
 	map->proj_plane = (map->s_width / 2) / tan((map->fov_angle /2) * DEG_2_RAD);
 	map->rend_dist = 700; //512;
