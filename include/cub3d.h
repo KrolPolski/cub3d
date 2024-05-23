@@ -6,7 +6,7 @@
 /*   By: clundber <clundber@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 13:58:21 by clundber          #+#    #+#             */
-/*   Updated: 2024/05/22 14:32:21 by clundber         ###   ########.fr       */
+/*   Updated: 2024/05/23 23:04:33 by clundber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,10 @@ enum e_dir
 typedef struct s_map
 {
 	char		**map;
+	//int			map_size_x; //any function need this? the size of the file map
+	//int			map_size_y; //the x and y that all functions should stay under
+
+
 	int			p_pos_x;
 	int			p_pos_y;
 	double		p_orient;
