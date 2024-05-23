@@ -6,7 +6,7 @@
 /*   By: clundber <clundber@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 11:27:52 by clundber          #+#    #+#             */
-/*   Updated: 2024/05/23 15:48:45 by clundber         ###   ########.fr       */
+/*   Updated: 2024/05/24 00:08:00 by clundber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,13 @@ void	cast_wall(t_map *map, int dist, float deg, enum e_dir dir, int *row)
 		angle = ((deg * -1) + 90) * DEG_2_RAD;
 	else
 		angle = (deg + 90) * DEG_2_RAD;
-	dist = dist * sin(angle);
+
 	if (dist >= map->rend_dist)
 	{
 		(*row)++;
 		return;
 	}
+	dist = dist * sin(angle);
 	if (dist <= 0)
 		dist = 1;
 	top_pixel = 0;
@@ -78,6 +79,8 @@ void	cast_wall(t_map *map, int dist, float deg, enum e_dir dir, int *row)
 		}
 	(*row)++;
 }
+
+//void	wall_control(t_map *map)
 
 void	ray_caster(mlx_t *mlx, t_map *map, t_images *images)
 {
@@ -120,7 +123,7 @@ void	ray_caster(mlx_t *mlx, t_map *map, t_images *images)
 			deg += (double)60 / map->s_width;
 			dist = 0;
 		}
-		if (map->map[y / 64][x / 64] == '1' || map->map[y / 64][x / 64] == '\0' || dist -50 > map->rend_dist)
+		if (map->map[y / 64][x / 64] == '1' || map->map[y / 64][x / 64] == '\0' || dist -100 > map->rend_dist)
 		{
 			if (y % 64 == 0)
 				cast_wall(map, dist, deg, north, &row);

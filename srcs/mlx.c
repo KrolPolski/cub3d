@@ -6,7 +6,7 @@
 /*   By: clundber <clundber@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 11:58:50 by rboudwin          #+#    #+#             */
-/*   Updated: 2024/05/23 22:53:05 by clundber         ###   ########.fr       */
+/*   Updated: 2024/05/23 23:59:58 by clundber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -240,20 +240,29 @@ if	(((keydata.key == MLX_KEY_M)
 		}
 	}
 }
+void	add_data(t_ray *ray, t_map *map)
+{
+	map->s_width = 800;//1920;//320;//2560;
+	map->s_height = 600;//1080;//1440;
+	map->fov_angle = 60;
+	map->proj_plane = (map->s_width / 2) / tan((map->fov_angle /2) * DEG_2_RAD);
+	map->rend_dist = 700; //512;
+	ray->deg = 0;
+	ray->dist = 0;
+	ray->row = 0;
+}
 
 int cub3d_mlx(t_map *map)
 {
 	int			i;
 	mlx_t		*mlx;
 	t_images	images;
+	t_ray		ray;
 
+	map->ray = &ray;
 	map->images = &images;
 	i = 0;
-	map->s_width = 800;//1920;//320;//2560;
-	map->s_height = 600;//1080;//1440;
-	map->fov_angle = 60;
-	map->proj_plane = (map->s_width / 2) / tan((map->fov_angle /2) * DEG_2_RAD);
-	map->rend_dist = 700; //512;
+	add_data(&ray, map);
 	mlx = mlx_init(map->s_width, map->s_height, "cub3d", true);
 	map->mlx = mlx;
 	draw_2d_map(mlx, map, &images);
