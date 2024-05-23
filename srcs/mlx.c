@@ -182,23 +182,19 @@ void	ft_movehook(void *param)
 	if (mlx_is_key_down(map->mlx, MLX_KEY_W) || mlx_is_key_down(map->mlx, MLX_KEY_UP))
 	{
 		move_forward(map);
-		ray_caster(map->mlx, map, map->images);
 	}
 	if (mlx_is_key_down(map->mlx, MLX_KEY_S) || mlx_is_key_down(map->mlx, MLX_KEY_DOWN))
 	{
 		move_backward(map);
-		ray_caster(map->mlx, map, map->images);
 	}
 
 	if (mlx_is_key_down(map->mlx, MLX_KEY_A))
 	{
 		move_left(map);
-		ray_caster(map->mlx, map, map->images);
 	}
 	if (mlx_is_key_down(map->mlx, MLX_KEY_D))
 	{
 		move_right(map);
-		ray_caster(map->mlx, map, map->images);
 	}
 	if (mlx_is_key_down(map->mlx, MLX_KEY_LEFT))
 	{
@@ -206,7 +202,6 @@ void	ft_movehook(void *param)
 		if (map->p_orient <= 0)
 			map->p_orient += 2 * M_PI;
 		printf("Degrees: %f\n", map->p_orient / DEG_2_RAD);
-		ray_caster(map->mlx, map, map->images);
 	}
 	if (mlx_is_key_down(map->mlx, MLX_KEY_RIGHT))
 	{
@@ -214,8 +209,8 @@ void	ft_movehook(void *param)
 		if (map->p_orient >= 2 * M_PI)
 			map->p_orient -= 2 * M_PI;
 		printf("Degrees: %f\n", map->p_orient / DEG_2_RAD);
-		ray_caster(map->mlx, map, map->images);
 	}
+	ray_caster(map->mlx, map, map->images);
 	
 }
 void	ft_single_press_hook(mlx_key_data_t keydata, void *param)
@@ -254,8 +249,8 @@ int cub3d_mlx(t_map *map)
 
 	map->images = &images;
 	i = 0;
-	map->s_width = 800;//320;//2560;
-	map->s_height = 600;//1440;
+	map->s_width = 1920;//320;//2560;
+	map->s_height = 1080;//1440;
 	map->fov_angle = 60;
 	map->proj_plane = (map->s_width / 2) / tan((map->fov_angle /2) * DEG_2_RAD);
 	map->rend_dist = 700; //512;
