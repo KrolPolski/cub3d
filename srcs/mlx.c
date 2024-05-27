@@ -6,7 +6,7 @@
 /*   By: clundber <clundber@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 11:58:50 by rboudwin          #+#    #+#             */
-/*   Updated: 2024/05/23 23:59:58 by clundber         ###   ########.fr       */
+/*   Updated: 2024/05/25 16:29:08 by clundber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 
 }*/
 /* Draws lines on the minimap, to indicate a 60 degree field of view relative to the players orientation */
-void	draw_direction(mlx_t *mlx, t_map *map, t_images *images)
+/* void	draw_direction(mlx_t *mlx, t_map *map, t_images *images)
 {
 	int i;
 	(void)mlx;
@@ -41,7 +41,7 @@ void	draw_direction(mlx_t *mlx, t_map *map, t_images *images)
 		
 		i++;
 	}
-}
+} */
 /* draws a top down map */
 void	draw_2d_map(mlx_t *mlx, t_map *map, t_images *images)
 {
@@ -72,38 +72,38 @@ void	draw_2d_map(mlx_t *mlx, t_map *map, t_images *images)
 		{
 			if (map->map[i][k] == '1')
 			{
-				mlx_image_to_window(mlx, images->blk, (k + 1) * 64, (i + 1) * 64);
+				mlx_image_to_window(mlx, images->blk, k * 64, i * 64);
 			}
 			else if (map->map[i][k] == 'N')
 			{
-				map->p_pos_x = ((k + 1) * 64);
-				map->p_pos_y = ((i + 1) * 64);
+				map->p_pos_x = (k * 64) + 32;
+				map->p_pos_y = (i * 64) + 32;
 				map->p_orient = 0;
-				mlx_image_to_window(mlx, images->wht, (k + 1) * 64, (i + 1) * 64);
+				mlx_image_to_window(mlx, images->wht, k * 64, i * 64);
 			}
 			else if (map->map[i][k] == 'S')
 			{
-				map->p_pos_x = ((k + 1) * 64);
-				map->p_pos_y = ((i + 1) * 64);
+				map->p_pos_x = (k * 64) + 32;
+				map->p_pos_y = (i * 64) + 32;
 				map->p_orient = 180 * DEG_2_RAD;
-				mlx_image_to_window(mlx, images->wht, (k + 1) * 64, (i + 1) * 64);
+				mlx_image_to_window(mlx, images->wht, k * 64, i * 64);
 			}
 			else if (map->map[i][k] == 'E')
 			{
-				map->p_pos_x = ((k + 1) * 64);
-				map->p_pos_y = ((i + 1) * 64);
+				map->p_pos_x = (k * 64) + 32;
+				map->p_pos_y = (i * 64) + 32;
 				map->p_orient = 90 * DEG_2_RAD;
-				mlx_image_to_window(mlx, images->wht, (k + 1) * 64, (i + 1) * 64);
+				mlx_image_to_window(mlx, images->wht, k * 64, i * 64);
 			}
 			else if (map->map[i][k] == 'W')
 			{
-				map->p_pos_x = ((k + 1) * 64);
-				map->p_pos_y = ((i + 1) * 64);
+				map->p_pos_x = (k * 64) + 32;
+				map->p_pos_y = (i * 64) + 32;
 				map->p_orient = 270 * DEG_2_RAD;
-				mlx_image_to_window(mlx, images->wht, (k + 1) * 64, (i + 1) * 64);
+				mlx_image_to_window(mlx, images->wht, k * 64, i * 64);
 			}
 			else if (map->map[i][k] == '0')
-				mlx_image_to_window(mlx, images->wht, (k + 1) * 64, (i + 1) * 64);
+				mlx_image_to_window(mlx, images->wht, k * 64, i * 64);
 			k++;
 		}
 		k = 0;
@@ -243,7 +243,7 @@ if	(((keydata.key == MLX_KEY_M)
 void	add_data(t_ray *ray, t_map *map)
 {
 	map->s_width = 800;//1920;//320;//2560;
-	map->s_height = 600;//1080;//1440;
+	map->s_height = 600;//1440;
 	map->fov_angle = 60;
 	map->proj_plane = (map->s_width / 2) / tan((map->fov_angle /2) * DEG_2_RAD);
 	map->rend_dist = 700; //512;
@@ -269,9 +269,9 @@ int cub3d_mlx(t_map *map)
 	map->x_offset = 64;
 	map->y_offset = 64;
 
-	mlx_key_hook(mlx, ft_single_press_hook, map);
-	ray_caster(mlx, map, map->images);
-	mlx_loop_hook(mlx, ft_movehook, map);
+	//mlx_key_hook(mlx, ft_single_press_hook, map);
+	//ray_caster(mlx, map, map->images);
+	//mlx_loop_hook(mlx, ft_movehook, map);
 	mlx_loop(mlx);
 	mlx_terminate(mlx);
 	free_2d(map->map);

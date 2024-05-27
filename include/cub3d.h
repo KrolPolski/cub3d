@@ -6,7 +6,7 @@
 /*   By: clundber <clundber@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 13:58:21 by clundber          #+#    #+#             */
-/*   Updated: 2024/05/23 23:44:56 by clundber         ###   ########.fr       */
+/*   Updated: 2024/05/25 12:27:43 by clundber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ typedef struct s_ray
 {
 	double	deg;
 	int		row;
+	int		ray_x;
+	int		ray_y;
 	int		dist;
 }	t_ray;
 
