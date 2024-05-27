@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mlx.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clundber <clundber@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: rboudwin <rboudwin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 11:58:50 by rboudwin          #+#    #+#             */
-/*   Updated: 2024/05/25 16:29:08 by clundber         ###   ########.fr       */
+/*   Updated: 2024/05/27 14:02:33 by rboudwin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -269,9 +269,9 @@ int cub3d_mlx(t_map *map)
 	map->x_offset = 64;
 	map->y_offset = 64;
 
-	//mlx_key_hook(mlx, ft_single_press_hook, map);
+	mlx_key_hook(mlx, ft_single_press_hook, map);
 	//ray_caster(mlx, map, map->images);
-	//mlx_loop_hook(mlx, ft_movehook, map);
+	mlx_loop_hook(mlx, ft_movehook, map);
 	mlx_loop(mlx);
 	mlx_terminate(mlx);
 	free_2d(map->map);

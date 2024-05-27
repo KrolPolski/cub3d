@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ray_casting.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clundber <clundber@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: rboudwin <rboudwin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 11:27:52 by clundber          #+#    #+#             */
-/*   Updated: 2024/05/25 16:46:54 by clundber         ###   ########.fr       */
+/*   Updated: 2024/05/27 14:07:01 by rboudwin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,15 @@ void	get_len(t_map *map, int *x_len, int *y_len, double deg)
 {
 	double	corner;
 
-	corner = 0;
-		corner = (map->p_orient + (deg * DEG_2_RAD));
-		printf("y corner = %f\n", corner / DEG_2_RAD);
+	//corner = 0;
+	corner = (map->p_orient + (deg * DEG_2_RAD));
+	//printf("y corner = %f\n", corner / DEG_2_RAD);
 	if (map->p_orient / DEG_2_RAD + deg == 90 || map->p_orient / DEG_2_RAD + deg == 270)
+	{	
 		(*y_len) = map->rend_dist;
+		//(*x_len) = 64 - map->ray->ray_x % 64;
+		//return ;
+	}
  	else if (corner > 0 && corner / DEG_2_RAD > 90 && corner / DEG_2_RAD < 270)
 		(*y_len) = (64 - ((map->ray->ray_y) % 64)) / cos(corner);
 	else
@@ -29,8 +33,13 @@ void	get_len(t_map *map, int *x_len, int *y_len, double deg)
 		corner += (-90 * DEG_2_RAD);
 	else
 		corner += (270 * DEG_2_RAD);
-	if ((map->p_orient / DEG_2_RAD) + deg == 0 || map->p_orient / DEG_2_RAD + deg == 180)
-		(*x_len) = map->rend_dist;		
+	//printf("got to X, y_len currently %d\n", *y_len);
+	if ((map->p_orient / DEG_2_RAD) + deg == 90 || (map->p_orient / DEG_2_RAD + deg == 270))
+	{
+		*x_len = map->rend_dist;
+	}
+	//else if ((map->p_orient / DEG_2_RAD) + deg == 0 || map->p_orient / DEG_2_RAD + deg == 180)
+		//(*x_len) = map->rend_dist;		
     else if (corner > 0 && corner / DEG_2_RAD > 90 && corner / DEG_2_RAD < 270)
 		(*x_len) = ((map->ray->ray_x) % 64) / cos(corner);
 	else
@@ -116,10 +125,10 @@ void	cast_wall(t_map *map, int dist, float deg, enum e_dir dir, int *row)
 
 void	ray_caster(mlx_t *mlx, t_map *map, t_images *images)
 {
-	int	dist;
+	long	dist;
 	double	deg;
-	int	y_len;
-	int	x_len;
+	long	y_len;
+	long	x_len;
 	int	row;
 
 	row = 0;
@@ -146,15 +155,16 @@ void	ray_caster(mlx_t *mlx, t_map *map, t_images *images)
 				dist += x_len;
 			else
 				dist += y_len;
+			printf("Dist is currently %d\n", dist);
 		}
 
-/*    		while (dist < map->rend_dist && dist <= y_len && dist <= x_len)
+   	/* 	while (dist < map->rend_dist && dist <= y_len && dist <= x_len)
 		{
 			if (map->map_visible)
 				mlx_put_pixel(images->fg, map->rend_dist + dist * sin(map->p_orient + deg * DEG_2_RAD), map->rend_dist - dist * cos(map->p_orient + deg * DEG_2_RAD), get_rgba(255, 0, 0, 255));
 			dist++;
 		} */
-		dist++;
+		//dist++;
 		printf ("DEG %f dist = %d\n", deg, dist);
 		map->ray->ray_y = (map->p_pos_y - dist  * cos(map->p_orient + (deg * DEG_2_RAD)));
 		map->ray->ray_x = (map->p_pos_x + dist  * sin(map->p_orient + (deg * DEG_2_RAD)));
@@ -166,24 +176,24 @@ void	ray_caster(mlx_t *mlx, t_map *map, t_images *images)
 		}
 		if (map->map[map->ray->ray_y / 64][map->ray->ray_x / 64] == '1' || map->map[map->ray->ray_y / 64][map->ray->ray_x / 64] == '\0' || dist > map->rend_dist)
 		{
-/* 			if (y < (map->p_pos_y - 32 - (dist -1)  * cos(map->p_orient + (deg * DEG_2_RAD))))
+			if (map->ray->ray_y < (map->p_pos_y - 32 - (dist -1)  * cos(map->p_orient + (deg * DEG_2_RAD))))
 				cast_wall(map, dist, deg, south, &row);
-			else if (y > (map->p_pos_y - 32 - (dist -1)  * cos(map->p_orient + (deg * DEG_2_RAD))))
+			else if (map->ray->ray_y > (map->p_pos_y - 32 - (dist -1)  * cos(map->p_orient + (deg * DEG_2_RAD))))
 				cast_wall(map, dist, deg, north, &row);
-			else if (x < (map->p_pos_x - 32 + (dist -1)  * sin(map->p_orient + (deg * DEG_2_RAD))))
+			else if (map->ray->ray_x < (map->p_pos_x - 32 + (dist -1)  * sin(map->p_orient + (deg * DEG_2_RAD))))
 				cast_wall(map, dist, deg, east, &row);
-			else if (x > (map->p_pos_x - 32 + (dist -1)  * sin(map->p_orient + (deg * DEG_2_RAD))))
+			else if (map->ray->ray_x > (map->p_pos_x - 32 + (dist -1)  * sin(map->p_orient + (deg * DEG_2_RAD))))
 				cast_wall(map, dist, deg, east, &row);
- */
-			if (map->ray->ray_y % 64 == 0)
+
+			/* if (map->ray->ray_y % 64 == 0)
 				cast_wall(map, dist, deg, north, &row);
 			else if (map->ray->ray_x % 64  == 0)
 				cast_wall(map, dist, deg, west, &row);
 			else if (map->ray->ray_y % 64 == 63)
 				cast_wall(map, dist, deg, south, &row);
 			else
-				cast_wall(map, dist, deg, east, &row);
-			deg += (double)60 / map->s_width;
+				cast_wall(map, dist, deg, east, &row); */
+			deg += (double)map->fov_angle / map->s_width;
 			dist = 0;
 		}
 		else
