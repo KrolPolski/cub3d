@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ray_casting.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clundber <clundber@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: rboudwin <rboudwin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 11:27:52 by clundber          #+#    #+#             */
-/*   Updated: 2024/05/27 16:37:24 by clundber         ###   ########.fr       */
+/*   Updated: 2024/05/27 18:09:41 by rboudwin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,11 +179,11 @@ void	ray_caster(mlx_t *mlx, t_map *map, t_images *images)
 			else if (map->ray->ray_x > (map->p_pos_x - 32 + (dist -1)  * sin(map->p_orient + (deg * DEG_2_RAD))))
 				cast_wall(map, dist, deg, east, &row); */
 
- 			if (map->ray->ray_y % 64 == 0)
+ 			if (map->ray->ray_y % 64 <= 1)
 				cast_wall(map, map->ray->dist, deg, north, &row);
 			else if (map->ray->ray_y % 64 == 63)
 				cast_wall(map, map->ray->dist, deg, south, &row);
-			else if (map->ray->ray_x % 64  == 0)
+			else if (map->ray->ray_x % 64  <= 1)
 				cast_wall(map, map->ray->dist, deg, west, &row);
 			else if (map->ray->ray_x % 64 == 63)
 				cast_wall(map, map->ray->dist, deg, east, &row);
