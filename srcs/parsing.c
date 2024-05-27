@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clundber <clundber@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: rboudwin <rboudwin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 12:02:13 by clundber          #+#    #+#             */
-/*   Updated: 2024/05/23 23:04:21 by clundber         ###   ########.fr       */
+/*   Updated: 2024/05/27 18:29:05 by rboudwin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ char *get_path(char *line)
 	return (ft_substr(line, 3, i -3));
 }
 
-// need to add amlloc checks
+// need to add malloc checks
 int	check_line(char *line, t_map *map)
 {
 	if (ft_empty(line) == 0)
@@ -171,8 +171,6 @@ int	map_init(char **temp_map, t_map *map)
 			max = x;
 		y++;
 	}
-	//map->map_size_x = max;
-	//map->map_size_y = y;
 	map->map = ft_calloc((y +2), sizeof(char *));
 	x = 0;
 	while (x <= y)
@@ -180,7 +178,6 @@ int	map_init(char **temp_map, t_map *map)
 		map->map[x] = ft_calloc(max + 1, sizeof(char));
 		x++;
 	}
-	//printf("We decided the max was %d\n", max);
 	return (0);
 }
 
@@ -194,7 +191,7 @@ int	map_parse(char *map_str, t_map *map)
 	temp_map = NULL;
 	temp_map = ft_split(map_str, '\n');
 	if (!temp_map)
-		return(ret_error("malloc failed"));
+		return (ret_error("malloc failed"));
 	ft_nullfree(map_str);
 	map_init(temp_map, map);
 	while (temp_map[y])
@@ -215,7 +212,6 @@ int	map_parse(char *map_str, t_map *map)
 		printf("Map: %s\n", temp_map[y]);
 		y++;
 	}
-	//printf("This will probably segfault()")
 	free_2d(temp_map);
 	return (0);
 }

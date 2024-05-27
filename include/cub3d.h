@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clundber <clundber@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: rboudwin <rboudwin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 13:58:21 by clundber          #+#    #+#             */
-/*   Updated: 2024/05/27 16:01:03 by clundber         ###   ########.fr       */
+/*   Updated: 2024/05/27 18:15:54 by rboudwin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@
 
 # define BPP sizeof(int32_t)
 # define DEG_2_RAD 0.01745329252
-# define PI 3.14159265359
 
 typedef struct s_images
 {
@@ -64,38 +63,30 @@ typedef struct s_ray
 typedef struct s_map
 {
 	char		**map;
-	//int			map_size_x; //any function need this? the size of the file map
-	//int			map_size_y; //the x and y that all functions should stay under
-
 	t_ray		*ray;
 	int			p_pos_x;
 	int			p_pos_y;
 	double		p_orient;
 	int			*ceiling;
 	int			*floor;
-	t_images	*images; 
-	mlx_t		*mlx; 
+	t_images	*images;
+	mlx_t		*mlx;
 	int			mapstart;
-	int			x_offset; //is this needed anymore?
-	int			y_offset; //is this needed anymore?
 	char		*text[5]; //N->E->S->W
 	bool		map_visible;
-
 	int			rend_dist;
 	int			s_width;
 	int			s_height;
 	int			proj_plane;
 	double		fov_angle;
-
 }	t_map;  
-
 
 void	ray_caster(mlx_t *mlx, t_map *map, t_images *images);
 char	detect_square(t_map *map, int x, int y);
 void	ft_nullfree(char *str);
 int		parsing(int argc, char **argv, t_map *map);
 int		ret_error(char *str);
-int cub3d_mlx(t_map *map);
-void free_2d(char **ptr);
-int get_rgba(int r, int g, int b, int a);
+int		cub3d_mlx(t_map *map);
+void	free_2d(char **ptr);
+int		get_rgba(int r, int g, int b, int a);
 #endif

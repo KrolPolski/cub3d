@@ -6,7 +6,7 @@
 /*   By: rboudwin <rboudwin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 11:45:09 by clundber          #+#    #+#             */
-/*   Updated: 2024/05/22 09:47:09 by rboudwin         ###   ########.fr       */
+/*   Updated: 2024/05/27 18:17:35 by rboudwin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,10 @@ void	init_data(t_map *map)
 	map->mapstart = -1;
 	map->map_visible = false;
 }
+
 int	main(int argc, char *argv[])
 {
-	t_map map;
+	t_map	map;
 
 	init_data(&map);
 	if (parsing(argc, argv, &map) != 0)
@@ -46,7 +47,7 @@ int	main(int argc, char *argv[])
 	cub3d_mlx(&map);
 	//cleanup
 	printf("great success\n");
-	return(0);
+	return (0);
 }
 
 /* 
