@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mlx.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rboudwin <rboudwin@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: clundber <clundber@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 11:58:50 by rboudwin          #+#    #+#             */
-/*   Updated: 2024/05/27 14:02:33 by rboudwin         ###   ########.fr       */
+/*   Updated: 2024/05/27 14:58:21 by clundber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -242,8 +242,8 @@ if	(((keydata.key == MLX_KEY_M)
 }
 void	add_data(t_ray *ray, t_map *map)
 {
-	map->s_width = 800;//1920;//320;//2560;
-	map->s_height = 600;//1440;
+	map->s_width = 1920;//800;//1920;//320;//2560;
+	map->s_height = 1080;//600;//1440;
 	map->fov_angle = 60;
 	map->proj_plane = (map->s_width / 2) / tan((map->fov_angle /2) * DEG_2_RAD);
 	map->rend_dist = 700; //512;

@@ -6,7 +6,7 @@
 /*   By: clundber <clundber@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 13:58:21 by clundber          #+#    #+#             */
-/*   Updated: 2024/05/25 12:27:43 by clundber         ###   ########.fr       */
+/*   Updated: 2024/05/27 14:34:22 by clundber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ enum e_dir
 	east,
 	south,
 	west,
+	error,
 };
 
 typedef struct s_ray

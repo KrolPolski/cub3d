@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ray_casting.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rboudwin <rboudwin@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: clundber <clundber@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 11:27:52 by clundber          #+#    #+#             */
-/*   Updated: 2024/05/27 14:07:01 by rboudwin         ###   ########.fr       */
+/*   Updated: 2024/05/27 14:40:22 by clundber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,6 @@ void	get_len(t_map *map, int *x_len, int *y_len, double deg)
 		(*x_len) = ((map->ray->ray_x) % 64) / cos(corner);
 	else
 		(*x_len) = (64 - ((map->ray->ray_x) % 64)) / cos(corner);
-/*  	if (*y_len < -1000 || *y_len > 1000)
-		*y_len = 1000; 
-  	if (*x_len < -1000 || *x_len > 1000)
-		*x_len = 1000;  */
 	if (*y_len < 0)
         (*y_len) *= -1;
  	if (*x_len < 0)
@@ -94,6 +90,8 @@ void	cast_wall(t_map *map, int dist, float deg, enum e_dir dir, int *row)
 		color = get_rgba(0, 0, 200, 255);
 	if (dir == west)
 		color = get_rgba(100, 100, 0, 255);
+	if (dir == error)
+		color = get_rgba(255, 255, 255, 255);
 	pixels = 0;
  	if (deg < 0)
 		angle = ((deg * -1) + 90) * DEG_2_RAD;
@@ -155,44 +153,46 @@ void	ray_caster(mlx_t *mlx, t_map *map, t_images *images)
 				dist += x_len;
 			else
 				dist += y_len;
-			printf("Dist is currently %d\n", dist);
+			//printf("Dist is currently %d\n", dist);
 		}
 
-   	/* 	while (dist < map->rend_dist && dist <= y_len && dist <= x_len)
+/* 	 	while (dist < map->rend_dist && dist <= y_len && dist <= x_len)
 		{
 			if (map->map_visible)
 				mlx_put_pixel(images->fg, map->rend_dist + dist * sin(map->p_orient + deg * DEG_2_RAD), map->rend_dist - dist * cos(map->p_orient + deg * DEG_2_RAD), get_rgba(255, 0, 0, 255));
 			dist++;
 		} */
-		//dist++;
-		printf ("DEG %f dist = %d\n", deg, dist);
+		dist++;
+		//printf ("DEG %f dist = %d\n", deg, dist);
 		map->ray->ray_y = (map->p_pos_y - dist  * cos(map->p_orient + (deg * DEG_2_RAD)));
 		map->ray->ray_x = (map->p_pos_x + dist  * sin(map->p_orient + (deg * DEG_2_RAD)));
 		if (map->ray->ray_y  < 0 || map->ray->ray_x < 0 )//y >= map->s_height || x < 0 || x >= map->s_width)
 		{
 			printf("ray out of bounds detected\n");	
-			deg += (double)60 / map->s_width;
+			deg += (double)map->fov_angle / map->s_width;
 			dist = 0;
 		}
 		if (map->map[map->ray->ray_y / 64][map->ray->ray_x / 64] == '1' || map->map[map->ray->ray_y / 64][map->ray->ray_x / 64] == '\0' || dist > map->rend_dist)
 		{
-			if (map->ray->ray_y < (map->p_pos_y - 32 - (dist -1)  * cos(map->p_orient + (deg * DEG_2_RAD))))
+/* 			if (map->ray->ray_y < (map->p_pos_y - 32 - (dist -1)  * cos(map->p_orient + (deg * DEG_2_RAD))))
 				cast_wall(map, dist, deg, south, &row);
 			else if (map->ray->ray_y > (map->p_pos_y - 32 - (dist -1)  * cos(map->p_orient + (deg * DEG_2_RAD))))
 				cast_wall(map, dist, deg, north, &row);
 			else if (map->ray->ray_x < (map->p_pos_x - 32 + (dist -1)  * sin(map->p_orient + (deg * DEG_2_RAD))))
 				cast_wall(map, dist, deg, east, &row);
 			else if (map->ray->ray_x > (map->p_pos_x - 32 + (dist -1)  * sin(map->p_orient + (deg * DEG_2_RAD))))
-				cast_wall(map, dist, deg, east, &row);
+				cast_wall(map, dist, deg, east, &row); */
 
-			/* if (map->ray->ray_y % 64 == 0)
+ 			if (map->ray->ray_y % 64 == 0)
 				cast_wall(map, dist, deg, north, &row);
-			else if (map->ray->ray_x % 64  == 0)
-				cast_wall(map, dist, deg, west, &row);
 			else if (map->ray->ray_y % 64 == 63)
 				cast_wall(map, dist, deg, south, &row);
+			else if (map->ray->ray_x % 64  == 0)
+				cast_wall(map, dist, deg, west, &row);
+			else if (map->ray->ray_x % 64 == 63)
+				cast_wall(map, dist, deg, east, &row);
 			else
-				cast_wall(map, dist, deg, east, &row); */
+				cast_wall(map, dist, deg, error, &row);
 			deg += (double)map->fov_angle / map->s_width;
 			dist = 0;
 		}
@@ -200,7 +200,9 @@ void	ray_caster(mlx_t *mlx, t_map *map, t_images *images)
 		{
 			if (map->map_visible)
 				mlx_put_pixel(images->fg, map->rend_dist + dist * sin(map->p_orient + deg * DEG_2_RAD), map->rend_dist - dist * cos(map->p_orient + deg * DEG_2_RAD), get_rgba(255, 0, 0, 255));
-			dist++;
+		//map->ray->ray_y = (map->p_pos_y - (dist +1)  * cos(map->p_orient + (deg * DEG_2_RAD)));
+		//map->ray->ray_x = (map->p_pos_x + (dist +1)  * sin(map->p_orient + (deg * DEG_2_RAD)));
+		//dist++;
 		}
 	}
 }
