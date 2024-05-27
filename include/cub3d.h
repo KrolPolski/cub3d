@@ -6,7 +6,7 @@
 /*   By: clundber <clundber@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 13:58:21 by clundber          #+#    #+#             */
-/*   Updated: 2024/05/22 14:32:21 by clundber         ###   ########.fr       */
+/*   Updated: 2024/05/27 14:34:22 by clundber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,25 @@ enum e_dir
 	east,
 	south,
 	west,
+	error,
 };
+
+typedef struct s_ray
+{
+	double	deg;
+	int		row;
+	int		ray_x;
+	int		ray_y;
+	int		dist;
+}	t_ray;
 
 typedef struct s_map
 {
 	char		**map;
+	//int			map_size_x; //any function need this? the size of the file map
+	//int			map_size_y; //the x and y that all functions should stay under
+
+	t_ray		*ray;
 	int			p_pos_x;
 	int			p_pos_y;
 	double		p_orient;
@@ -62,8 +76,8 @@ typedef struct s_map
 	t_images	*images; 
 	mlx_t		*mlx; 
 	int			mapstart;
-	int			x_offset;
-	int			y_offset;
+	int			x_offset; //is this needed anymore?
+	int			y_offset; //is this needed anymore?
 	char		*text[5]; //N->E->S->W
 	bool		map_visible;
 

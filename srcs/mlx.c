@@ -6,7 +6,7 @@
 /*   By: clundber <clundber@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 11:58:50 by rboudwin          #+#    #+#             */
-/*   Updated: 2024/05/22 21:38:19 by clundber         ###   ########.fr       */
+/*   Updated: 2024/05/27 14:58:21 by clundber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 
 }*/
 /* Draws lines on the minimap, to indicate a 60 degree field of view relative to the players orientation */
-void	draw_direction(mlx_t *mlx, t_map *map, t_images *images)
+/* void	draw_direction(mlx_t *mlx, t_map *map, t_images *images)
 {
 	int i;
 	(void)mlx;
@@ -41,7 +41,7 @@ void	draw_direction(mlx_t *mlx, t_map *map, t_images *images)
 		
 		i++;
 	}
-}
+} */
 /* draws a top down map */
 void	draw_2d_map(mlx_t *mlx, t_map *map, t_images *images)
 {
@@ -72,38 +72,38 @@ void	draw_2d_map(mlx_t *mlx, t_map *map, t_images *images)
 		{
 			if (map->map[i][k] == '1')
 			{
-				mlx_image_to_window(mlx, images->blk, (k + 1) * 64, (i + 1) * 64);
+				mlx_image_to_window(mlx, images->blk, k * 64, i * 64);
 			}
 			else if (map->map[i][k] == 'N')
 			{
-				map->p_pos_x = ((k + 1) * 64);
-				map->p_pos_y = ((i + 1) * 64);
+				map->p_pos_x = (k * 64) + 32;
+				map->p_pos_y = (i * 64) + 32;
 				map->p_orient = 0;
-				mlx_image_to_window(mlx, images->wht, (k + 1) * 64, (i + 1) * 64);
+				mlx_image_to_window(mlx, images->wht, k * 64, i * 64);
 			}
 			else if (map->map[i][k] == 'S')
 			{
-				map->p_pos_x = ((k + 1) * 64);
-				map->p_pos_y = ((i + 1) * 64);
+				map->p_pos_x = (k * 64) + 32;
+				map->p_pos_y = (i * 64) + 32;
 				map->p_orient = 180 * DEG_2_RAD;
-				mlx_image_to_window(mlx, images->wht, (k + 1) * 64, (i + 1) * 64);
+				mlx_image_to_window(mlx, images->wht, k * 64, i * 64);
 			}
 			else if (map->map[i][k] == 'E')
 			{
-				map->p_pos_x = ((k + 1) * 64);
-				map->p_pos_y = ((i + 1) * 64);
+				map->p_pos_x = (k * 64) + 32;
+				map->p_pos_y = (i * 64) + 32;
 				map->p_orient = 90 * DEG_2_RAD;
-				mlx_image_to_window(mlx, images->wht, (k + 1) * 64, (i + 1) * 64);
+				mlx_image_to_window(mlx, images->wht, k * 64, i * 64);
 			}
 			else if (map->map[i][k] == 'W')
 			{
-				map->p_pos_x = ((k + 1) * 64);
-				map->p_pos_y = ((i + 1) * 64);
+				map->p_pos_x = (k * 64) + 32;
+				map->p_pos_y = (i * 64) + 32;
 				map->p_orient = 270 * DEG_2_RAD;
-				mlx_image_to_window(mlx, images->wht, (k + 1) * 64, (i + 1) * 64);
+				mlx_image_to_window(mlx, images->wht, k * 64, i * 64);
 			}
 			else if (map->map[i][k] == '0')
-				mlx_image_to_window(mlx, images->wht, (k + 1) * 64, (i + 1) * 64);
+				mlx_image_to_window(mlx, images->wht, k * 64, i * 64);
 			k++;
 		}
 		k = 0;
@@ -121,7 +121,7 @@ void	draw_2d_map(mlx_t *mlx, t_map *map, t_images *images)
 
 void	move_forward(t_map *map)
 {
-	printf("We are in a '%c' square\n", detect_square(map, map->p_pos_x, map->p_pos_y));
+	//printf("We are in a '%c' square\n", detect_square(map, map->p_pos_x, map->p_pos_y));
 	if (detect_square(map, map->p_pos_x + round(5 * sin(map->p_orient)), map->p_pos_y - round(5 * cos(map->p_orient))) != '1')
 	{
 		map->p_pos_x += round(5 * sin(map->p_orient));
@@ -129,12 +129,12 @@ void	move_forward(t_map *map)
 	//	map->images->plyr->instances[0].x += round(5 * sin(map->p_orient));
 	//	map->images->plyr->instances[0].y -= round(5 * cos(map->p_orient));
 	}
-	else
-		printf("Hello wall my old friend\n");
+	//else
+	//	printf("Hello wall my old friend\n");
 }
 void	move_backward(t_map *map)
 {
-	printf("We are in a '%c' square\n", detect_square(map, map->p_pos_x, map->p_pos_y));
+	//printf("We are in a '%c' square\n", detect_square(map, map->p_pos_x, map->p_pos_y));
 	if (detect_square(map, map->p_pos_x - round(5 * sin(map->p_orient)), map->p_pos_y + round(5 * cos(map->p_orient))) != '1')
 	{
 		map->p_pos_x -= round(5 * sin(map->p_orient));
@@ -142,12 +142,12 @@ void	move_backward(t_map *map)
 	//	map->images->plyr->instances[0].x -= round(5 * sin(map->p_orient));
 	//	map->images->plyr->instances[0].y += round(5 * cos(map->p_orient));
 	}
-	else
-		printf("Hello wall my old friend\n");
+	//else
+	//	printf("Hello wall my old friend\n");
 }
 void	move_left(t_map *map)
 {
-	printf("We are in a '%c' square\n", detect_square(map, map->p_pos_x, map->p_pos_y));
+	//printf("We are in a '%c' square\n", detect_square(map, map->p_pos_x, map->p_pos_y));
 	if (detect_square(map, map->p_pos_x + round(5 * sin(map->p_orient - 90 * DEG_2_RAD)), map->p_pos_y - round(5 * cos(map->p_orient - 90 * DEG_2_RAD))) != '1')
 	{
 		map->p_pos_x += round(5 * sin(map->p_orient - 90 * DEG_2_RAD));
@@ -155,13 +155,13 @@ void	move_left(t_map *map)
 	//	map->images->plyr->instances[0].x += round(5 * sin(map->p_orient - 90 * DEG_2_RAD));
 	//	map->images->plyr->instances[0].y -= round(5 * cos(map->p_orient - 90 * DEG_2_RAD));
 	}
-	else
-		printf("Hello wall my old friend\n");
+	//else
+	//	printf("Hello wall my old friend\n");
 }
 
 void	move_right(t_map *map)
 {
-	printf("We are in a '%c' square\n", detect_square(map, map->p_pos_x, map->p_pos_y));
+	//printf("We are in a '%c' square\n", detect_square(map, map->p_pos_x, map->p_pos_y));
 	if (detect_square(map, map->p_pos_x + round(5 * sin(map->p_orient + 90 * DEG_2_RAD)), map->p_pos_y - round(5 * cos(map->p_orient + 90 * DEG_2_RAD))) != '1')
 	{
 		map->p_pos_x += round(5 * sin(map->p_orient + 90 * DEG_2_RAD));
@@ -169,8 +169,8 @@ void	move_right(t_map *map)
 	//	map->images->plyr->instances[0].x += round(5 * sin(map->p_orient + 90 * DEG_2_RAD));
 	//	map->images->plyr->instances[0].y -= round(5 * cos(map->p_orient + 90 * DEG_2_RAD));
 	}
-	else
-		printf("Hello wall my old friend\n");
+	//else
+	//	printf("Hello wall my old friend\n");
 }
 void	ft_movehook(void *param)
 {
@@ -201,14 +201,14 @@ void	ft_movehook(void *param)
 		map->p_orient -= 2 * DEG_2_RAD;
 		if (map->p_orient <= 0)
 			map->p_orient += 2 * M_PI;
-		printf("Degrees: %f\n", map->p_orient / DEG_2_RAD);
+		//printf("Degrees: %f\n", map->p_orient / DEG_2_RAD);
 	}
 	if (mlx_is_key_down(map->mlx, MLX_KEY_RIGHT))
 	{
 		map->p_orient += 2 * DEG_2_RAD;
 		if (map->p_orient >= 2 * M_PI)
 			map->p_orient -= 2 * M_PI;
-		printf("Degrees: %f\n", map->p_orient / DEG_2_RAD);
+		//printf("Degrees: %f\n", map->p_orient / DEG_2_RAD);
 	}
 	ray_caster(map->mlx, map, map->images);
 	
@@ -240,20 +240,29 @@ if	(((keydata.key == MLX_KEY_M)
 		}
 	}
 }
+void	add_data(t_ray *ray, t_map *map)
+{
+	map->s_width = 1920;//800;//1920;//320;//2560;
+	map->s_height = 1080;//600;//1440;
+	map->fov_angle = 60;
+	map->proj_plane = (map->s_width / 2) / tan((map->fov_angle /2) * DEG_2_RAD);
+	map->rend_dist = 700; //512;
+	ray->deg = 0;
+	ray->dist = 0;
+	ray->row = 0;
+}
 
 int cub3d_mlx(t_map *map)
 {
 	int			i;
 	mlx_t		*mlx;
 	t_images	images;
+	t_ray		ray;
 
+	map->ray = &ray;
 	map->images = &images;
 	i = 0;
-	map->s_width = 1920;//320;//2560;
-	map->s_height = 1080;//1440;
-	map->fov_angle = 60;
-	map->proj_plane = (map->s_width / 2) / tan((map->fov_angle /2) * DEG_2_RAD);
-	map->rend_dist = 700; //512;
+	add_data(&ray, map);
 	mlx = mlx_init(map->s_width, map->s_height, "cub3d", true);
 	map->mlx = mlx;
 	draw_2d_map(mlx, map, &images);
@@ -261,7 +270,7 @@ int cub3d_mlx(t_map *map)
 	map->y_offset = 64;
 
 	mlx_key_hook(mlx, ft_single_press_hook, map);
-	ray_caster(mlx, map, map->images);
+	//ray_caster(mlx, map, map->images);
 	mlx_loop_hook(mlx, ft_movehook, map);
 	mlx_loop(mlx);
 	mlx_terminate(mlx);

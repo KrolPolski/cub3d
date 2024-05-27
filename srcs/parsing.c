@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rboudwin <rboudwin@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: clundber <clundber@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 12:02:13 by clundber          #+#    #+#             */
-/*   Updated: 2024/05/15 14:45:37 by clundber         ###   ########.fr       */
+/*   Updated: 2024/05/23 23:04:21 by clundber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,9 +171,11 @@ int	map_init(char **temp_map, t_map *map)
 			max = x;
 		y++;
 	}
-	map->map = ft_calloc((y +1), sizeof(char *));
+	//map->map_size_x = max;
+	//map->map_size_y = y;
+	map->map = ft_calloc((y +2), sizeof(char *));
 	x = 0;
-	while (x < y)
+	while (x <= y)
 	{
 		map->map[x] = ft_calloc(max + 1, sizeof(char));
 		x++;
