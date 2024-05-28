@@ -6,7 +6,7 @@
 /*   By: clundber <clundber@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 11:27:52 by clundber          #+#    #+#             */
-/*   Updated: 2024/05/28 17:34:35 by clundber         ###   ########.fr       */
+/*   Updated: 2024/05/28 18:05:45 by clundber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	get_x_dist(t_map *map, double deg)
 	double	curr_y;
 
 	angle = (map->p_orient + (deg * DEG_2_RAD));
-	if (angle < 0)
+ 	if (angle < 0)
 		angle += 2 * M_PI;
 	else if (angle > 2 * M_PI)
 		angle -= 2 * M_PI;
@@ -45,14 +45,19 @@ void	get_x_dist(t_map *map, double deg)
 		prev_x = (modulus_64(map->ray->ray_x) - 1);
 		delta_x = -64;
 	}
-	prev_y = map->ray->ray_y + (map->ray->ray_x - prev_x) / tan (angle);
-	delta_y = 64 / tan(angle);
+
+	prev_y = (map->ray->ray_y + (map->ray->ray_x - prev_x)) * tan(angle);
+	delta_y = 64 * tan(angle);
+
+printf("prev_y = %f prev_x = %f\n", prev_y, prev_x);
 	if (map->map[(int)prev_y / 64][(int)prev_x / 64] != '1')
 	{
+	printf("mamma mia\n");
 		while (true)
 		{
 			curr_x = (prev_x + delta_x);
 			curr_y = (prev_y + delta_y);
+			
 			if (map->map[(int)curr_y / 64][(int)curr_x / 64] == '1')
 				break ;
 			else
@@ -186,13 +191,16 @@ void	ray_caster(mlx_t *mlx, t_map *map, t_images *images)
 	{
 		y_len = 64;//map->rend_dist;
 		x_len = 64;//map->rend_dist;
-	get_x_dist(map, deg);
-	get_y_dist(map, deg);
-	if (map->ray->x_dist < map->ray->ray_y)
-		map->ray->dist = map->ray->x_dist;
-	else
-		map->ray->dist = map->ray->y_dist;
+		printf("got here!\n");
+		get_x_dist(map, deg);
+		printf("got here2!\n");
+		get_y_dist(map, deg);
+		printf("got here3!\n");
 
+		if (map->ray->x_dist < map->ray->ray_y)
+			map->ray->dist = map->ray->x_dist;
+		else
+			map->ray->dist = map->ray->y_dist;
 /*   //			if (map->ray->ray_y % 64 < 1)
 			if(map->ray->ray_y - (64 *(floor(map->ray->ray_y / 64))) < 1)
 				cast_wall(map, map->ray->dist, deg, north, &row);
