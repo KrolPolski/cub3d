@@ -6,7 +6,7 @@
 /*   By: clundber <clundber@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 11:27:52 by clundber          #+#    #+#             */
-/*   Updated: 2024/05/29 14:40:23 by clundber         ###   ########.fr       */
+/*   Updated: 2024/05/29 15:29:47 by clundber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	get_x_dist(t_map *map, double deg)
 	else if (angle > 2 * M_PI)
 		angle -= 2 * M_PI;
 	printf("This is X function\n");
- 	if (angle / DEG_2_RAD > 0 && angle / DEG_2_RAD < 180)
+ 	if (angle / DEG_2_RAD > 90 && angle / DEG_2_RAD < 270)
 	{
 		prev_x = map->ray->ray_x - (modulus_64(map->ray->ray_x) + 64);
 		delta_x = 64;
@@ -96,7 +96,9 @@ void	get_y_dist(t_map *map, double deg)
 	if (angle * DEG_2_RAD == 0)
 		angle += 0.01;
 	printf("This is Y function\n");
- 	if (angle / DEG_2_RAD > 90 && angle / DEG_2_RAD < 270)
+	printf("angle = %f\n", angle / DEG_2_RAD);
+
+ 	if (angle / DEG_2_RAD > 0 && angle / DEG_2_RAD < 180)
 	{
 		prev_y = map->ray->ray_y - (modulus_64(map->ray->ray_y) + 64);
 		delta_y = 64;
@@ -202,7 +204,7 @@ void	ray_caster(mlx_t *mlx, t_map *map, t_images *images)
 		get_y_dist(map, deg);
 		//printf("got here2!\n");
 		map->ray->x_dist = 500;
-		//get_x_dist(map, deg);
+	//	get_x_dist(map, deg);
 
 
 		//printf("got here3!\n");
@@ -212,6 +214,7 @@ void	ray_caster(mlx_t *mlx, t_map *map, t_images *images)
 	else
 		map->ray->dist = map->ray->y_dist;
 	printf("y_dist = %f\n", map->ray->y_dist);
+		printf("looking angle is %f\n", map->p_orient / DEG_2_RAD);
 /*   //			if (map->ray->ray_y % 64 < 1)
 			if(map->ray->ray_y - (64 *(floor(map->ray->ray_y / 64))) < 1)
 				cast_wall(map, map->ray->dist, deg, north, &row);
