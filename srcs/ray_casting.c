@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ray_casting.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rboudwin <rboudwin@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: clundber <clundber@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 11:27:52 by clundber          #+#    #+#             */
-/*   Updated: 2024/05/29 11:47:34 by rboudwin         ###   ########.fr       */
+/*   Updated: 2024/05/28 18:05:45 by clundber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ void	get_x_dist(t_map *map, double deg)
 		angle += 2 * M_PI;
 	else if (angle > 2 * M_PI)
 		angle -= 2 * M_PI;
-	printf("Our angle is %f and our ray_x position is %f and our ray_y position is %f\n", angle / DEG_2_RAD, map->ray->ray_x, map->ray->ray_y);
  	if (angle / DEG_2_RAD > 0 && angle / DEG_2_RAD < 180)
 	{
 		prev_x = (modulus_64(map->ray->ray_x) + 64);
@@ -47,10 +46,10 @@ void	get_x_dist(t_map *map, double deg)
 		delta_x = -64;
 	}
 
-	prev_y = map->ray->ray_y + (prev_x) * tan(angle);
+	prev_y = (map->ray->ray_y + (map->ray->ray_x - prev_x)) * tan(angle);
 	delta_y = 64 * tan(angle);
 
-	printf("prev_y = %f prev_x = %f\n", prev_y, prev_x);
+printf("prev_y = %f prev_x = %f\n", prev_y, prev_x);
 	if (map->map[(int)prev_y / 64][(int)prev_x / 64] != '1')
 	{
 	printf("mamma mia\n");
@@ -91,8 +90,7 @@ void	get_y_dist(t_map *map, double deg)
 		angle += 2 * M_PI;
 	else if (angle > 2 * M_PI)
 		angle -= 2 * M_PI;
- 	
-	if (angle / DEG_2_RAD > 90 && angle / DEG_2_RAD < 270)
+ 	if (angle / DEG_2_RAD > 90 && angle / DEG_2_RAD < 270)
 	{
 		prev_y = (modulus_64(map->ray->ray_y) + 64);
 		delta_y = 64;
@@ -102,9 +100,8 @@ void	get_y_dist(t_map *map, double deg)
 		prev_y = (modulus_64(map->ray->ray_y) - 1);
 		delta_y = -64;
 	}
-	prev_x = map->ray->ray_x + (delta_y) / tan (angle);
+	prev_x = map->ray->ray_x + (map->ray->ray_y - prev_y) / tan (angle);
 	delta_x = 64 / tan(angle);
-	printf("prev_y = %f prev_x = %f\n", prev_y, prev_x);
 	if (map->map[(int)prev_y / 64][(int)prev_x / 64] != '1')
 	{
 		while (true)
