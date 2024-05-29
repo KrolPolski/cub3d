@@ -6,7 +6,7 @@
 /*   By: clundber <clundber@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 11:27:52 by clundber          #+#    #+#             */
-/*   Updated: 2024/05/28 18:05:45 by clundber         ###   ########.fr       */
+/*   Updated: 2024/05/29 14:40:23 by clundber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,28 +31,31 @@ void	get_x_dist(t_map *map, double deg)
 	double	curr_y;
 
 	angle = (map->p_orient + (deg * DEG_2_RAD));
+	if (angle * DEG_2_RAD == 0)
+		angle += 0.01;
  	if (angle < 0)
 		angle += 2 * M_PI;
 	else if (angle > 2 * M_PI)
 		angle -= 2 * M_PI;
+	printf("This is X function\n");
  	if (angle / DEG_2_RAD > 0 && angle / DEG_2_RAD < 180)
 	{
-		prev_x = (modulus_64(map->ray->ray_x) + 64);
+		prev_x = map->ray->ray_x - (modulus_64(map->ray->ray_x) + 64);
 		delta_x = 64;
 	}
-	else
+	else 
 	{
-		prev_x = (modulus_64(map->ray->ray_x) - 1);
+		prev_x = map->ray->ray_x - (modulus_64(map->ray->ray_x) - 1);
 		delta_x = -64;
 	}
 
-	prev_y = (map->ray->ray_y + (map->ray->ray_x - prev_x)) * tan(angle);
+	prev_y = map->ray->ray_y + (map->ray->ray_x - prev_x) * tan(angle);
 	delta_y = 64 * tan(angle);
-
-printf("prev_y = %f prev_x = %f\n", prev_y, prev_x);
+	//printf("prev_y = %d prev_x = %d\n", (int)prev_y / 64, (int)prev_x / 64);
+	//printf("prev_y = %f prev_x = %f\n", prev_y, prev_x);
 	if (map->map[(int)prev_y / 64][(int)prev_x / 64] != '1')
 	{
-	printf("mamma mia\n");
+	//printf("mamma mia\n");
 		while (true)
 		{
 			curr_x = (prev_x + delta_x);
@@ -90,18 +93,22 @@ void	get_y_dist(t_map *map, double deg)
 		angle += 2 * M_PI;
 	else if (angle > 2 * M_PI)
 		angle -= 2 * M_PI;
+	if (angle * DEG_2_RAD == 0)
+		angle += 0.01;
+	printf("This is Y function\n");
  	if (angle / DEG_2_RAD > 90 && angle / DEG_2_RAD < 270)
 	{
-		prev_y = (modulus_64(map->ray->ray_y) + 64);
+		prev_y = map->ray->ray_y - (modulus_64(map->ray->ray_y) + 64);
 		delta_y = 64;
 	}
 	else
 	{
-		prev_y = (modulus_64(map->ray->ray_y) - 1);
+		prev_y = map->ray->ray_y - (modulus_64(map->ray->ray_y) - 1);
 		delta_y = -64;
 	}
 	prev_x = map->ray->ray_x + (map->ray->ray_y - prev_y) / tan (angle);
 	delta_x = 64 / tan(angle);
+	printf("prev_y = %d prev_x = %d\n", (int)prev_y / 64, (int)prev_x / 64);
 	if (map->map[(int)prev_y / 64][(int)prev_x / 64] != '1')
 	{
 		while (true)
@@ -191,16 +198,20 @@ void	ray_caster(mlx_t *mlx, t_map *map, t_images *images)
 	{
 		y_len = 64;//map->rend_dist;
 		x_len = 64;//map->rend_dist;
-		printf("got here!\n");
-		get_x_dist(map, deg);
-		printf("got here2!\n");
+		//printf("got here!\n");
 		get_y_dist(map, deg);
-		printf("got here3!\n");
+		//printf("got here2!\n");
+		map->ray->x_dist = 500;
+		//get_x_dist(map, deg);
 
-		if (map->ray->x_dist < map->ray->ray_y)
-			map->ray->dist = map->ray->x_dist;
-		else
-			map->ray->dist = map->ray->y_dist;
+
+		//printf("got here3!\n");
+
+	if (map->ray->x_dist < map->ray->y_dist)
+		map->ray->dist = map->ray->x_dist;
+	else
+		map->ray->dist = map->ray->y_dist;
+	printf("y_dist = %f\n", map->ray->y_dist);
 /*   //			if (map->ray->ray_y % 64 < 1)
 			if(map->ray->ray_y - (64 *(floor(map->ray->ray_y / 64))) < 1)
 				cast_wall(map, map->ray->dist, deg, north, &row);
@@ -214,7 +225,8 @@ void	ray_caster(mlx_t *mlx, t_map *map, t_images *images)
 			if(map->ray->ray_x - (64 *(floor(map->ray->ray_x / 64))) >= 63)
 				cast_wall(map, map->ray->dist, deg, east, &row);
 			else  */
-			
+			printf("DEG = %f\n", deg);
+			printf("DIST = %f\n", map->ray->dist);
 			cast_wall(map, map->ray->dist, deg, error, &row);
 			deg += (double)(map->fov_angle / map->s_width);
 			map->ray->dist = 0;
