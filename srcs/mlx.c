@@ -6,7 +6,7 @@
 /*   By: clundber <clundber@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 11:58:50 by rboudwin          #+#    #+#             */
-/*   Updated: 2024/05/29 15:28:13 by clundber         ###   ########.fr       */
+/*   Updated: 2024/05/30 13:00:51 by clundber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,9 +212,9 @@ int	cub3d_mlx(t_map *map)
 	mlx = mlx_init(map->s_width, map->s_height, "cub3d", true);
 	map->mlx = mlx;
 	draw_2d_map(mlx, map, &images);
-	map->p_orient -= 90 * DEG_2_RAD;
-	if (map->p_orient / DEG_2_RAD < 0)
-		map->p_orient += 360 *DEG_2_RAD;
+	//map->p_orient -= 90 * DEG_2_RAD;
+	//if (map->p_orient / DEG_2_RAD < 0)
+	//	map->p_orient += 360 *DEG_2_RAD;
 	mlx_key_hook(mlx, ft_single_press_hook, map);
 	mlx_loop_hook(mlx, ft_movehook, map);
 	mlx_loop(mlx);

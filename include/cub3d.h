@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rboudwin <rboudwin@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: clundber <clundber@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 13:58:21 by clundber          #+#    #+#             */
-/*   Updated: 2024/05/28 17:06:23 by rboudwin         ###   ########.fr       */
+/*   Updated: 2024/05/30 13:29:28 by clundber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,9 @@
 # define BPP sizeof(int32_t)
 # define DEG_2_RAD 0.01745329252
 
+#ifndef M_PI
+# define M_PI 3.14159265359 
+# endif
 typedef struct s_images
 {
 	mlx_image_t		*bg;
@@ -81,6 +84,8 @@ typedef struct s_map
 	int			s_height;
 	int			proj_plane;
 	double		fov_angle;
+	int			map_x_border;
+	int			map_y_border;
 }	t_map;  
 
 void	ray_caster(mlx_t *mlx, t_map *map, t_images *images);
