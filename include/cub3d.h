@@ -6,7 +6,7 @@
 /*   By: clundber <clundber@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 13:58:21 by clundber          #+#    #+#             */
-/*   Updated: 2024/05/30 13:29:28 by clundber         ###   ########.fr       */
+/*   Updated: 2024/05/31 11:27:14 by clundber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,13 +56,13 @@ enum e_dir
 
 typedef struct s_ray
 {
-	double	deg;
+	float	deg;
 	int		row;
-	double	ray_x;
-	double	ray_y;
-	double	dist;
-	double	y_dist;
-	double	x_dist;
+	float	ray_x;
+	float	ray_y;
+	float	dist;
+	float	y_dist;
+	float	x_dist;
 }	t_ray;
 
 typedef struct s_map
