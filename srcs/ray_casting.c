@@ -6,7 +6,7 @@
 /*   By: clundber <clundber@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 11:27:52 by clundber          #+#    #+#             */
-/*   Updated: 2024/05/31 13:16:15 by clundber         ###   ########.fr       */
+/*   Updated: 2024/05/31 13:34:22 by clundber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,10 @@ void	get_len(t_map *map, double *x_len, double *y_len, double deg)
 	double	corner;
 
 	corner = (map->p_orient + (deg * DEG_2_RAD));
+	if (corner * DEG_2_RAD < 0)
+		corner += 360 * DEG_2_RAD;
+	else if (corner * DEG_2_RAD > 360)
+		corner  -= 360 * DEG_2_RAD;
 	if (map->p_orient / DEG_2_RAD + deg == 90 || map->p_orient / DEG_2_RAD + deg == 270)
 		(*y_len) = map->rend_dist;
  	else if (corner > 0 && corner / DEG_2_RAD > 90 && corner / DEG_2_RAD < 270)
@@ -29,7 +33,7 @@ void	get_len(t_map *map, double *x_len, double *y_len, double deg)
 		corner += (270 * DEG_2_RAD); */
   	if ((map->p_orient / DEG_2_RAD) + deg == 0 || (map->p_orient / DEG_2_RAD + deg == 180))
 		(*x_len) = map->rend_dist;
-    else if (corner > 0 && corner / DEG_2_RAD < 360 && corner / DEG_2_RAD > 180)
+    else if (/* corner > 0 &&  */corner / DEG_2_RAD < 360 && corner / DEG_2_RAD > 180)
 		(*x_len) = ((int)(map->ray->ray_x) % 64) * cos(corner);
 	else
 		(*x_len) = (64 - ((int)(map->ray->ray_x) % 64)) * cos(corner);
