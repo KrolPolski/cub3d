@@ -6,7 +6,7 @@
 /*   By: clundber <clundber@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 11:27:52 by clundber          #+#    #+#             */
-/*   Updated: 2024/05/31 12:11:35 by clundber         ###   ########.fr       */
+/*   Updated: 2024/06/04 17:34:38 by clundber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,11 @@ void	get_x_dist(t_map *map, float deg)
 	angle = (map->p_orient + (deg * DEG_2_RAD));
 	if (angle * DEG_2_RAD == 0)
 		angle += 0.01;
- 	if (angle < 0)
+  	if (angle < 0)
 		angle += 2 * M_PI;
 	else if (angle > 2 * M_PI)
-		angle -= 2 * M_PI;
-	if (angle * DEG_2_RAD == 0 ||  angle * DEG_2_RAD == 180)
+		angle -= 2 * M_PI; 
+	if (angle / DEG_2_RAD == 0 ||  angle / DEG_2_RAD == 180)
 	{
 		map->ray->x_dist = map->rend_dist + 10;
 		return ;
@@ -48,6 +48,7 @@ void	get_x_dist(t_map *map, float deg)
 		//prev_x = map->ray->ray_x - (modulus_64(map->ray->ray_x) + 64);
 		prev_x = floor(map->ray->ray_x  / 64) * 64 + 64;
 		delta_x = 64;
+
 	}
 	else 
 	{
@@ -55,9 +56,10 @@ void	get_x_dist(t_map *map, float deg)
 		prev_x = floor(map->ray->ray_x  / 64) * 64 - 1;
 		delta_x = -64;
 	}
-
+	//tested that the first gridline is working correctly.
 	prev_y = floor(map->ray->ray_y + (map->ray->ray_x - prev_x) / tan(angle));
 	delta_y = (float)64 / tan(angle);
+
 	//printf("prev_y = %d prev_x = %d\n", (int)prev_y / 64, (int)prev_x / 64);
 	//printf("X prev_y = %f prev_x = %f\n", prev_y, prev_x);
 	if ((int)prev_y / 64 < 0 || (int)prev_y / 64 > map->map_y_border || (int)prev_x / 64 < 0 || (int)prev_x / 64 > map->map_x_border)
@@ -101,25 +103,26 @@ void	get_y_dist(t_map *map, float deg)
 	float	prev_y;
 	float	prev_x;
 	float	delta_y;
-	float  delta_x;
+	float  	delta_x;
 	float	curr_x;
 	float	curr_y;
 
 	angle = (map->p_orient + (deg * DEG_2_RAD));
 	if (angle * DEG_2_RAD == 0)
-		angle += 0.01;
-	if (angle < 0)
+		angle += 0.01 * DEG_2_RAD;
+ 	if (angle < 0)
 		angle += 2 * M_PI;
 	else if (angle > 2 * M_PI)
-		angle -= 2 * M_PI;
-	if (angle * DEG_2_RAD == 90 ||  angle * DEG_2_RAD == 270)
+		angle -= 2 * M_PI; 
+
+	if (angle / DEG_2_RAD == 90 ||  angle / DEG_2_RAD == 270)
 	{
 		map->ray->y_dist = map->rend_dist + 10;
 		return ;
 	}
 	//printf("This is Y function\n");
 //	printf("angle = %f\n", angle / DEG_2_RAD);
- 	if (angle / DEG_2_RAD < 270 && angle / DEG_2_RAD > 180)
+ 	if (angle / DEG_2_RAD < 270 && angle / DEG_2_RAD > 90)
 	{
 		//prev_y = map->ray->ray_y - (modulus_64(map->ray->ray_y) + 64);
 		prev_y = floor(map->ray->ray_y / 64) * 64 + 64;
@@ -128,12 +131,15 @@ void	get_y_dist(t_map *map, float deg)
 	else
 	{
 		//prev_y = map->ray->ray_y - (modulus_64(map->ray->ray_y) - 1);
-		prev_y = floor(map->ray->ray_y / 64) * 64 - 1;
+		prev_y = floor(map->ray->ray_y / 64) * 64 -1;
 		delta_y = -64;
 	}
-	prev_x = floor(map->ray->ray_y + (map->ray->ray_y - prev_y) / tan (angle));
-	delta_x = (float)64 / tan(angle);
-	printf("prev_y = %d prev_x = %d\n", (int)prev_y / 64, (int)prev_x / 64);
+	prev_x = floor(map->ray->ray_x + (map->ray->ray_y - prev_y) / tan (angle));
+	// now finding the first Y grid works as well
+	delta_x = 64 / tan(angle);
+	printf("delta x = %f\n", delta_x);
+
+
 	if ((int)prev_y / 64 < 0 || (int)prev_y / 64 > map->map_y_border || (int)prev_x / 64 < 0 || (int)prev_x / 64 > map->map_x_border)
 	{
 		map->ray->y_dist = map->rend_dist + 10;
@@ -143,15 +149,10 @@ void	get_y_dist(t_map *map, float deg)
 	{
 		while (true)
 		{
-			printf("prev_x = %d and x border = %d\n", (int)prev_x / 64, map->map_x_border);
-			printf("prev_y = %d and y border = %d\n", (int)prev_y / 64, map->map_y_border);	
 			curr_x = (prev_x + delta_x);
 			curr_y = (prev_y + delta_y);
-			printf("curr_x = %d and x border = %d\n", (int)curr_x / 64, map->map_x_border);
-			printf("curr_y = %d and y border = %d\n", (int)curr_y / 64, map->map_y_border);	
 			if ((int)curr_y / 64 < 0 || (int)curr_y / 64 > map->map_y_border || (int)curr_x / 64 < 0 || (int)curr_x / 64 > map->map_x_border)
 			{
-							
 				printf("exited here\n");
 				map->ray->y_dist = map->rend_dist + 10;
 				return ;
@@ -244,9 +245,10 @@ void	ray_caster(mlx_t *mlx, t_map *map, t_images *images)
 		x_len = 64;//map->rend_dist;
 		//printf("got here!\n");
 		get_y_dist(map, deg);
+	//	map->ray->y_dist = 1000;
 		//printf("got here2!\n");
-		//map->ray->x_dist = 500;
-		get_x_dist(map, deg);
+		map->ray->x_dist = 1500;
+	//	get_x_dist(map, deg);
 
 
 		//printf("got here3!\n");
