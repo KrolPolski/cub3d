@@ -6,7 +6,7 @@
 /*   By: clundber <clundber@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 11:58:50 by rboudwin          #+#    #+#             */
-/*   Updated: 2024/06/04 17:36:26 by clundber         ###   ########.fr       */
+/*   Updated: 2024/06/05 21:48:18 by clundber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,8 +188,8 @@ void	ft_single_press_hook(mlx_key_data_t keydata, void *param)
 }
 void	add_data(t_ray *ray, t_map *map)
 {
-	map->s_width = 400;//800;//1920;//320;//2560;
-	map->s_height = 300;//600;//1080;//600;//1440;
+	map->s_width = 800;//1920;//320;//2560;
+	map->s_height = 600;//1080;//600;//1440;
 	map->fov_angle = 60;
 	map->proj_plane = (map->s_width / 2) / tan((map->fov_angle / 2) * DEG_2_RAD);
 	map->rend_dist = 700; //512;

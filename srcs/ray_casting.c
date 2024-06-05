@@ -6,7 +6,7 @@
 /*   By: clundber <clundber@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 11:27:52 by clundber          #+#    #+#             */
-/*   Updated: 2024/06/04 17:34:38 by clundber         ###   ########.fr       */
+/*   Updated: 2024/06/05 22:48:28 by clundber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ float	modulus_64(float pos)
 	ret = pos - ret;
 	return (ret);
 }
-void	get_x_dist(t_map *map, float deg)
+/* void	get_x_dist(t_map *map, float deg)
 {
 	float	angle;
 	float	prev_y;
@@ -58,6 +58,7 @@ void	get_x_dist(t_map *map, float deg)
 	}
 	//tested that the first gridline is working correctly.
 	prev_y = floor(map->ray->ray_y + (map->ray->ray_x - prev_x) / tan(angle));
+	//delta_y = delta_x * tan(angle);
 	delta_y = (float)64 / tan(angle);
 
 	//printf("prev_y = %d prev_x = %d\n", (int)prev_y / 64, (int)prev_x / 64);
@@ -176,6 +177,103 @@ void	get_y_dist(t_map *map, float deg)
 	map->ray->y_dist = sqrt(pow((float)map->p_pos_x - curr_x, 2) + pow((float)map->p_pos_y - curr_y, 2));
 	//map->ray->y_dist = fabs((map->p_pos_y - curr_y) / cos(angle));
 }
+ */
+
+int	check_sq(float y, float x, char to_check, t_map *map)
+{
+	if ((int)y / 64 < 0 || (int)y / 64 > map->map_y_border || (int)x / 64 < 0 || (int)x / 64 > map->map_x_border)
+	{
+		printf("out of bounds\n");
+		return (1);
+	}
+	if (map->map[(int)y / 64][(int)x / 64] == to_check)
+		return (1);
+	return (0);
+}
+// was get x_dist
+void	vertical_dist(t_map *map, float deg)
+{
+	float	angle;
+	float	ray_y;
+	float	ray_x;
+	float	delta_y;
+	float  	delta_x;
+
+	angle = (map->p_orient + (deg * DEG_2_RAD));
+	if (angle * DEG_2_RAD == 0)
+		angle += 0.01;
+  	if (angle < 0)
+		angle += 2 * M_PI;
+	else if (angle > 2 * M_PI)
+		angle -= 2 * M_PI; 
+	if (angle / DEG_2_RAD == 0 ||  angle / DEG_2_RAD == 180)
+	{
+		map->ray->x_dist = map->rend_dist + 10;
+		return ;
+	}
+ 	if (angle / DEG_2_RAD > 0 && angle / DEG_2_RAD < 180)
+	{
+		ray_x = (floor(map->p_pos_x / 64) * 64) + (64 - modulus_64(map->p_pos_x));
+		delta_x = 64;
+	}
+	else 
+	{
+		ray_x = (floor(map->p_pos_x / 64) * 64) - modulus_64(map->p_pos_x);
+		delta_x = -64;
+	}
+	ray_y = (map->p_pos_x - ray_x) / tan(angle) + map->p_pos_y;
+	delta_y = delta_x * tan(angle);
+
+	while (check_sq(ray_y, ray_x, '1', map) == 0)
+	{
+		ray_x += delta_x;
+		ray_y += delta_y;;
+	}
+	map->ray->x_dist = sqrt(pow((float)map->p_pos_x - ray_x, 2) + pow((float)map->p_pos_y - ray_y, 2));
+	//map->ray->x_dist = fabs((map->p_pos_x - curr_x) / cos(angle));
+}
+//was get y dist
+void	horizontal_dist(t_map *map, float deg)
+{
+	float	angle;
+	float	ray_y;
+	float	ray_x;
+	float	delta_y;
+	float  	delta_x;
+
+	angle = (map->p_orient + (deg * DEG_2_RAD));
+	if (angle * DEG_2_RAD == 0)
+		angle += 0.01;
+  	if (angle < 0)
+		angle += 2 * M_PI;
+	else if (angle > 2 * M_PI)
+		angle -= 2 * M_PI; 
+	if (angle / DEG_2_RAD == 90 ||  angle / DEG_2_RAD == 270)
+	{
+		map->ray->y_dist = map->rend_dist + 10;
+		return ;
+	}
+ 	if (angle / DEG_2_RAD > 90 && angle / DEG_2_RAD < 270)
+	{
+		ray_y = (floor(map->p_pos_y / 64) * 64) + (64 - modulus_64(map->p_pos_y));
+		delta_y = 64;
+	}
+	else 
+	{
+		ray_y = (floor(map->p_pos_y / 64) * 64) - modulus_64(map->p_pos_y);
+		delta_y = -64;
+	}
+	ray_x = (map->p_pos_y - ray_y) / -tan(angle) + map->p_pos_x;
+	delta_x = delta_y * tan(angle);
+
+	while (check_sq(ray_y, ray_x, '1', map) == 0)
+	{
+		ray_x += delta_x;
+		ray_y += delta_y;;
+	}
+	map->ray->y_dist = sqrt(pow((float)map->p_pos_x - ray_x, 2) + pow((float)map->p_pos_y - ray_y, 2));
+	//map->ray->x_dist = fabs((map->p_pos_x - curr_x) / cos(angle));
+}
 
 void	cast_wall(t_map *map, float dist, float deg, enum e_dir dir, int *row)
 {
@@ -244,12 +342,12 @@ void	ray_caster(mlx_t *mlx, t_map *map, t_images *images)
 		y_len = 64;//map->rend_dist;
 		x_len = 64;//map->rend_dist;
 		//printf("got here!\n");
-		get_y_dist(map, deg);
-	//	map->ray->y_dist = 1000;
+	//	get_y_dist(map, deg);
+	//	horizontal_dist(map, deg);
+		map->ray->y_dist = 1000;
 		//printf("got here2!\n");
-		map->ray->x_dist = 1500;
-	//	get_x_dist(map, deg);
-
+	//	map->ray->x_dist = 1500;
+		vertical_dist(map, deg);
 
 		//printf("got here3!\n");
 
@@ -281,6 +379,6 @@ void	ray_caster(mlx_t *mlx, t_map *map, t_images *images)
 			deg += (float)(map->fov_angle / map->s_width);
 			map->ray->dist = 0;
 
-		}
+	}
 
 }
