@@ -6,7 +6,7 @@
 /*   By: clundber <clundber@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 11:27:52 by clundber          #+#    #+#             */
-/*   Updated: 2024/06/10 07:22:04 by clundber         ###   ########.fr       */
+/*   Updated: 2024/06/11 11:59:46 by clundber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,17 +191,17 @@ int	check_sq(float y, float x, char to_check, t_map *map)
 	return (0);
 }
 // was get x_dist
-void	vertical_dist(t_map *map, float deg)
+void	vertical_dist(t_map *map, float angle)
 {
-	float	angle;
+//	float	angle;
 	float	ray_y;
 	float	ray_x;
 	float	delta_y;
 	float  	delta_x;
 
-	angle = (map->p_orient + (deg * DEG_2_RAD));
-	if (angle * DEG_2_RAD == 0)
-		angle += 0.01;
+//	angle = (map->p_orient + (deg * DEG_2_RAD));
+	//if (angle / DEG_2_RAD == 0)
+	//	angle += 0.01;
   	if (angle < 0)
 		angle += 2 * M_PI;
 	else if (angle > 2 * M_PI)
@@ -353,7 +353,7 @@ void	ray_caster(mlx_t *mlx, t_map *map, t_images *images)
 		map->ray->y_dist = 1000;
 		//printf("got here2!\n");
 	//	map->ray->x_dist = 1500;
-		vertical_dist(map, deg);
+		vertical_dist(map, map->p_orient + (deg * DEG_2_RAD));
 
 		//printf("got here3!\n");
 
