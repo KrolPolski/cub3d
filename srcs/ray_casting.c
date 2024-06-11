@@ -6,7 +6,7 @@
 /*   By: clundber <clundber@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 11:27:52 by clundber          #+#    #+#             */
-/*   Updated: 2024/06/11 11:59:46 by clundber         ###   ########.fr       */
+/*   Updated: 2024/06/11 17:23:47 by clundber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,110 +179,103 @@ void	get_y_dist(t_map *map, float deg)
 }
  */
 
-int	check_sq(float y, float x, char to_check, t_map *map)
+int	check_sq(int y, int x, char to_check, t_map *map)
 {
-	if ((int)y / 64 < 0 || (int)y / 64 > map->map_y_border || (int)x / 64 < 0 || (int)x / 64 > map->map_x_border)
+	if (y / 64 < 0 || y / 64 > map->map_y_border || x / 64 < 0 || x / 64 > map->map_x_border)
 	{
-		printf("out of bounds\n");
+		//printf("out of bounds\n");
 		return (1);
 	}
-	if (map->map[(int)y / 64][(int)x / 64] == to_check)
+	if (map->map[y / 64][x / 64] == to_check)
 		return (1);
 	return (0);
 }
 // was get x_dist
 void	vertical_dist(t_map *map, float angle)
 {
-//	float	angle;
-	float	ray_y;
-	float	ray_x;
+	int		ray_y;
+	int		ray_x;
 	float	delta_y;
 	float  	delta_x;
 
-//	angle = (map->p_orient + (deg * DEG_2_RAD));
-	//if (angle / DEG_2_RAD == 0)
-	//	angle += 0.01;
+  	if (angle < 0)
+		angle += 2 * M_PI;
+	else if (angle > 2 * M_PI)
+		angle -= 2 * M_PI; 
+	if (angle / DEG_2_RAD == 270 ||  angle / DEG_2_RAD == 90)
+	{
+		map->ray->x_dist = map->rend_dist + 10;
+		return ;
+	}
+	//right
+ 	if (angle / DEG_2_RAD > 270 || angle / DEG_2_RAD < 90)
+	{
+		ray_x = map->p_pos_x + (64 - modulus_64(map->p_pos_x));
+		ray_y = map->p_pos_y + ((map->p_pos_x - ray_x) * tan(angle));
+		delta_x = 64;
+	}
+	//left
+	else 
+	{
+		ray_x = (map->p_pos_x - modulus_64(map->p_pos_x)) -1;
+		ray_y = map->p_pos_y + ((map->p_pos_x - ray_x) * tan(angle));
+		delta_x = -64;
+	}
+/* 	if (angle / DEG_2_RAD > 180)
+		ray_y = map->p_pos_y - ((map->p_pos_x - ray_x) * tan(angle));
+	else
+		ray_y = map->p_pos_y + ((map->p_pos_x - ray_x) * tan(angle)); */
+
+	delta_y = delta_x * tan(angle);
+	while (check_sq(ray_y, ray_x, '1', map) == 0)
+	{
+		ray_x += delta_x;
+		ray_y += delta_y;
+	}
+	map->ray->x_dist = sqrt(pow(map->p_pos_x - ray_x, 2) + pow(map->p_pos_y - ray_y, 2));
+}
+//was get y dist
+void	horizontal_dist(t_map *map, float angle)
+{
+	int		ray_y;
+	int		ray_x;
+	float	delta_y;
+	float  	delta_x;
+
   	if (angle < 0)
 		angle += 2 * M_PI;
 	else if (angle > 2 * M_PI)
 		angle -= 2 * M_PI; 
 	if (angle / DEG_2_RAD == 0 ||  angle / DEG_2_RAD == 180)
 	{
-		map->ray->x_dist = map->rend_dist + 10;
-		return ;
-	}
- 	if (angle / DEG_2_RAD > 0 && angle / DEG_2_RAD < 180)
-	{
-		ray_x = map->p_pos_x + (64 - modulus_64(map->p_pos_x));
-		printf("ray_x = %d\n", (int)ray_x % 64);
-		ray_y = ((64 - modulus_64(map->p_pos_x)) * tan(angle)) + map->p_pos_y;
-		if (ray_y < 0)
-			ray_y *= -1;
-		printf("ray_y = %f\n", ray_y);
-		delta_x = 64;
-	}
-	else 
-	{
-		ray_x = (map->p_pos_x - modulus_64(map->p_pos_x)) -1;
-		printf("ray_x = %d\n", (int)ray_x % 64);
-		ray_y = ((modulus_64(map->p_pos_x)) * tan(angle)) + map->p_pos_y;
-		if (ray_y < 0)
-			ray_y *= -1;
-		delta_x = -64;
-		//angle -= 180;
-	}
-	//ray_y = (map->p_pos_x - ray_x) / tan(angle) + map->p_pos_y;
-	delta_y = delta_x * tan(angle);
-
- 	while (check_sq(ray_y, ray_x, '1', map) == 0)
-	{
-		ray_x += delta_x;
-		ray_y += delta_y;;
-	}
-	map->ray->x_dist = sqrt(pow((float)map->p_pos_x - ray_x, 2) + pow((float)map->p_pos_y - ray_y, 2));
-	//map->ray->x_dist = fabs((map->p_pos_x - curr_x) / cos(angle));
-}
-//was get y dist
-void	horizontal_dist(t_map *map, float deg)
-{
-	float	angle;
-	float	ray_y;
-	float	ray_x;
-	float	delta_y;
-	float  	delta_x;
-
-	angle = (map->p_orient + (deg * DEG_2_RAD));
-	if (angle * DEG_2_RAD == 0)
-		angle += 0.01;
-  	if (angle < 0)
-		angle += 2 * M_PI;
-	else if (angle > 2 * M_PI)
-		angle -= 2 * M_PI; 
-	if (angle / DEG_2_RAD == 90 ||  angle / DEG_2_RAD == 270)
-	{
 		map->ray->y_dist = map->rend_dist + 10;
 		return ;
 	}
- 	if (angle / DEG_2_RAD > 90 && angle / DEG_2_RAD < 270)
+	//down
+ 	if (angle / DEG_2_RAD > 0 && angle / DEG_2_RAD < 180)
 	{
-		ray_y = (floor(map->p_pos_y / 64) * 64) + (64 - modulus_64(map->p_pos_y));
+		ray_y = map->p_pos_y + (64 - modulus_64(map->p_pos_y));
+		ray_x = map->p_pos_x + ((map->p_pos_y - ray_y) / tan(angle));
 		delta_y = 64;
 	}
+	//up
 	else 
 	{
-		ray_y = (floor(map->p_pos_y / 64) * 64) - modulus_64(map->p_pos_y);
+		ray_y = (map->p_pos_y - modulus_64(map->p_pos_y)) -1;
+		ray_x = map->p_pos_x + ((map->p_pos_y - ray_y) / tan(angle));
 		delta_y = -64;
 	}
-	ray_x = (map->p_pos_y - ray_y) / -tan(angle) + map->p_pos_x;
-	delta_x = delta_y * tan(angle);
-
+/* 	if (angle / DEG_2_RAD > 270 || angle / DEG_2_RAD < 90)
+		ray_x = map->p_pos_x + ((map->p_pos_y - ray_y) / tan(angle));
+	else
+		ray_x = map->p_pos_x - ((map->p_pos_y - ray_y) / tan(angle)); */
+	delta_x = delta_y / tan(angle);
 	while (check_sq(ray_y, ray_x, '1', map) == 0)
 	{
 		ray_x += delta_x;
-		ray_y += delta_y;;
+		ray_y += delta_y;
 	}
-	map->ray->y_dist = sqrt(pow((float)map->p_pos_x - ray_x, 2) + pow((float)map->p_pos_y - ray_y, 2));
-	//map->ray->x_dist = fabs((map->p_pos_x - curr_x) / cos(angle));
+	map->ray->y_dist = sqrt(pow(map->p_pos_x - ray_x, 2) + pow(map->p_pos_y - ray_y, 2));
 }
 
 void	cast_wall(t_map *map, float dist, float deg, enum e_dir dir, int *row)
@@ -318,7 +311,7 @@ void	cast_wall(t_map *map, float dist, float deg, enum e_dir dir, int *row)
 	top_pixel = (map->s_height / 2) - column_height / 2;
 	if (top_pixel < 0)
 		top_pixel = 0;
-		while (pixels < column_height && top_pixel + pixels < map->s_height)
+		while (pixels < (int)column_height && top_pixel + pixels < map->s_height)
 		{
 			mlx_put_pixel(map->images->world, (*row), top_pixel + pixels, color);
 			pixels++;
@@ -328,10 +321,22 @@ void	cast_wall(t_map *map, float dist, float deg, enum e_dir dir, int *row)
 
 //void	wall_control(t_map *map)
 
+/* void	get_dist(t_ray *ray, float angle)
+{
+	double	delta_dist_x;
+	double	delta_dist_y;
+
+
+
+
+} */
+
 void	ray_caster(mlx_t *mlx, t_map *map, t_images *images)
 {
 	float	deg;
 	int		row;
+	float	angle;
+
 
 	row = 0;
 
@@ -347,13 +352,13 @@ void	ray_caster(mlx_t *mlx, t_map *map, t_images *images)
 	mlx_image_to_window(mlx, images->fg, map->p_pos_x - map->rend_dist , map->p_pos_y - map->rend_dist);
  	while (deg <= (map->fov_angle / 2) && row < map->s_width)
 	{
+		angle = map->p_orient + (deg * DEG_2_RAD);
 		//printf("got here!\n");
-	//	get_y_dist(map, deg);
-	//	horizontal_dist(map, deg);
-		map->ray->y_dist = 1000;
+		horizontal_dist(map, angle);
+	//	map->ray->y_dist = 1000;
 		//printf("got here2!\n");
 	//	map->ray->x_dist = 1500;
-		vertical_dist(map, map->p_orient + (deg * DEG_2_RAD));
+		vertical_dist(map, angle);
 
 		//printf("got here3!\n");
 
@@ -361,11 +366,12 @@ void	ray_caster(mlx_t *mlx, t_map *map, t_images *images)
 		map->ray->dist = map->ray->x_dist;
 	else
 		map->ray->dist = map->ray->y_dist;
-	printf("\n");
-	printf("y_dist = %f\n", map->ray->y_dist);
-	printf("x_dist = %f\n", map->ray->x_dist);	
-	printf("DIST = %f\n", map->ray->dist);
-	printf("ray angle is %f\n", map->p_orient / DEG_2_RAD + deg);
+	//printf("\n");
+/* 	printf("y_dist = %f\n", map->ray->y_dist);
+	printf("x_dist = %f\n", map->ray->x_dist);	*/
+	//printf("player pos = [%d][%d]\n", map->p_pos_y, map->p_pos_x);
+	//printf("DIST = %f\n", map->ray->y_dist); 
+	//printf("ray angle is %f\n", map->p_orient / DEG_2_RAD + deg);
 /*   //			if (map->ray->ray_y % 64 < 1)
 			if(map->ray->ray_y - (64 *(floor(map->ray->ray_y / 64))) < 1)
 				cast_wall(map, map->ray->dist, deg, north, &row);

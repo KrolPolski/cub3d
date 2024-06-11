@@ -31,6 +31,9 @@ CFILES = $(SRCS_DIR)/cub3d.c $(SRCS_DIR)/parsing.c $(SRCS_DIR)/utils.c $(SRCS_DI
 
 OFILES = $(CFILES:.c=.o)
 
+%.o: %.c
+	@cc $(CFLAGS) -c $< -o $@
+
 LIBS	= $(MLX_DIR)/build/libmlx42.a
 
 ifeq ($(shell uname), Darwin)
@@ -41,7 +44,7 @@ endif
 
 #--------- FLAGS ----------#
 CC = @cc
-CFLAGS =# -Wall -Wextra -Werror -Wunreachable-code -Ofast
+CFLAGS = -Wall -Wextra -Werror -Wunreachable-code -Ofast
 HEADERS	= -I ./includes -I $(MLX_DIR)/include/MLX42/
 DEBUGFLAGS = -g -fsanitize=address,undefined
 
