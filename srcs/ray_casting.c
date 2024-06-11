@@ -6,7 +6,7 @@
 /*   By: clundber <clundber@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 11:27:52 by clundber          #+#    #+#             */
-/*   Updated: 2024/06/05 22:48:28 by clundber         ###   ########.fr       */
+/*   Updated: 2024/06/10 07:22:04 by clundber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,18 +213,28 @@ void	vertical_dist(t_map *map, float deg)
 	}
  	if (angle / DEG_2_RAD > 0 && angle / DEG_2_RAD < 180)
 	{
-		ray_x = (floor(map->p_pos_x / 64) * 64) + (64 - modulus_64(map->p_pos_x));
+		ray_x = map->p_pos_x + (64 - modulus_64(map->p_pos_x));
+		printf("ray_x = %d\n", (int)ray_x % 64);
+		ray_y = ((64 - modulus_64(map->p_pos_x)) * tan(angle)) + map->p_pos_y;
+		if (ray_y < 0)
+			ray_y *= -1;
+		printf("ray_y = %f\n", ray_y);
 		delta_x = 64;
 	}
 	else 
 	{
-		ray_x = (floor(map->p_pos_x / 64) * 64) - modulus_64(map->p_pos_x);
+		ray_x = (map->p_pos_x - modulus_64(map->p_pos_x)) -1;
+		printf("ray_x = %d\n", (int)ray_x % 64);
+		ray_y = ((modulus_64(map->p_pos_x)) * tan(angle)) + map->p_pos_y;
+		if (ray_y < 0)
+			ray_y *= -1;
 		delta_x = -64;
+		//angle -= 180;
 	}
-	ray_y = (map->p_pos_x - ray_x) / tan(angle) + map->p_pos_y;
+	//ray_y = (map->p_pos_x - ray_x) / tan(angle) + map->p_pos_y;
 	delta_y = delta_x * tan(angle);
 
-	while (check_sq(ray_y, ray_x, '1', map) == 0)
+ 	while (check_sq(ray_y, ray_x, '1', map) == 0)
 	{
 		ray_x += delta_x;
 		ray_y += delta_y;;
@@ -321,8 +331,6 @@ void	cast_wall(t_map *map, float dist, float deg, enum e_dir dir, int *row)
 void	ray_caster(mlx_t *mlx, t_map *map, t_images *images)
 {
 	float	deg;
-	float	y_len;
-	float	x_len;
 	int		row;
 
 	row = 0;
@@ -339,8 +347,6 @@ void	ray_caster(mlx_t *mlx, t_map *map, t_images *images)
 	mlx_image_to_window(mlx, images->fg, map->p_pos_x - map->rend_dist , map->p_pos_y - map->rend_dist);
  	while (deg <= (map->fov_angle / 2) && row < map->s_width)
 	{
-		y_len = 64;//map->rend_dist;
-		x_len = 64;//map->rend_dist;
 		//printf("got here!\n");
 	//	get_y_dist(map, deg);
 	//	horizontal_dist(map, deg);
