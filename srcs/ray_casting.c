@@ -6,7 +6,7 @@
 /*   By: clundber <clundber@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 11:27:52 by clundber          #+#    #+#             */
-/*   Updated: 2024/06/11 17:23:47 by clundber         ###   ########.fr       */
+/*   Updated: 2024/06/19 15:43:47 by clundber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -283,10 +283,9 @@ void	cast_wall(t_map *map, float dist, float deg, enum e_dir dir, int *row)
 	int	top_pixel;
 	int	pixels;
 	int	color;
-	float	angle;
 	unsigned int column_height;
 
-	angle = 0;
+	color = 0;
 	if (dir == north)
 		color = get_rgba(100, 100, 200, 255);
 	if (dir == east)
@@ -311,25 +310,13 @@ void	cast_wall(t_map *map, float dist, float deg, enum e_dir dir, int *row)
 	top_pixel = (map->s_height / 2) - column_height / 2;
 	if (top_pixel < 0)
 		top_pixel = 0;
-		while (pixels < (int)column_height && top_pixel + pixels < map->s_height)
+	while (pixels < (int)column_height && top_pixel + pixels < map->s_height)
 		{
 			mlx_put_pixel(map->images->world, (*row), top_pixel + pixels, color);
 			pixels++;
 		}
 	(*row)++;
 }
-
-//void	wall_control(t_map *map)
-
-/* void	get_dist(t_ray *ray, float angle)
-{
-	double	delta_dist_x;
-	double	delta_dist_y;
-
-
-
-
-} */
 
 void	ray_caster(mlx_t *mlx, t_map *map, t_images *images)
 {

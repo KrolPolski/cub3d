@@ -6,7 +6,7 @@
 /*   By: clundber <clundber@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 11:58:50 by rboudwin          #+#    #+#             */
-/*   Updated: 2024/06/11 16:06:53 by clundber         ###   ########.fr       */
+/*   Updated: 2024/06/19 15:37:47 by clundber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@ void	draw_2d_map(mlx_t *mlx, t_map *map, t_images *images)
 {
 	int			i;
 	int			k;
-	int			x;
-	int			y;
 
 	images->black = mlx_load_png("assets/black.png");
 	images->white = mlx_load_png("assets/white.png");
@@ -33,8 +31,6 @@ void	draw_2d_map(mlx_t *mlx, t_map *map, t_images *images)
 	mlx_image_to_window(mlx, images->bg, 0, 0);
 	i = 0;
 	k = 0;
-	x = 0;
-	y = 0;
 	while (map->map[i])
 	{
 		while (map->map[i][k])
@@ -200,14 +196,12 @@ void	add_data(t_ray *ray, t_map *map)
 
 int	cub3d_mlx(t_map *map)
 {
-	int			i;
 	mlx_t		*mlx;
 	t_images	images;
 	t_ray		ray;
 
 	map->ray = &ray;
 	map->images = &images;
-	i = 0;
 	add_data(&ray, map);
 	mlx = mlx_init(map->s_width, map->s_height, "cub3d", true);
 	map->mlx = mlx;
