@@ -6,7 +6,7 @@
 /*   By: rboudwin <rboudwin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 13:58:21 by clundber          #+#    #+#             */
-/*   Updated: 2024/05/27 18:15:54 by rboudwin         ###   ########.fr       */
+/*   Updated: 2024/06/20 12:53:27 by rboudwin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,15 @@ typedef struct s_map
 {
 	char		**map;
 	t_ray		*ray;
-	int			p_pos_x;
-	int			p_pos_y;
+	double		p_pos_x;
+	double		p_pos_y;
 	double		p_orient;
+	double		p_dir_x;
+	double		p_dir_y;
+	double		camera_x;
+	double		camera_y;
+	double		plane_x;
+	double		plane_y;
 	int			*ceiling;
 	int			*floor;
 	t_images	*images;
