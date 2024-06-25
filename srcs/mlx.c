@@ -6,7 +6,7 @@
 /*   By: clundber <clundber@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 11:58:50 by rboudwin          #+#    #+#             */
-/*   Updated: 2024/06/19 15:37:47 by clundber         ###   ########.fr       */
+/*   Updated: 2024/06/19 21:54:41 by clundber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,28 +43,28 @@ void	draw_2d_map(mlx_t *mlx, t_map *map, t_images *images)
 			{
 				map->p_pos_x = (k * 64) + 32;
 				map->p_pos_y = (i * 64) + 32;
-				map->p_orient = 270 * DEG_2_RAD;
+				map->p_orient = 0;
 				mlx_image_to_window(mlx, images->wht, k * 64, i * 64);
 			}
 			else if (map->map[i][k] == 'S')
 			{
 				map->p_pos_x = (k * 64) + 32;
 				map->p_pos_y = (i * 64) + 32;
-				map->p_orient = 90 * DEG_2_RAD;
+				map->p_orient = 180 * DEG_2_RAD;
 				mlx_image_to_window(mlx, images->wht, k * 64, i * 64);
 			}
 			else if (map->map[i][k] == 'E')
 			{
 				map->p_pos_x = (k * 64) + 32;
 				map->p_pos_y = (i * 64) + 32;
-				map->p_orient = 0;
+				map->p_orient = 90 * DEG_2_RAD;
 				mlx_image_to_window(mlx, images->wht, k * 64, i * 64);
 			}
 			else if (map->map[i][k] == 'W')
 			{
 				map->p_pos_x = (k * 64) + 32;
 				map->p_pos_y = (i * 64) + 32;
-				map->p_orient = 180 * DEG_2_RAD;
+				map->p_orient = 270 * DEG_2_RAD;
 				mlx_image_to_window(mlx, images->wht, k * 64, i * 64);
 			}
 			else if (map->map[i][k] == '0')
@@ -185,7 +185,7 @@ void	ft_single_press_hook(mlx_key_data_t keydata, void *param)
 void	add_data(t_ray *ray, t_map *map)
 {
 	map->s_width = 800;//1920;//320;//2560;
-	map->s_height = 600;//1080;//600;//1440;
+	map->s_height = 600;//1440;
 	map->fov_angle = 60;
 	map->proj_plane = (map->s_width / 2) / tan((map->fov_angle / 2) * DEG_2_RAD);
 	map->rend_dist = 700; //512;

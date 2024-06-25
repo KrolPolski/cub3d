@@ -44,7 +44,7 @@ endif
 
 #--------- FLAGS ----------#
 CC = @cc
-CFLAGS = -Wall -Wextra -Werror -Wunreachable-code -Ofast
+CFLAGS = #-Wall -Wextra -Werror -Wunreachable-code -Ofast
 HEADERS	= -I ./includes -I $(MLX_DIR)/include/MLX42/
 DEBUGFLAGS = -g -fsanitize=address,undefined
 
