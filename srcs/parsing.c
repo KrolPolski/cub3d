@@ -293,7 +293,12 @@ int	validate_map(t_map *map)
 					if (player == true)
 						return (1);
 					else
+					{
 						player = true; 
+						map->p_start_x = x;
+						map->p_start_y = y;
+						printf("We decided that the start position should be x: %d y: %d and the char is %c\n", map->p_start_x, map->p_start_y, map->map[y][x]);
+					}
 				}
 			}
 			x++;

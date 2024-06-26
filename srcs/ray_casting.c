@@ -28,8 +28,9 @@ void	ray_caster(mlx_t *mlx, t_map *map, t_images *images)
 	while(x < w)
     {
       //calculate ray position and direction
-      map->camera_x = 2 * x / double(w) - 1; //x-coordinate in camera space
+      map->camera_x = 2 * x / (double)(w) - 1; //x-coordinate in camera space
       ray.ray_x = map->p_dir_x + map->plane_x * map->camera_x;
 	  ray.ray_y = map->p_dir_y + map->plane_y * map->camera_x;
 	  w++;
+	}
 }

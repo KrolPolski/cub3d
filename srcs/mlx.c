@@ -13,7 +13,7 @@
 #include "../include/cub3d.h"
 
 /* draws a top down map */
-void	draw_2d_map(mlx_t *mlx, t_map *map, t_images *images)
+/*void	draw_2d_map(mlx_t *mlx, t_map *map, t_images *images)
 {
 	int			i;
 	int			k;
@@ -84,7 +84,7 @@ void	draw_2d_map(mlx_t *mlx, t_map *map, t_images *images)
 	images->wht->enabled = false;
 	images->plyr->enabled = false;
 	images->fg->enabled = false;
-}
+} */
 
 void	move_forward(t_map *map)
 {
@@ -198,20 +198,28 @@ void	add_data(t_ray *ray, t_map *map)
 	ray->row = 0;
 }
 
+void	init_vectors(t_map *map, t_vector *vec)
+{
+	
+}
 int	cub3d_mlx(t_map *map)
 {
 	int			i;
 	mlx_t		*mlx;
 	t_images	images;
 	t_ray		ray;
+	t_vector	vec;
 
 	map->ray = &ray;
 	map->images = &images;
+	map->vec = &vec;
+
 	i = 0;
 	add_data(&ray, map);
 	mlx = mlx_init(map->s_width, map->s_height, "cub3d", true);
 	map->mlx = mlx;
-	draw_2d_map(mlx, map, &images);
+	init_vectors(map, &vec);
+	//draw_2d_map(mlx, map, &images);
 	mlx_key_hook(mlx, ft_single_press_hook, map);
 	mlx_loop_hook(mlx, ft_movehook, map);
 	mlx_loop(mlx);

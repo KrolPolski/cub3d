@@ -60,11 +60,19 @@ typedef struct s_ray
 	double	dist;
 }	t_ray;
 
+typedef struct s_vector
+{
+	double	p_pos_x;
+	double	p_pos_y;
+} t_vector;
+
 typedef struct s_map
 {
 	char		**map;
 	t_ray		*ray;
 	double		p_pos_x;
+	int			p_start_x;
+	int			p_start_y;
 	double		p_pos_y;
 	double		p_orient;
 	double		p_dir_x;
@@ -85,6 +93,7 @@ typedef struct s_map
 	int			s_height;
 	int			proj_plane;
 	double		fov_angle;
+	t_vector	*vec;
 }	t_map;  
 
 void	ray_caster(mlx_t *mlx, t_map *map, t_images *images);
