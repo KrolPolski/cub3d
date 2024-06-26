@@ -128,7 +128,7 @@ void	ft_movehook(void *param)
 	map = (t_map *)param;
 	if (mlx_is_key_down(map->mlx, MLX_KEY_ESCAPE))
 		mlx_close_window(map->mlx);
-	if (mlx_is_key_down(map->mlx, MLX_KEY_W) || mlx_is_key_down(map->mlx, MLX_KEY_UP))
+	/*if (mlx_is_key_down(map->mlx, MLX_KEY_W) || mlx_is_key_down(map->mlx, MLX_KEY_UP))
 	{
 		move_forward(map);
 	}
@@ -156,8 +156,8 @@ void	ft_movehook(void *param)
 		map->p_orient += 2 * DEG_2_RAD;
 		if (map->p_orient >= 2 * M_PI)
 			map->p_orient -= 2 * M_PI;
-	}
-	ray_caster(map->mlx, map, map->images);
+	}*/
+	ray_caster(map->mlx, map, map->images, map->vec);
 }
 
 void	ft_single_press_hook(mlx_key_data_t keydata, void *param)
@@ -200,7 +200,14 @@ void	add_data(t_ray *ray, t_map *map)
 
 void	init_vectors(t_map *map, t_vector *vec)
 {
-	
+	vec->p_pos_x = map->p_start_x + 0.5;
+	vec->p_pos_y = map->p_start_y + 0.5;
+	//assumes only N start for now
+	vec->p_dir_x = -1;
+	vec->p_dir_y = 0;
+	vec->plane_x = 0;
+	vec->plane_y = 0.66;
+
 }
 int	cub3d_mlx(t_map *map)
 {

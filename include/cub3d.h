@@ -55,8 +55,8 @@ typedef struct s_ray
 {
 	double	deg;
 	int		row;
-	int		ray_x;
-	int		ray_y;
+	int		ray_dir_x;
+	int		ray_dir_y;
 	double	dist;
 }	t_ray;
 
@@ -64,6 +64,12 @@ typedef struct s_vector
 {
 	double	p_pos_x;
 	double	p_pos_y;
+	double	p_dir_x;
+	double  p_dir_y;
+	double  plane_x;
+	double  plane_y;
+	double	camera_x;
+	double	camera_y;
 } t_vector;
 
 typedef struct s_map
@@ -96,7 +102,7 @@ typedef struct s_map
 	t_vector	*vec;
 }	t_map;  
 
-void	ray_caster(mlx_t *mlx, t_map *map, t_images *images);
+void	ray_caster(mlx_t *mlx, t_map *map, t_images *images, t_vector *vec);
 char	detect_square(t_map *map, int x, int y);
 void	ft_nullfree(char *str);
 int		parsing(int argc, char **argv, t_map *map);
